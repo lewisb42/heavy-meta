@@ -651,7 +651,7 @@ public class HeavyMeta {
 	 * 
 	 * @param condition the condition to test.
 	 */
-	public static void whenFalse(boolean condition) {
+	public static void whenNot(boolean condition) {
 		assertFalse(condition);
 	}
 	
@@ -965,7 +965,7 @@ public class HeavyMeta {
 	 * 
 	 * @param condition the condition to test.
 	 */
-	public static void whenTrue(boolean condition) {
+	public static void when(boolean condition) {
 		assertTrue(condition);
 	}
 	
@@ -976,7 +976,7 @@ public class HeavyMeta {
 	 * 
 	 * @param booleanSupplier the supplier
 	 */
-	public static void whenTrue(BooleanSupplier booleanSupplier) {
+	public static void when(BooleanSupplier booleanSupplier) {
 		assertTrue(booleanSupplier);
 	}
 	
