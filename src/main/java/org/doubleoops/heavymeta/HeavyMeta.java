@@ -1133,4 +1133,13 @@ public class HeavyMeta {
 	public static void whenNotSame(Object expected, Object actual) {
 		assertNotSame(expected, actual);
 	}
+	
+	/**
+	 * Used with a new MockUp<T>() block to indicate a student's test
+	 * should immediately fail. Typically used in conjunction with shouldFail()
+	 * in order to make the HeavyMeta test pass.
+	 */
+	public static void forceStudentsTestToFail() {
+		fail();
+	}
 }
