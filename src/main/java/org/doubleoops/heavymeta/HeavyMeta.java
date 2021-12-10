@@ -2,9 +2,12 @@ package org.doubleoops.heavymeta;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 import org.opentest4j.AssertionFailedError;
@@ -21,6 +24,28 @@ import mockit.MockUp;
  */
 public class HeavyMeta {
 
+	/**
+	 * Asserts that the given method in the given class is a test method,
+	 * i.e., annotated with Test
+	 * 
+	 * @param <T> the type name
+	 * @param klass the runtime class object
+	 * @param methodName the name of the method in question
+	 */
+	public static <T> void assertIsTestMethod(Class<T> klass, String methodName) {
+		try {
+			Method method = klass.getMethod(methodName);
+			Annotation testAnnotation = method.getAnnotation(Test.class);
+			assertNotNull(testAnnotation,
+					"method '" + methodName + "' is not annotated with @Test.");
+		} catch (NoSuchMethodException e) {
+			throw new AssertionFailedError("No test method with name '" + methodName + "' exists on class" + klass.getName());
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Asserts the given unit test should pass.
 	 * 
