@@ -1,7 +1,13 @@
 package org.doubleoops.heavymeta;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
+
+import mockit.Invocation;
+import mockit.Mock;
+import mockit.MockUp;
 
 /**
  * DSL for writing meta-unit tests
@@ -87,4 +93,39 @@ public class HeavyMeta {
 			throw new AssertionFailedError(passMessage);
 		}
 	}
+	
+	/**
+	 * Matcher to use within a new MockUp<T>() block.
+	 * 
+	 * Matches when the given condition is true.
+	 * 
+	 * @param condition the condition to test.
+	 */
+	public static void whenTrue(boolean condition) {
+		assertTrue(condition);
+	}
+	
+	/**
+	 * Matcher to use within a new MockUp<T>() block.
+	 * 
+	 * Matches when the argument is not null.
+	 * 
+	 * @param condition the condition to test.
+	 */
+	public static void whenNotNull(Object obj) {
+		assertNotNull(obj);
+	}
+	
+	/**
+	 * Matcher to use within a new MockUp<T>() block.
+	 * 
+	 * Matches when the argument is null.
+	 * 
+	 * @param condition the condition to test.
+	 */
+	public static void whenNull(Object obj) {
+		assertNull(obj);
+	}
+	
+	
 }
