@@ -57,7 +57,7 @@ As previously mentioned, the student test's code-under-test is the "input" to th
 
 Let's start with the (from the student's point-of-view) code-under-test, a simple data class in Java:
 
-`
+```
 public class Measurement {
 	private String location;
 	private int temperatureInCelsius;
@@ -86,40 +86,97 @@ public class Measurement {
 		return temperatureInCelsius;
 	}
 }
-`
+```
 While not a particularly interesting class from a testing perspective, its simplicity makes it a good place to start teaching students about unit test structure, even if we might not bother testing it In Real Life.
 
 Now we have an autograded programming exercise: *Complete the unit test below by instantiating a `Measurement` object with valid parameters and writing the appropriate assertions to check the constructor properly initialized its state*
 
 With the following scaffolded test class:
 
-`
+```
 public class TestConstructor {
 	
   public void testShouldCreateValidMeasurement() {
 
   }
 }
-`
+```
 
 (Notice we left out the @Test! HeavyMeta can check for its absence as a way to remind the student to include it in their tests. Also note that the test method **must** be public. This isn't required by JUnit, but is required by the HeavyMeta approach.)
 
 An acceptable implementation of this unit test would look something like:
 
-`
+```
 @Test
 public void testShouldCreateValidMeasurement() {
   Measurement measurement = new Measurement(new String("Carrollton"), 100);
   assertEquals(new String("Carrollton"), measurement.getLocation());
   assertEquals(100, measurement.getTemperatureInCelsius());
 }
-`
+```
 
-Now, on the back end, we as the instructor have created a series of meta-tests to use to autograde the student's work. A reasonably complete suite of meta-tests for `testShouldCreateValidMeasurement()` might be:
+Now, on the back end, we as the instructor have created a series of meta-tests to use to autograde the student's work. 
+A reasonably complete suite of meta-tests for `testShouldCreateValidMeasurement()` might be:
 
-- student's test should pass if fed the non-mutated `Measurement`
-- student's test should fail if `Measurement`'s constructor's `location` parameter is `null`
-- student's test should fail if `Measurement`'s constructor's `location` parameter is the empty string
-- student's test should fail if `Measurement`'s constructor's `temperatureInCelsius` parameter is less-than -273
-- student's test should fail if `getLocation()` returns a different value than that specified in the constructor
-- student's test should fail if `getTemperatureInCelsius()` returns a different value than that specified in the constructor
+1. student's test should pass if fed the non-mutated `Measurement`
+1. student's test should fail if `Measurement`'s constructor's `location` parameter is `null`
+1. student's test should fail if `Measurement`'s constructor's `location` parameter is the empty string
+1. student's test should fail if `Measurement`'s constructor's `temperatureInCelsius` parameter is less-than -273
+1. student's test should fail if `getLocation()` returns a different value than that specified in the constructor
+1. student's test should fail if `getTemperatureInCelsius()` returns a different value than that specified in the constructor
+
+Here is the test class and meta-test for case #5 above:
+
+```
+class ShouldCreateValidMeasurementTests {
+	TestConstructor unitTests;
+
+	@BeforeEach
+	void setup() {
+		assertIsTestMethod(TestConstructor.class, "testShouldCreateValidMeasurement");
+		unitTests = new TestConstructor();
+	}
+	
+	@Test 
+	void studentsTestShouldFailWhenGetLocationReturnsWrongValue() {
+		
+		new MockUp<Measurement>() {
+			@Mock 
+			public void $init(Invocation inv, String location, int temperatureInCelsius) {
+				when(temperatureInCelsius >= -273);
+				whenNotNull(location);
+				whenNot(location.isEmpty());
+				inv.proceed(location, temperatureInCelsius);
+			}
+			
+			@Mock 
+			public String getLocation() {
+				return "q2w3sedxcftg6y7hunjk";
+			}
+		};
+		
+		shouldFail(() -> {
+			unitTests.testShouldCreateValidMeasurement();
+		});
+	}
+}
+```
+
+Explanation of all the bits and pieces of the test:
+
+- The `@BeforeEach` first checks that the student-test-under-test method is annotated with `@Test` and then creates an instance of the student's test class (here `TestConstructor`). Obviously this doesn't have to happen in an @BeforeEach, but this is code that will common to most tests.
+- In the meta-test itself (`studentsTestShouldFailWhenGetLocationReturnsWrongValue()`):
+	1. We create a `MockUp<Measurement>` object and pass it an initialization block. (`MockUp` is JMockit's fake object class.) This `MockUp` object will intercept calls to methods of `Measurement`.
+	1. We `@Mock` `Measurement`'s `getLocation()` method and constructor, the latter via the `$init()` method.
+	1. `$init()` ensures the constructor has been called with a valid value for `temperatureInCelsius` as we don't want the student's test to fail for the wrong reasons.
+	1. Similarly, `$init()` ensures the `location` valid (neither `null` nor the empty string).
+	1. `$init()` then calls the *real* constructor via `Invocation#proceed`, passing in the parameters.
+	1. The `@Mock` for `getLocation()` returns an ugly location value that is unlikely to be what was originally sent to the constructor. 
+
+We have now created a modified `Measurement` object, at run-time, 
+that effectively has a bug in it, namely that the location passed-in to the constructor is 
+not being returned by `getLocation()`. The student's test should should show failure in this situation.
+
+The last bit of our meta-test is a call to `shouldFail()`, which takes as parameter a lambda running the student's 
+unit test. This means our meta-test passes if the student's test (properly) fails, and that the meta-test fails if 
+the student's test (improperly) passes. Keeping those straight can be a chore so proceed carefully!

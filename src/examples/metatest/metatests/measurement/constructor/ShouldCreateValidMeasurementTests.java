@@ -74,12 +74,14 @@ class ShouldCreateValidMeasurementTests {
 			@Mock 
 			public void $init(Invocation inv, String location, int temperatureInCelsius) {
 				when(temperatureInCelsius >= -273);
-				inv.proceed("good value", temperatureInCelsius);
+				whenNotNull(location);
+				whenNot(location.isEmpty());
+				inv.proceed(location, temperatureInCelsius);
 			}
 			
 			@Mock 
 			public String getLocation() {
-				return "bad value";
+				return "q2w3sedxcftg6y7hunjk";
 			}
 		};
 		
