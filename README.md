@@ -19,6 +19,9 @@ See the [jmockit](https://jmockit.github.io/tutorial/Introduction.html#runningTe
 
 # Writing Meta-tests
 
+You are strongly encouraged to read up on [JMockit's fake objects](https://jmockit.github.io/tutorial/Faking.html)
+before proceeding!
+
 ## Scope and limitations
 
 What this is not: a general framework for evaluating the quality of student-written unit tests. This is a Hard Problem. I know, because I spent several years banging my head against it, to no avail. So if you came here looking for that, sorry not sorry.
