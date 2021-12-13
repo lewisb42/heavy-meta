@@ -69,10 +69,17 @@ class ShouldCreateValidMeasurementTests {
 
 	@Test 
 	void studentsTestShouldFailWhenGetLocationReturnsWrongValue() {
-		// mutate the class-under-test
+		
 		new MockUp<Measurement>() {
-			@Mock public String getLocation() {
-				return "This is not what should happen";
+			@Mock 
+			public void $init(Invocation inv, String location, int temperatureInCelsius) {
+				when(temperatureInCelsius >= -273);
+				inv.proceed("good value", temperatureInCelsius);
+			}
+			
+			@Mock 
+			public String getLocation() {
+				return "bad value";
 			}
 		};
 		
