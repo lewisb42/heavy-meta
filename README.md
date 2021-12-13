@@ -19,6 +19,19 @@ See the [jmockit](https://jmockit.github.io/tutorial/Introduction.html#runningTe
 
 # Writing Meta-tests
 
+## Scope and limitations
+
+What this is not: a general framework for evaluating the quality of student-written unit tests. This is a Hard Problem. I know, because I spent several years banging my head against it, to no avail. So if you came here looking for that, sorry not sorry.
+
+Instead, this is intended specifically for automated grading systems like ZyBooks, Mimir, Codio, etc. that present students with small, focused, heavily-scaffolded programming exercises, the kind of exercises that give them ample opportunities for practice and are likely low-value in terms of the impact on the student's grade. It is not intended for high-point-value assignments that are major assessments for the course.
+
+In our case, the scaffolding includes:
+
+- A Java class with one-or-more methods whose role is the code-under-test for the student test. This class will typically be the *correct* code for passing the test the student writes.
+- A test class with a test method stub for the unit test the student will write. It is important that the scaffolded code include the class name and the name of the student test method, since our meta-tests will depend on those.
+
+In these exercises it is expected that the student's task is to complete the unit test body, then submit their code to the autograder.
+
 ## Conceptual Overview
 
 ### Student tests vs. Meta-tests
