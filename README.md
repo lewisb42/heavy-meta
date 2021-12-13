@@ -53,4 +53,73 @@ Now extend that to a unit test (the meta-test) whose method-under-test is a JUni
 
 As previously mentioned, the student test's code-under-test is the "input" to the meta-test. What this means is that in order to write a suite of meta-tests to check a single student test, we have to be able to pass different versions of that code-under-test to the student's test. Naively we could simply write multiple versions and execute the meta-tests using each one. A better way, however, is to start with correct code-under-test and modify it at runtime. (*If this is starting to sound like mutation testing, it's no accident -- while mutation testing is technically something different, our approach is very much inspired by it.*) This is where JMockit comes in, specifically its [*fake object*](https://jmockit.github.io/tutorial/Faking.html) functionality. In JMockit, a fake object is one that can intercept constructor and method calls to the "real" object and change the behavior of those calls. We will use fakes to mutate the class-under-test that our student's unit test is testing. By carefully and intelligently crafting a fake, we create code that is expected to pass or fail, as appropriate, the student-written test. Then, if the meta-test fails we can provide guidance to the student about what they got wrong.
 
-## examples
+## We all need a simple and contrived example so here it is
+
+Let's start with the (from the student's point-of-view) code-under-test, a simple data class in Java:
+
+`
+public class Measurement {
+	private String location;
+	private int temperatureInCelsius;
+	public Measurement(String location, int temperatureInCelsius) {
+		if (location == null) {
+			throw new IllegalArgumentException("invalid location");
+		}
+		
+		if (location.isEmpty()) {
+			throw new IllegalArgumentException("invalid location");
+		}
+		
+		if (temperatureInCelsius < -273) {
+			throw new IllegalArgumentException("invalid temperatureInCelsius");
+		}
+		
+		this.location = location;
+		this.temperatureInCelsius = temperatureInCelsius;
+	}
+  
+	public String getLocation() {
+		return location;
+	}
+  
+	public int getTemperatureInCelsius() {
+		return temperatureInCelsius;
+	}
+}
+`
+While not a particularly interesting class from a testing perspective, its simplicity makes it a good place to start teaching students about unit test structure, even if we might not bother testing it In Real Life.
+
+Now we have an autograded programming exercise: *Complete the unit test below by instantiating a `Measurement` object with valid parameters and writing the appropriate assertions to check the constructor properly initialized its state*
+
+With the following scaffolded test class:
+
+`
+public class TestConstructor {
+	
+  public void testShouldCreateValidMeasurement() {
+
+  }
+}
+`
+
+(Notice we left out the @Test! HeavyMeta can check for its absence as a way to remind the student to include it in their tests. Also note that the test method **must** be public. This isn't required by JUnit, but is required by the HeavyMeta approach.)
+
+An acceptable implementation of this unit test would look something like:
+
+`
+@Test
+public void testShouldCreateValidMeasurement() {
+  Measurement measurement = new Measurement(new String("Carrollton"), 100);
+  assertEquals(new String("Carrollton"), measurement.getLocation());
+  assertEquals(100, measurement.getTemperatureInCelsius());
+}
+`
+
+Now, on the back end, we as the instructor have created a series of meta-tests to use to autograde the student's work. A reasonably complete suite of meta-tests for `testShouldCreateValidMeasurement()` might be:
+
+- student's test should pass if fed the non-mutated `Measurement`
+- student's test should fail if `Measurement`'s constructor's `location` parameter is `null`
+- student's test should fail if `Measurement`'s constructor's `location` parameter is the empty string
+- student's test should fail if `Measurement`'s constructor's `temperatureInCelsius` parameter is less-than -273
+- student's test should fail if `getLocation()` returns a different value than that specified in the constructor
+- student's test should fail if `getTemperatureInCelsius()` returns a different value than that specified in the constructor
