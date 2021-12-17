@@ -26,7 +26,7 @@ before proceeding!
 
 What this is not: a general framework for evaluating the quality of student-written unit tests. This is a Hard Problem. I know, because I spent several years banging my head against it, to no avail. So if you came here looking for that, sorry not sorry.
 
-Instead, this is intended specifically for automated grading systems like ZyBooks, Mimir, Codio, etc. that present students with small, focused, heavily-scaffolded programming exercises, the kind of exercises that give them ample opportunities for practice and are likely low-value in terms of the impact on the student's grade. It is not intended for high-point-value assignments that are major assessments for the course.
+Instead, this is intended specifically for automated grading systems (e.g., zyBooks) that present students with small, focused, heavily-scaffolded programming exercises, the kind of exercises that give them ample opportunities for practice and are likely low-value in terms of the impact on the student's grade. It is not intended for high-point-value assignments that are major assessments for the course.
 
 In our case, the scaffolding includes:
 
