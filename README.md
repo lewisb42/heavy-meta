@@ -3,7 +3,7 @@ A library and approach for writing "meta" unit tests that test conventional JUni
 
 # Setup
 
-Add the [HeavyMeta.java](https://github.com/lewisb42/heavy-meta/blob/main/src/main/java/org/doubleoops/heavymeta/HeavyMeta.java) file to your project (sorry no Maven repository yet -- at least its).
+Add the [HeavyMeta.java](https://github.com/lewisb42/heavy-meta/blob/main/src/main/java/org/doubleoops/heavymeta/HeavyMeta.java) file to your project (sorry no Maven repository yet -- at least its just one file).
 
 Note that HeavyMeta.java is just a class of static convenience methods. The meta-testing process here can be done without them; they just make things more readable.
 
