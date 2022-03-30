@@ -92,13 +92,15 @@ public class HeavyMeta {
 		throws AssertionFailedError {
 		try {
 			unitTestUnderTest.execute();
-			throw new AssertionFailedError(passMessage);
 		} catch (AssertionFailedError e) {
 			// this is where we want to be, so if here, do nothing,
 			// meaning shouldFail() was successful
+			return;
 		} catch (Throwable e) {
 			throw new AssertionFailedError(passMessage);
 		}
+		
+		
 	}
 	
 	/**
@@ -114,13 +116,17 @@ public class HeavyMeta {
 		String passMessage = "unit-test-under-test did not fail when it should have";
 		try {
 			unitTestUnderTest.execute();
-			throw new AssertionFailedError(passMessage);
 		} catch (AssertionFailedError e) {
 			// this is where we want to be, so if here, do nothing,
 			// meaning shouldFail() was successful
+			return;
 		} catch (Throwable e) {
 			throw new AssertionFailedError(passMessage);
 		}
+		
+		// if we made it here it means the student test *passed*, 
+		// thus *this* test fails
+		throw new AssertionFailedError(passMessage);
 	}
 	
 	/**
