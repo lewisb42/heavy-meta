@@ -2,6 +2,7 @@ package org.doubleoops.heavymeta;
 
 import org.junit.jupiter.api.Assertions;
 
+import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
@@ -19,13 +20,15 @@ public class FakedAssertions extends MockUp<Assertions> {
 	private static boolean didAssertTrue = false;
 	
 	@Mock
-	public static void assertEquals(int expected, int actual) {
+	public static void assertEquals(Invocation inv, int expected, int actual) {
 		didAssertEqualsIntInt = true;
+		inv.proceed(expected, actual);
 	}
 	
 	@Mock
-	public static void assertEquals(int expected, int actual, String message) {
+	public static void assertEquals(Invocation inv, int expected, int actual, String message) {
 		didAssertEqualsIntInt = true;
+		inv.proceed(expected, actual, message);
 	}
 	
 	/**
@@ -38,13 +41,15 @@ public class FakedAssertions extends MockUp<Assertions> {
 	}
 	
 	@Mock
-	public static void assertTrue(boolean condition) {
+	public static void assertTrue(Invocation inv, boolean condition) {
 		didAssertTrue = true;
+		inv.proceed(condition);
 	}
 	
 	@Mock
-	public static void assertTrue(boolean condition, String message) {
+	public static void assertTrue(Invocation inv, boolean condition, String message) {
 		didAssertTrue = true;
+		inv.proceed(condition, message);
 	}
 	
 	/**
