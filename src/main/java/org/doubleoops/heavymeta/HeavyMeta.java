@@ -83,6 +83,8 @@ public class HeavyMeta {
 		try {
 			unitTestUnderTest.execute();
 		} catch (Throwable e) {
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 			throw new AssertionFailedError(failureMessage);
 		}
 	}
@@ -99,7 +101,24 @@ public class HeavyMeta {
 		try {
 			unitTestUnderTest.execute();
 		} catch (Throwable e) {
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 			throw new AssertionFailedError("Unit-test-under-test did not pass");
+		}
+	}
+	
+	/**
+	 * Simply executes the given unit test but doesn't care if it passes or fails.
+	 * Effectively ignore any exceptions thrown by a failing test.
+	 * 
+	 * @param unitTestUnderTest
+	 */
+	public static void shouldPassOrFail(Executable unitTestUnderTest) {
+		try {
+			unitTestUnderTest.execute();
+		} catch (Throwable e) {
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -120,8 +139,12 @@ public class HeavyMeta {
 		} catch (AssertionFailedError e) {
 			// this is where we want to be, so if here, do nothing,
 			// meaning shouldFail() was successful
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 			return;
 		} catch (Throwable e) {
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 			throw new AssertionFailedError(passMessage);
 		}
 		
@@ -144,8 +167,12 @@ public class HeavyMeta {
 		} catch (AssertionFailedError e) {
 			// this is where we want to be, so if here, do nothing,
 			// meaning shouldFail() was successful
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 			return;
 		} catch (Throwable e) {
+			System.err.println("Original exception message: " + e.getMessage());
+			e.printStackTrace();
 			throw new AssertionFailedError(passMessage);
 		}
 		
