@@ -9,7 +9,7 @@ import mockit.MockUp;
 /**
  * A faked version of JUnit5's Assertions class,
  * used to verify that certain assertions have been
- * called.
+ * called. This should be *copied* into meta-tests, not instantiated!
  * 
  * @author lewisb
  *
@@ -17,7 +17,11 @@ import mockit.MockUp;
 public class FakedAssertions extends MockUp<Assertions> {
 
 	private static boolean didAssertEqualsIntInt = false;
-	private static boolean didAssertTrue = false;
+	
+	public FakedAssertions() {
+		didAssertEqualsIntInt = false;
+		didAssertTrue = false;
+	}
 	
 	@Mock
 	public static void assertEquals(Invocation inv, int expected, int actual) {
@@ -39,6 +43,8 @@ public class FakedAssertions extends MockUp<Assertions> {
 	public static boolean didAssertEqualsIntInt() {
 		return didAssertEqualsIntInt;
 	}
+	
+	private static boolean didAssertTrue = false;
 	
 	@Mock
 	public static void assertTrue(Invocation inv, boolean condition) {
