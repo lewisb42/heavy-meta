@@ -148,7 +148,9 @@ public class HeavyMeta {
 			throw new AssertionFailedError(passMessage);
 		}
 		
-		
+		// if we made it here it means the student test *passed*, 
+		// thus *this* test fails
+		throw new AssertionFailedError(passMessage);
 	}
 	
 	/**
