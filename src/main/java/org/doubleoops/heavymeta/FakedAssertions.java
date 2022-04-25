@@ -24,6 +24,17 @@ public class FakedAssertions extends MockUp<Assertions> {
 		didAssertTrue = false;
 		didAssertFalse = false;
 		didAssertThrows = false;
+		didAssertEqualsBooleanBoolean = false;
+	}
+	 
+	/**
+	 * Catchall to report that one of assertTrue(), assertFalse(), or
+	 * assertEquals(boolean, boolean) was called
+	 * 
+	 * @return true if one of the above methods was called; false otherwise
+	 */
+	public static boolean didAssertBoolean() {
+		return didAssertTrue || didAssertFalse || didAssertEqualsBooleanBoolean;
 	}
 	
 	@Mock
@@ -45,6 +56,29 @@ public class FakedAssertions extends MockUp<Assertions> {
 	 */
 	public static boolean didAssertEqualsIntInt() {
 		return didAssertEqualsIntInt;
+	}
+	
+	private static boolean didAssertEqualsBooleanBoolean = false;
+	
+	/**
+	 * Called on the fake class to indicate that an assertEquals(boolean,boolean) was recorded.
+	 * 
+	 * @return true if assertEquals(boolean,boolean) was called
+	 */
+	public static boolean didAssertEqualsBooleanBoolean() {
+		return didAssertEqualsBooleanBoolean;
+	}
+	
+	@Mock
+	public static void assertEquals(Invocation inv, boolean expected, boolean actual) {
+		didAssertEqualsBooleanBoolean = true;
+		inv.proceed(expected, actual);
+	}
+	
+	@Mock
+	public static void assertEquals(Invocation inv, boolean expected, boolean actual, String message) {
+		didAssertEqualsBooleanBoolean = true;
+		inv.proceed(expected, actual, message);
 	}
 	
 	private static boolean didAssertTrue = false;
