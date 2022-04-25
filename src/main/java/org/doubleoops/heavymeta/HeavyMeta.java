@@ -50,6 +50,31 @@ public class HeavyMeta {
 	}
 	
 	/**
+	 * If using FakedAssertions, you can't use normal JUnit assertions in your meta-tests.
+	 * This is a "safe" version of assertFalse(boolean, String) for those situations.
+	 * 
+	 * @param cond the condition you are asserting is false
+	 * @param message the message for a failed assertion
+	 */
+	public static void safeAssertFalse(boolean cond, String message) {
+		if (cond) {
+			throw new AssertionFailedError(message);
+		}
+	}
+	
+	/**
+	 * If using FakedAssertions, you can't use normal JUnit assertions in your meta-tests.
+	 * This is a "safe" version of assertFalse(boolean) for those situations.
+	 * 
+	 * @param cond the condition you are asserting is false
+	 */
+	public static void safeAssertFalse(boolean cond) {
+		if (cond) {
+			throw new AssertionFailedError();
+		}
+	}
+	
+	/**
 	 * Asserts that the given method in the given class is a test method,
 	 * i.e., annotated with Test
 	 * 

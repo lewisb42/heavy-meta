@@ -1,6 +1,7 @@
 package org.doubleoops.heavymeta;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 
 import mockit.Invocation;
 import mockit.Mock;
@@ -21,6 +22,8 @@ public class FakedAssertions extends MockUp<Assertions> {
 	public FakedAssertions() {
 		didAssertEqualsIntInt = false;
 		didAssertTrue = false;
+		didAssertFalse = false;
+		didAssertThrows = false;
 	}
 	
 	@Mock
@@ -65,5 +68,60 @@ public class FakedAssertions extends MockUp<Assertions> {
 	 */
 	public static boolean didAssertTrue() {
 		return didAssertTrue;
+	}
+	
+	private static boolean didAssertFalse = false;
+	
+	@Mock
+	public static void assertFalse(Invocation inv, boolean condition) {
+		didAssertFalse = true;
+		inv.proceed(condition);
+	}
+	
+	@Mock
+	public static void assertFalse(Invocation inv, boolean condition, String message) {
+		didAssertFalse = true;
+		inv.proceed(condition, message);
+	}
+	
+	/**
+	 * Called on the fake class to indicate that an assertFalse was recorded.
+	 * 
+	 * @return true if assertFalse was called
+	 */
+	public static boolean didAssertFalse() {
+		return didAssertFalse;
+	}
+	
+	
+	
+	private static boolean didAssertThrows = false;
+	
+	/**
+	 * Called on the fake class to indicate that an assertThrows was recorded.
+	 * 
+	 * @return true if assertThrows was called
+	 */
+	public static boolean didAssertThrows() {
+		return didAssertThrows;
+	}
+	
+	@Mock
+	public static <T extends Throwable> T assertThrows(
+			Invocation inv,
+			Class<T> expectedType, 
+			Executable executable) {
+		didAssertThrows = true;
+		return inv.proceed(expectedType, executable);
+	}
+	
+	@Mock
+	public static <T extends Throwable> T assertThrows(
+			Invocation inv,
+			Class<T> expectedType, 
+			Executable executable,
+			String message) {
+		didAssertThrows = true;
+		return inv.proceed(expectedType, executable, message);
 	}
 }
