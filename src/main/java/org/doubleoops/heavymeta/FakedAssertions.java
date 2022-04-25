@@ -70,14 +70,20 @@ public class FakedAssertions extends MockUp<Assertions> {
 	}
 	
 	@Mock
-	public static void assertEquals(Invocation inv, boolean expected, boolean actual) {
-		didAssertEqualsBooleanBoolean = true;
+	public static void assertEquals(Invocation inv, Object expected, Object actual) {
+		if (expected instanceof Boolean && actual instanceof Boolean) {
+			didAssertEqualsBooleanBoolean = true;
+		}
+		
 		inv.proceed(expected, actual);
 	}
 	
 	@Mock
-	public static void assertEquals(Invocation inv, boolean expected, boolean actual, String message) {
-		didAssertEqualsBooleanBoolean = true;
+	public static void assertEquals(Invocation inv, Object expected, Object actual, String message) {
+		if (expected instanceof Boolean && actual instanceof Boolean) {
+			didAssertEqualsBooleanBoolean = true;
+		}
+		
 		inv.proceed(expected, actual, message);
 	}
 	
