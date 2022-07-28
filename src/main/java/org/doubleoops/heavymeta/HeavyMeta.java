@@ -3,10 +3,12 @@ package org.doubleoops.heavymeta;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.function.ThrowingSupplier;
@@ -24,6 +26,21 @@ import mockit.MockUp;
  */
 public class HeavyMeta {
 
+	
+	/**
+	 * If using FakedAssertions, you can't use normal JUnit assertions in your meta-tests.
+	 * This is a "safe" version of assertEquals(int, int) for those situations.
+	 * 
+	 * @param expected the expected value
+	 * @param actual the actual value
+	 * @param message the message for a failed assertion
+	 */
+	public static void safeAssertEquals(int expected, int actual, String message) {
+		if (expected != actual) {
+			throw new AssertionFailedError(message);
+		}
+	}
+	
 	/**
 	 * If using FakedAssertions, you can't use normal JUnit assertions in your meta-tests.
 	 * This is a "safe" version of assertTrue(boolean, String) for those situations.
@@ -208,6 +225,42 @@ public class HeavyMeta {
 		throw new AssertionFailedError(passMessage);
 	}
 	
+	/**
+	 * Run any method on testClassObject that is annotated with BeforeEach
+	 * 
+	 * @param testClassObject any object. If null the method simply returns.
+	 */
+	public static void runBeforeEachMethods(Object testClassObject) {
+		if (testClassObject == null) return;
+		
+		Class<? extends Object> klass = testClassObject.getClass();
+		Method[] methods = klass.getDeclaredMethods();
+		for (Method method: methods) {
+			if (isBeforeEachMethod(method)) {
+				try {
+					method.invoke(testClassObject);
+				} catch (IllegalAccessException e) {
+					// ignore exceptions
+				} catch (IllegalArgumentException e) {
+					// ignore exceptions
+				} catch (InvocationTargetException e) {
+					// ignore exceptions
+				}
+			}
+		}
+	}
+	
+	private static boolean isBeforeEachMethod(Method method) {
+		// TODO Auto-generated method stub
+		Annotation[] annotations = method.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation.annotationType().equals(BeforeEach.class)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Matcher to use within a new MockUp<T>() block.
 	 * 
@@ -1252,4 +1305,6 @@ public class HeavyMeta {
 	public static void forceStudentsTestToFail() {
 		fail();
 	}
+	
+
 }

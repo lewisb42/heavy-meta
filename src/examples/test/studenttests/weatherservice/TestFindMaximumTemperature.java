@@ -2,6 +2,7 @@ package studenttests.weatherservice;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import model.Measurement;
@@ -9,6 +10,12 @@ import model.WeatherService;
 
 public class TestFindMaximumTemperature {
 
+	private WeatherService weatherService;
+	@BeforeEach
+	public void setup() {
+		weatherService = new WeatherService();
+	}
+	
 	@Test
 	public void testWhenNoMeasurements() {
 		WeatherService ws = new WeatherService();
@@ -17,9 +24,8 @@ public class TestFindMaximumTemperature {
 	
 	@Test
 	public void testWhenOneMeasurement() {
-		WeatherService ws = new WeatherService();
-		ws.add(new Measurement("Atlanta", 75));
-		assertEquals(75, ws.findMaximumTemperature());
+		weatherService.add(new Measurement("Atlanta", 75));
+		assertEquals(75, weatherService.findMaximumTemperature());
 	}
 
 	@Test
