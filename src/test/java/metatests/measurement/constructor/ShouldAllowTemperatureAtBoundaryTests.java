@@ -1,11 +1,9 @@
 package metatests.measurement.constructor;
 
-import static org.doubleoops.heavymeta.HeavyMeta.assertIsTestMethod;
-import static org.doubleoops.heavymeta.HeavyMeta.shouldPass;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.doubleoops.heavymeta.MetaTestExtension;
-import org.junit.jupiter.api.BeforeEach;
+import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -18,7 +16,7 @@ import studenttests.measurement.TestConstructor;
 class ShouldAllowTemperatureAtBoundaryTests {
 
 	@RegisterExtension
-	private static MetaTestExtension metaTester = new MetaTestExtension(TestConstructor.class, "testShouldAllowTemperatureAtBoundary");
+	private static HeavyMeta metaTester = new HeavyMeta(TestConstructor.class, "testShouldAllowTemperatureAtBoundary");
 
 	@Test
 	public void shouldHaveArrangeActStage() {
