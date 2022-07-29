@@ -10,7 +10,7 @@ import mockit.MockUp;
 /**
  * A faked version of JUnit5's Assertions class,
  * used to verify that certain assertions have been
- * called. This should be *copied* into meta-tests, not instantiated!
+ * called.
  * 
  * @author lewisb
  *
