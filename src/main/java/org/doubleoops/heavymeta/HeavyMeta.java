@@ -14,10 +14,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 import org.opentest4j.AssertionFailedError;
 
-import mockit.Invocation;
-import mockit.Mock;
-import mockit.MockUp;
-
 /**
  * DSL for writing meta-unit tests
  * 
