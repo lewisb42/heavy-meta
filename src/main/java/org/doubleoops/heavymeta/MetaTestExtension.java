@@ -57,5 +57,15 @@ public class MetaTestExtension implements BeforeAllCallback {
 		System.out.println("called beforeAll");
 		assertIsTestMethod(this.testClass, this.testMethodName);
 	}
+	
+	/**
+	 * Helper to run the student's unit test, with no expectation of passing or failing.
+	 */
+	public void runStudentsTestIgnoreFails() {
+		HeavyMeta.shouldPassOrFail(() -> {
+			HeavyMeta.runBeforeEachMethods(this.testClassInstance);
+			this.testMethod.invoke(this.testClassInstance);
+		});
+	}
 
 }
