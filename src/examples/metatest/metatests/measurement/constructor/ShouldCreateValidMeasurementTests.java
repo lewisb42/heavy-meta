@@ -16,108 +16,113 @@ import studenttests.weatherservice.TestFindMaximumTemperature;
 class ShouldCreateValidMeasurementTests {
 	TestConstructor unitTests;
 
-	@BeforeEach
-	void setup() {
-		assertIsTestMethod(TestConstructor.class, "testShouldCreateValidMeasurement");
-		unitTests = new TestConstructor();
-	}
-
 	@Test
-	void studentsTestShouldHandleNonMutatedMeasurement() {
-		// mutate the class-under-test
-		new MockUp<Measurement>() {
-			@Mock void $init(Invocation invocation, String location, int temperatureInCelsius) {
-				whenNotNull(location);
-				whenNotEqual("", location);
-				when(temperatureInCelsius > -273);
-				invocation.proceed(location, temperatureInCelsius);
-			}
-		};
-		
-		shouldPass(() -> {
-			unitTests.testShouldCreateValidMeasurement();
-		});
+	public void deprecated() {
+		fail("These tests need to be rewritten.");
 	}
-
-	@Test
-	void studentsTestShouldFailWhenGetLocationReturnsNull() {
-		// mutate the class-under-test
-		new MockUp<Measurement>() {
-			@Mock String getLocation() {
-				return null;
-			}
-		};
-		
-		shouldFail(() -> {
-			unitTests.testShouldCreateValidMeasurement();
-		});
-	}
-
-	@Test
-	void studentsTestShouldFailWhenGetLocationReturnsEmptyString() {
-		// mutate the class-under-test
-		new MockUp<Measurement>() {
-			@Mock String getLocation() {
-				return "";
-			}
-		};
-		
-		shouldFail(() -> {
-			unitTests.testShouldCreateValidMeasurement();
-		});
-	}
-
-	@Test 
-	void studentsTestShouldFailWhenGetLocationReturnsWrongValue() {
-		
-		new MockUp<Measurement>() {
-			@Mock 
-			public void $init(Invocation inv, String location, int temperatureInCelsius) {
-				when(temperatureInCelsius >= -273);
-				whenNotNull(location);
-				whenNot(location.isEmpty());
-				inv.proceed(location, temperatureInCelsius);
-			}
-			
-			@Mock 
-			public String getLocation() {
-				return "q2w3sedxcftg6y7hunjk";
-			}
-		};
-		
-		shouldFail(() -> {
-			unitTests.testShouldCreateValidMeasurement();
-		});
-	}
-
-	@Test 
-	void studentsTestShouldFailWhenGetTemperatureInCelsiusReturnsWrongValue() {
-		// mutate the class-under-test
-		new MockUp<Measurement>() {
-			@Mock 
-			public int getTemperatureInCelsius() {
-				return Integer.MAX_VALUE;
-			}
-		};
-		
-		shouldFail(() -> {
-			unitTests.testShouldCreateValidMeasurement();
-		});
-	}
-
-	@Test
-	void studentsTestShouldFailWhenGetTemperatureInCelsiusReturnsInvalidValue() {
-		// mutate the class-under-test
-		new MockUp<Measurement>() {
-			@Mock 
-			public int getTemperatureInCelsius() {
-				return -274;
-			}
-		};
-		
-		shouldFail(() -> {
-			unitTests.testShouldCreateValidMeasurement();
-		});
-	}
+	
+//	@BeforeEach
+//	void setup() {
+//		assertIsTestMethod(TestConstructor.class, "testShouldCreateValidMeasurement");
+//		unitTests = new TestConstructor();
+//	}
+//
+//	@Test
+//	void studentsTestShouldHandleNonMutatedMeasurement() {
+//		// mutate the class-under-test
+//		new MockUp<Measurement>() {
+//			@Mock void $init(Invocation invocation, String location, int temperatureInCelsius) {
+//				whenNotNull(location);
+//				whenNotEqual("", location);
+//				when(temperatureInCelsius > -273);
+//				invocation.proceed(location, temperatureInCelsius);
+//			}
+//		};
+//		
+//		shouldPass(() -> {
+//			unitTests.testShouldCreateValidMeasurement();
+//		});
+//	}
+//
+//	@Test
+//	void studentsTestShouldFailWhenGetLocationReturnsNull() {
+//		// mutate the class-under-test
+//		new MockUp<Measurement>() {
+//			@Mock String getLocation() {
+//				return null;
+//			}
+//		};
+//		
+//		shouldFail(() -> {
+//			unitTests.testShouldCreateValidMeasurement();
+//		});
+//	}
+//
+//	@Test
+//	void studentsTestShouldFailWhenGetLocationReturnsEmptyString() {
+//		// mutate the class-under-test
+//		new MockUp<Measurement>() {
+//			@Mock String getLocation() {
+//				return "";
+//			}
+//		};
+//		
+//		shouldFail(() -> {
+//			unitTests.testShouldCreateValidMeasurement();
+//		});
+//	}
+//
+//	@Test 
+//	void studentsTestShouldFailWhenGetLocationReturnsWrongValue() {
+//		
+//		new MockUp<Measurement>() {
+//			@Mock 
+//			public void $init(Invocation inv, String location, int temperatureInCelsius) {
+//				when(temperatureInCelsius >= -273);
+//				whenNotNull(location);
+//				whenNot(location.isEmpty());
+//				inv.proceed(location, temperatureInCelsius);
+//			}
+//			
+//			@Mock 
+//			public String getLocation() {
+//				return "q2w3sedxcftg6y7hunjk";
+//			}
+//		};
+//		
+//		shouldFail(() -> {
+//			unitTests.testShouldCreateValidMeasurement();
+//		});
+//	}
+//
+//	@Test 
+//	void studentsTestShouldFailWhenGetTemperatureInCelsiusReturnsWrongValue() {
+//		// mutate the class-under-test
+//		new MockUp<Measurement>() {
+//			@Mock 
+//			public int getTemperatureInCelsius() {
+//				return Integer.MAX_VALUE;
+//			}
+//		};
+//		
+//		shouldFail(() -> {
+//			unitTests.testShouldCreateValidMeasurement();
+//		});
+//	}
+//
+//	@Test
+//	void studentsTestShouldFailWhenGetTemperatureInCelsiusReturnsInvalidValue() {
+//		// mutate the class-under-test
+//		new MockUp<Measurement>() {
+//			@Mock 
+//			public int getTemperatureInCelsius() {
+//				return -274;
+//			}
+//		};
+//		
+//		shouldFail(() -> {
+//			unitTests.testShouldCreateValidMeasurement();
+//		});
+//	}
 }
 

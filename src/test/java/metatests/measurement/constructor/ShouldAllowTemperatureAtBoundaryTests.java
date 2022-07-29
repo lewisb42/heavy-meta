@@ -2,9 +2,6 @@ package metatests.measurement.constructor;
 
 import static org.doubleoops.heavymeta.HeavyMeta.assertIsTestMethod;
 import static org.doubleoops.heavymeta.HeavyMeta.shouldPass;
-import static org.doubleoops.heavymeta.HeavyMeta.when;
-import static org.doubleoops.heavymeta.HeavyMeta.whenNotEqual;
-import static org.doubleoops.heavymeta.HeavyMeta.whenNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.doubleoops.heavymeta.MetaTestExtension;
