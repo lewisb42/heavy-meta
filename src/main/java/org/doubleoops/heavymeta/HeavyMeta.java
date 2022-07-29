@@ -39,6 +39,32 @@ public class HeavyMeta {
 	
 	/**
 	 * If using FakedAssertions, you can't use normal JUnit assertions in your meta-tests.
+	 * This is a "safe" version of assertEquals(Object, Object) for those situations.
+	 * 
+	 * (Also a reminder this covers the assertEquals for Strings -- there is no
+	 * separate assertion for that type)
+	 * 
+	 * @param expected the expected value
+	 * @param actual the actual value
+	 * @param message the message for a failed assertion
+	 */
+	public static void safeAssertEquals(Object expected, Object actual, String message) {
+		if (expected == actual) {
+			return;
+		}
+		
+		// note the above case handles when both are null
+		if (expected == null || actual == null) {
+			throw new AssertionFailedError(message);
+		}
+		
+		if (!expected.equals(actual)) {
+			throw new AssertionFailedError(message);
+		}
+	}
+	
+	/**
+	 * If using FakedAssertions, you can't use normal JUnit assertions in your meta-tests.
 	 * This is a "safe" version of assertTrue(boolean, String) for those situations.
 	 * 
 	 * @param cond the condition you are asserting is true
