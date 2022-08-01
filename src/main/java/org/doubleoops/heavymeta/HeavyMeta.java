@@ -260,8 +260,7 @@ public class HeavyMeta implements AfterAllCallback {
 		try {
 			unitTestUnderTest.execute();
 		} catch (Throwable e) {
-			System.err.println("Original exception message: " + e.getMessage());
-			e.printStackTrace();
+			// don't print any underlying exceptions!
 		}
 	}
 	
@@ -282,8 +281,6 @@ public class HeavyMeta implements AfterAllCallback {
 		} catch (AssertionFailedError e) {
 			// this is where we want to be, so if here, do nothing,
 			// meaning shouldFail() was successful
-			System.err.println("Original exception message: " + e.getMessage());
-			e.printStackTrace();
 			return;
 		} catch (Throwable e) {
 			System.err.println("Original exception message: " + e.getMessage());
@@ -312,8 +309,6 @@ public class HeavyMeta implements AfterAllCallback {
 		} catch (AssertionFailedError e) {
 			// this is where we want to be, so if here, do nothing,
 			// meaning shouldFail() was successful
-			System.err.println("Original exception message: " + e.getMessage());
-			e.printStackTrace();
 			return;
 		} catch (Throwable e) {
 			System.err.println("Original exception message: " + e.getMessage());
