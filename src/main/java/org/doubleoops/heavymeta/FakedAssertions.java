@@ -75,6 +75,10 @@ public class FakedAssertions extends MockUp<Assertions> {
 			didAssertEqualsBooleanBoolean = true;
 		}
 		
+		if (expected instanceof Integer && actual instanceof Integer) {
+			didAssertEqualsIntInt = true;
+		}
+		
 		inv.proceed(expected, actual);
 	}
 	
@@ -82,6 +86,10 @@ public class FakedAssertions extends MockUp<Assertions> {
 	public static void assertEquals(Invocation inv, Object expected, Object actual, String message) {
 		if (expected instanceof Boolean && actual instanceof Boolean) {
 			didAssertEqualsBooleanBoolean = true;
+		}
+		
+		if (expected instanceof Integer && actual instanceof Integer) {
+			didAssertEqualsIntInt = true;
 		}
 		
 		inv.proceed(expected, actual, message);
