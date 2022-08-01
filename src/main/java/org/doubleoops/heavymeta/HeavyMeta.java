@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.function.Executable;
@@ -19,7 +20,7 @@ import org.opentest4j.AssertionFailedError;
  * @author lewisb
  *
  */
-public class HeavyMeta implements BeforeAllCallback {
+public class HeavyMeta implements AfterAllCallback {
 
 	private Class<? extends Object> testClass;
 	private String testMethodName;
@@ -65,8 +66,23 @@ public class HeavyMeta implements BeforeAllCallback {
 
 
 	@Override
-	public void beforeAll(ExtensionContext context) throws Exception {
-		assertIsTestMethod(this.testClass, this.testMethodName);
+	public void afterAll(ExtensionContext context) throws Exception {
+		String message = "";
+		try {
+			assertIsTestMethod(this.testClass, this.testMethodName);
+		} catch (AssertionFailedError e) {
+			message += e.getMessage();
+		}
+		
+		try {
+			runStudentsTestExpectToPass();
+		} catch (AssertionFailedError e) {
+			message +=  " " + e.getMessage();
+		}
+		
+		if (!message.isEmpty()) {
+			throw new AssertionFailedError(message);
+		}
 	}
 	
 	/**
@@ -77,6 +93,13 @@ public class HeavyMeta implements BeforeAllCallback {
 			HeavyMeta.runBeforeEachMethods(this.testClassInstance);
 			this.testMethod.invoke(this.testClassInstance);
 		});
+	}
+	
+	public void runStudentsTestExpectToPass() {
+		HeavyMeta.shouldPass(() -> {
+			HeavyMeta.runBeforeEachMethods(this.testClassInstance);
+			this.testMethod.invoke(this.testClassInstance);
+		}, "Your unit test does not pass as-written. Other error messages may have clues as to why this occurred.");
 	}
 	
 	/**
