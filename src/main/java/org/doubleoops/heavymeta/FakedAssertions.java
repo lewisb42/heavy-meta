@@ -18,6 +18,7 @@ import mockit.MockUp;
 public class FakedAssertions extends MockUp<Assertions> {
 
 	private static boolean didAssertEqualsIntInt = false;
+	private static boolean didAssertEqualsStringString = false;
 	
 	public FakedAssertions() {
 		didAssertEqualsIntInt = false;
@@ -25,6 +26,7 @@ public class FakedAssertions extends MockUp<Assertions> {
 		didAssertFalse = false;
 		didAssertThrows = false;
 		didAssertEqualsBooleanBoolean = false;
+		didAssertEqualsStringString = false;
 	}
 	 
 	/**
@@ -58,6 +60,15 @@ public class FakedAssertions extends MockUp<Assertions> {
 		return didAssertEqualsIntInt;
 	}
 	
+	/**
+	 * Called on the fake class to indicate that an assertEquals(String,String) was recorded.
+	 * 
+	 * @return true if assertEquals(String,String) was called
+	 */
+	public static boolean didAssertEqualsStringString() {
+		return didAssertEqualsStringString;
+	}
+	
 	private static boolean didAssertEqualsBooleanBoolean = false;
 	
 	/**
@@ -79,6 +90,10 @@ public class FakedAssertions extends MockUp<Assertions> {
 			didAssertEqualsIntInt = true;
 		}
 		
+		if (expected instanceof String && actual instanceof String) {
+			didAssertEqualsStringString = true;
+		}
+		
 		inv.proceed(expected, actual);
 	}
 	
@@ -90,6 +105,10 @@ public class FakedAssertions extends MockUp<Assertions> {
 		
 		if (expected instanceof Integer && actual instanceof Integer) {
 			didAssertEqualsIntInt = true;
+		}
+		
+		if (expected instanceof String && actual instanceof String) {
+			didAssertEqualsStringString = true;
 		}
 		
 		inv.proceed(expected, actual, message);
