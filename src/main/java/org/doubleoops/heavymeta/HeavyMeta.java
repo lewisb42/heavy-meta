@@ -214,6 +214,22 @@ public class HeavyMeta implements AfterAllCallback {
 	}
 	
 	/**
+	 * Asserts that all elements in the collection are unique (per Object#equals()).
+	 * 
+	 * This is safe to use with a faked JUnit5 Assertions class.
+	 * 
+	 * @param <E> the type of element in the collection
+	 * @param collection the collection
+	 * @param msg the assertion failure message
+	 */
+	public static <E> void safeAssertElementsUnique(java.util.Collection<E> collection, String msg) {
+		int originalSize = collection.size();
+		java.util.HashSet<E> set = new java.util.HashSet<E>(collection);
+		safeAssertEquals(originalSize, set.size(), msg);
+	}
+
+	
+	/**
 	 * Asserts the given unit test should pass.
 	 * 
 	 * @param unitTestUnderTest no-arg lambda containing the unit test code, typically as a method
