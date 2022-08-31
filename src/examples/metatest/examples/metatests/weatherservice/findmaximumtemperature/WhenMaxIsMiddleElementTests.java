@@ -1,4 +1,4 @@
-package metatests.weatherservice.findmaximumtemperature;
+package examples.metatests.weatherservice.findmaximumtemperature;
 
 import static org.doubleoops.heavymeta.HeavyMeta.*;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
+import examples.modelclasses.Measurement;
+import examples.modelclasses.WeatherService;
+import examples.studentunittests.weatherservice.TestFindMaximumTemperature;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
-import model.Measurement;
-import model.WeatherService;
-import studenttests.weatherservice.TestFindMaximumTemperature;
 
 class WhenMaxIsMiddleElementTests {
 	

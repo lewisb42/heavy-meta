@@ -18,13 +18,13 @@ class TestsForAssertIsTestMethod {
 	
 	@Test
 	void shouldConfirmTestAnnotation() {
-		assertIsTestMethod(Dummy.class, "annotatedMethod");
+		SafeAssertions.assertIsTestMethod(Dummy.class, "annotatedMethod");
 	}
 
 	@Test
 	void shouldConfirmNotTestAnnotation() {
 		assertThrows(AssertionFailedError.class, () -> {
-			assertIsTestMethod(Dummy.class, "nonAnnotatedMethod");
+			SafeAssertions.assertIsTestMethod(Dummy.class, "nonAnnotatedMethod");
 		});
 	}
 }

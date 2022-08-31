@@ -1,12 +1,12 @@
-package studenttests.weatherservice;
+package examples.studentunittests.weatherservice;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import model.Measurement;
-import model.WeatherService;
+import examples.modelclasses.Measurement;
+import examples.modelclasses.WeatherService;
 
 public class TestFindMaximumTemperature {
 

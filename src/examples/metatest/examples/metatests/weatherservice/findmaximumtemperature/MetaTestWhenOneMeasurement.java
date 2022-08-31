@@ -1,4 +1,4 @@
-package metatests.weatherservice.findmaximumtemperature;
+package examples.metatests.weatherservice.findmaximumtemperature;
 
 import static org.doubleoops.heavymeta.HeavyMeta.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,18 +8,19 @@ import java.util.List;
 
 import org.doubleoops.heavymeta.FakedAssertions;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.SafeAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.opentest4j.AssertionFailedError;
 
+import examples.modelclasses.Measurement;
+import examples.modelclasses.WeatherService;
+import examples.studentunittests.weatherservice.TestFindMaximumTemperature;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
-import model.Measurement;
-import model.WeatherService;
-import studenttests.weatherservice.TestFindMaximumTemperature;
 
 /**
  * <strong>Meta-test example</strong>
@@ -28,19 +29,19 @@ import studenttests.weatherservice.TestFindMaximumTemperature;
  * 	<caption>Relevant Classes and Methods</caption>
  * 	<tr>
  * 		<td><strong>Class being unit-tested</strong></td>
- * 		<td>{@link model.WeatherService WeatherService}</td>
+ * 		<td>{@link examples.modelclasses.WeatherService WeatherService}</td>
  * 	</tr>
  * 	<tr>
  * 		<td><strong>Method being unit-tested</strong></td>
- * 		<td>{@link model.WeatherService#findMaximumTemperature() findMaximumTemperature()}</td>
+ * 		<td>{@link examples.modelclasses.WeatherService#findMaximumTemperature() findMaximumTemperature()}</td>
  * 	</tr>
  * 	<tr>
  * 		<td><strong>Test class being meta-tested</strong></td>
- * 		<td>{@link studenttests.weatherservice.TestFindMaximumTemperature TestFindMaximumTemperature}</td>
+ * 		<td>{@link examples.studentunittests.weatherservice.TestFindMaximumTemperature TestFindMaximumTemperature}</td>
  * 	</tr>
  * 	<tr>
  * 		<td><strong>Unit test method being meta-tested</strong></td>
- * 		<td>{@link studenttests.weatherservice.TestFindMaximumTemperature#testWhenOneMeasurement() testWhenOneMeasurement}</td>
+ * 		<td>{@link examples.studentunittests.weatherservice.TestFindMaximumTemperature#testWhenOneMeasurement() testWhenOneMeasurement}</td>
  * 	</tr>
  * </table>
  * 
@@ -143,7 +144,7 @@ public class MetaTestWhenOneMeasurement {
 		
 		metaTester.runStudentsTestIgnoreFails();
 		
-		safeAssertTrue(FakedAssertions.didAssertEqualsIntInt(), 
+		SafeAssertions.safeAssertTrue(FakedAssertions.didAssertEqualsIntInt(), 
 				"You did not use an appropriate assertion (e.g., assertEquals) in your Assert stage");
 	}
 	
@@ -172,7 +173,7 @@ public class MetaTestWhenOneMeasurement {
 		
 		metaTester.runStudentsTestIgnoreFails();
 		
-		safeAssertEquals(fakeAssertions.actualValue, sentinelValue,
+		SafeAssertions.safeAssertEquals(fakeAssertions.actualValue, sentinelValue,
 				"Use the return value of your findMaximumTemperature() as the actual value (2nd parameter) of your assertEquals()");
 	}
 	
@@ -200,7 +201,7 @@ public class MetaTestWhenOneMeasurement {
 		
 		metaTester.runStudentsTestIgnoreFails();
 		
-		safeAssertEquals(fakeAssertions.expectedValue, fakeWeatherService.actualValue,
+		SafeAssertions.safeAssertEquals(fakeAssertions.expectedValue, fakeWeatherService.actualValue,
 				"The expected value of the assertion must match the return value of findMaximumTemperature()");
 	}
 }

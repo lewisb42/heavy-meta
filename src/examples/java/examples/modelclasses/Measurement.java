@@ -1,4 +1,4 @@
-package model;
+package examples.modelclasses;
 
 /**
  * a class-under-test, used for basic constructor tests

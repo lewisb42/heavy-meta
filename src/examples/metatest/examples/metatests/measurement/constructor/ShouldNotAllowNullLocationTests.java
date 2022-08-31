@@ -1,15 +1,16 @@
-package metatests.measurement.constructor;
+package examples.metatests.measurement.constructor;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.doubleoops.heavymeta.HeavyMeta.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import examples.modelclasses.Measurement;
+import examples.studentunittests.measurement.TestConstructor;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
-import model.Measurement;
-import studenttests.measurement.TestConstructor;
 
 class ShouldNotAllowNullLocationTests {
 	TestConstructor unitTests;
