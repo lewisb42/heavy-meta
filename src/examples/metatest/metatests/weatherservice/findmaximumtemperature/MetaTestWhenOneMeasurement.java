@@ -21,7 +21,7 @@ import model.Measurement;
 import model.WeatherService;
 import studenttests.weatherservice.TestFindMaximumTemperature;
 
-public class WhenOnlyOneMeasurementTests {
+public class MetaTestWhenOneMeasurement {
 	
 	@RegisterExtension
 	static HeavyMeta metaTester = new HeavyMeta(TestFindMaximumTemperature.class, "testWhenOneMeasurement");
