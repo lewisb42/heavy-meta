@@ -13,6 +13,11 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
+/**
+ * @exclude
+ * @author lewisb
+ *
+ */
 class ShouldAllowTemperatureAtBoundaryTests {
 
 	@RegisterExtension

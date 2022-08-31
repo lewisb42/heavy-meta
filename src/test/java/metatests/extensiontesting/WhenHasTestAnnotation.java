@@ -8,6 +8,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import examples.studentunittests.measurement.TestConstructor;
 
+/**
+ * @exclude
+ * @author lewisb
+ *
+ */
 class WhenHasTestAnnotation {
 
 	@RegisterExtension
