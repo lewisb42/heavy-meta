@@ -14,9 +14,47 @@ import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
 /**
- * DSL for writing meta-unit tests
+ * <p>
+ * HeavyMeta is a JUnit5 extension for simplifying certain aspects of
+ * writing meta-tests.
+ * </p>
  * 
- * @author lewisb
+ * <p><strong>Usage</strong></p>
+ * 
+ * <p>
+ * Turn a vanilla JUnit5 test class into a Meta-Tests class by registering the 
+ * HeavyMeta extension as a class variable, e.g.:
+ * </p>
+ * 
+ * <pre>
+ * public class MetaTestForSomeStudentsUnitTest {
+ * 
+ *  {@literal @}RegisterExtension
+ *  static HeavyMeta metaTester = new HeavyMeta(NameOfStudentsTestClass.class, "testNameOfStudentsUnitTestMethod");
+ *  
+ * }
+ * </pre>
+ * 
+ * <p>
+ * This will automatically perform the following standard actions when your meta-test suite is run:
+ * </p>
+ * 
+ * <ol>
+ * <li>Checks that the student's test class can be instantiated with a 0-parameter constructor</li>
+ * <li>Checks that the student's unit test method exists in that class</li>
+ * <li>Checks that the student's unit test method is properly annotated with <code>{@literal @}Test</code></li>
+ * <li>Runs the student's unit test method (note this and the <code>{@literal @}Test</code> check both happen <i>after</i> all meta-tests have been run)</li>
+ * </ol>
+ * 
+ * <p>
+ * Additionally, calling <code>metaTester.runStudentsTestIgnoreFails()</code> is a standard Act 
+ * stage for most meta-tests. (<code>runStudentsTestExpectToPass()</code> is public, but rarely used directly,
+ * as the framework automatically uses it to check that students' tests pass.)
+ * </p>
+ * <p>
+ * See the project README and examples directory for more examples of use.
+ * </p>
+ * @author Lewis Baumstark
  *
  */
 public class HeavyMeta implements AfterAllCallback {
@@ -29,8 +67,10 @@ public class HeavyMeta implements AfterAllCallback {
 	/**
 	 * Configures the extension to run the given test method from the given class.
 	 * 
-	 * @param testClass the test-class-under-(meta)test
+	 * @param testClass the test-class-under-(meta)test.
 	 * @param testMethodName the name of the test-method-under-(meta)test
+	 * @throws IllegalArgumentException if testClass or testMethodName is null, or if testMethodName is blank
+	 * @throws AssertionFailedError if the test method does not exist on the test class, or if the test class cannot be instantiated with a zero-parameter constructor
 	 */
 	public HeavyMeta(Class<? extends Object> testClass, String testMethodName) {
 		if (testClass == null) {
@@ -86,6 +126,9 @@ public class HeavyMeta implements AfterAllCallback {
 	
 	/**
 	 * Helper to run the student's unit test, with no expectation of passing or failing.
+	 * 
+	 * Typically this is done in a meta-tests Act stage, after its Arrange stage has
+	 * configured fake objects with instrumentation
 	 */
 	public void runStudentsTestIgnoreFails() {
 		HeavyMeta.shouldPassOrFail(() -> {
@@ -94,6 +137,11 @@ public class HeavyMeta implements AfterAllCallback {
 		});
 	}
 	
+	/**
+	 * Runs the student's test, expecting it to pass (i.e., no exceptions thrown).
+	 * 
+	 * @throws AssertionFailedError if the student's test does not pass
+	 */
 	public void runStudentsTestExpectToPass() {
 		HeavyMeta.shouldPass(() -> {
 			HeavyMeta.runBeforeEachMethods(this.testClassInstance);
@@ -253,7 +301,7 @@ public class HeavyMeta implements AfterAllCallback {
 	 * @param unitTestUnderTest no-arg lambda containing the unit test code, typically as a method
 	 * 	call to the test method in a separate test class.
 	 * 
-	 * @throws AssertionFailedError if the unitTestUnderTest fails
+	 * @throws AssertionFailedError if the unitTestUnderTest fails for any reason (failed assertion or unexpected exception)
 	 */
 	public static void shouldPass(Executable unitTestUnderTest) throws AssertionFailedError {
 		try {
@@ -269,7 +317,8 @@ public class HeavyMeta implements AfterAllCallback {
 	 * Simply executes the given unit test but doesn't care if it passes or fails.
 	 * Effectively ignore any exceptions thrown by a failing test.
 	 * 
-	 * @param unitTestUnderTest
+	 * @param unitTestUnderTest no-arg lambda containing the unit test code, typically as a method
+	 * 	call to the test method in a separate test class.
 	 */
 	public static void shouldPassOrFail(Executable unitTestUnderTest) {
 		try {
@@ -287,7 +336,7 @@ public class HeavyMeta implements AfterAllCallback {
 	 * 
 	 * @param passMessage test result message to display if unitTestUnderTest passes (which it shouldn't)
 	 * 
-	 * @throws AssertionFailedError if the unitTestUnderTest fails
+	 * @throws AssertionFailedError if the unitTestUnderTest fails for any reason (failed assertion or unexpected exception)
 	 */
 	public static void shouldFail(Executable unitTestUnderTest, String passMessage) 
 		throws AssertionFailedError {
@@ -314,7 +363,7 @@ public class HeavyMeta implements AfterAllCallback {
 	 * @param unitTestUnderTest no-arg lambda containing the unit test code, typically as a method
 	 * 	call to the test method in a separate test class.
 	 *  
-	 * @throws AssertionFailedError if the unitTestUnderTest fails
+	 * @throws AssertionFailedError if the unitTestUnderTest fails for any reason (failed assertion or unexpected exception)
 	 */
 	public static void shouldFail(Executable unitTestUnderTest) 
 		throws AssertionFailedError {
@@ -337,7 +386,10 @@ public class HeavyMeta implements AfterAllCallback {
 	}
 	
 	/**
-	 * Run any method on testClassObject that is annotated with BeforeEach
+	 * Run any method on testClassObject that is annotated with BeforeEach.
+	 * 
+	 * This is automatically performed by the HeavyMeta extension and should not
+	 * normally be called directly.
 	 * 
 	 * @param testClassObject any object. If null the method simply returns.
 	 */

@@ -7,9 +7,15 @@ import java.util.ListIterator;
 
 /**
  * Unfortunately, jmockit does not allow faking of ArrayList,
- * so we provide our own version of it.
+ * so we provide our own version of it. It is recommended that
+ * instructors developing practice unit test problems import
+ * this into the code-under-test, unit-test-under-test, and 
+ * meta-test files for any scenarios where ArrayList needs to
+ * be faked.
  * 
- * @author lewisb
+ * This is effectively a pass-through wrapper over java.util.ArrayList.
+ * 
+ * @author Lewis Baumstark
  *
  * @param <E> The type of object in the list
  */

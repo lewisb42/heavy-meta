@@ -10,9 +10,17 @@ import mockit.MockUp;
 /**
  * A faked version of JUnit5's Assertions class,
  * used to verify that certain assertions have been
- * called.
+ * called. It is not exhaustive of all JUnit5's available
+ * assertions.
  * 
- * @author lewisb
+ * Warning: this may be deprecated in the future. Its
+ * usefulness is limited to checking if an appropriate
+ * assertion was called, and nothing more. Typical
+ * meta-test suites need the ability to validate parameters
+ * in ways that are likely impossible to abstract into
+ * a reusable class.
+ * 
+ * @author Lewis Baumstark
  *
  */
 public class FakedAssertions extends MockUp<Assertions> {
@@ -20,6 +28,10 @@ public class FakedAssertions extends MockUp<Assertions> {
 	private static boolean didAssertEqualsIntInt = false;
 	private static boolean didAssertEqualsStringString = false;
 	
+	/**
+	 * Instantiate to activate the faked object, even though
+	 * most methods are called statically.
+	 */
 	public FakedAssertions() {
 		didAssertEqualsIntInt = false;
 		didAssertTrue = false;
@@ -39,6 +51,7 @@ public class FakedAssertions extends MockUp<Assertions> {
 		return didAssertTrue || didAssertFalse || didAssertEqualsBooleanBoolean;
 	}
 	
+
 	@Mock
 	public static void assertEquals(Invocation inv, int expected, int actual) {
 		didAssertEqualsIntInt = true;
