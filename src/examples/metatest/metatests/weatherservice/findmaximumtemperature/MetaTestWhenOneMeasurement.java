@@ -21,11 +21,46 @@ import model.Measurement;
 import model.WeatherService;
 import studenttests.weatherservice.TestFindMaximumTemperature;
 
+/**
+ * <strong>Meta-test example</strong>
+ * 
+ * <table style="border: solid 1px black;">
+ * 	<caption>Relevant Classes and Methods</caption>
+ * 	<tr>
+ * 		<td><strong>Class being unit-tested</strong></td>
+ * 		<td>{@link model.WeatherService WeatherService}</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td><strong>Method being unit-tested</strong></td>
+ * 		<td>{@link model.WeatherService#findMaximumTemperature() findMaximumTemperature()}</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td><strong>Test class being meta-tested</strong></td>
+ * 		<td>{@link studenttests.weatherservice.TestFindMaximumTemperature TestFindMaximumTemperature}</td>
+ * 	</tr>
+ * 	<tr>
+ * 		<td><strong>Unit test method being meta-tested</strong></td>
+ * 		<td>{@link studenttests.weatherservice.TestFindMaximumTemperature#testWhenOneMeasurement() testWhenOneMeasurement}</td>
+ * 	</tr>
+ * </table>
+ * 
+ * 
+ * @author Lewis Baumstark
+ *
+ */
 public class MetaTestWhenOneMeasurement {
 	
 	@RegisterExtension
 	static HeavyMeta metaTester = new HeavyMeta(TestFindMaximumTemperature.class, "testWhenOneMeasurement");
 	
+	/**
+	 * Meta-test that ensures the proper Arrange components exist for this test:
+	 * <ol>
+	 * <li>a WeatherService object has been instantiated</li>
+	 * <li>exactly one Measurement object has been instantiated</li>
+	 * <li>the Measurement object has been added to the WeatherService</li>
+	 * </ol>
+	 */
 	@Test
 	public void shouldHaveArrangeStage() {
 		
@@ -70,6 +105,13 @@ public class MetaTestWhenOneMeasurement {
 
 	}
 	
+	/**
+	 * Meta-test that ensures the student's unit test
+	 * called the Act method (here, findMaximumTemperature()).
+	 * 
+	 * It does not check anything other than that the method
+	 * was called.
+	 */
 	@Test
 	public void shouldHaveActStage() {
 		var fakeWeatherService = new MockUp<WeatherService>() {
@@ -88,6 +130,13 @@ public class MetaTestWhenOneMeasurement {
 				"Did not not call findMaximumTemperature() in the Act stage");
 	}
 
+	/**
+	 * Meta-test to check that an appropriate assertion was
+	 * called (here, assertEquals(int, int) or assertEquals(int,int, String))
+	 * 
+	 * It does not check anything other than that the method
+	 * was called.
+	 */
 	@Test
 	public void shouldHaveAssertStage() {
 		new FakedAssertions();
