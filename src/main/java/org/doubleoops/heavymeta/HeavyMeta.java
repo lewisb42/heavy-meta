@@ -285,7 +285,7 @@ public class HeavyMeta implements AfterAllCallback {
 	 * @param failureMessage test result message to display if unitTestUnderTest fails
 	 * @throws AssertionFailedError if the unitTestUnderTest fails
 	 */
-	public static void shouldPass(Executable unitTestUnderTest, String failureMessage) throws AssertionFailedError {
+	private static void shouldPass(Executable unitTestUnderTest, String failureMessage) throws AssertionFailedError {
 		try {
 			unitTestUnderTest.execute();
 		} catch (Throwable e) {
@@ -327,63 +327,7 @@ public class HeavyMeta implements AfterAllCallback {
 			// don't print any underlying exceptions!
 		}
 	}
-	
-	/**
-	 * Asserts the given unit test should fail.
-	 * 
-	 * @param unitTestUnderTest no-arg lambda containing the unit test code, typically as a method
-	 * 	call to the test method in a separate test class.
-	 * 
-	 * @param passMessage test result message to display if unitTestUnderTest passes (which it shouldn't)
-	 * 
-	 * @throws AssertionFailedError if the unitTestUnderTest fails for any reason (failed assertion or unexpected exception)
-	 */
-	public static void shouldFail(Executable unitTestUnderTest, String passMessage) 
-		throws AssertionFailedError {
-		try {
-			unitTestUnderTest.execute();
-		} catch (AssertionFailedError e) {
-			// this is where we want to be, so if here, do nothing,
-			// meaning shouldFail() was successful
-			return;
-		} catch (Throwable e) {
-			System.err.println("Original exception message: " + e.getMessage());
-			e.printStackTrace();
-			throw new AssertionFailedError(passMessage);
-		}
-		
-		// if we made it here it means the student test *passed*, 
-		// thus *this* test fails
-		throw new AssertionFailedError(passMessage);
-	}
-	
-	/**
-	 * Asserts the given unit test should fail.
-	 * 
-	 * @param unitTestUnderTest no-arg lambda containing the unit test code, typically as a method
-	 * 	call to the test method in a separate test class.
-	 *  
-	 * @throws AssertionFailedError if the unitTestUnderTest fails for any reason (failed assertion or unexpected exception)
-	 */
-	public static void shouldFail(Executable unitTestUnderTest) 
-		throws AssertionFailedError {
-		String passMessage = "unit-test-under-test did not fail when it should have";
-		try {
-			unitTestUnderTest.execute();
-		} catch (AssertionFailedError e) {
-			// this is where we want to be, so if here, do nothing,
-			// meaning shouldFail() was successful
-			return;
-		} catch (Throwable e) {
-			System.err.println("Original exception message: " + e.getMessage());
-			e.printStackTrace();
-			throw new AssertionFailedError(passMessage);
-		}
-		
-		// if we made it here it means the student test *passed*, 
-		// thus *this* test fails
-		throw new AssertionFailedError(passMessage);
-	}
+
 	
 	/**
 	 * Run any method on testClassObject that is annotated with BeforeEach.
@@ -393,7 +337,7 @@ public class HeavyMeta implements AfterAllCallback {
 	 * 
 	 * @param testClassObject any object. If null the method simply returns.
 	 */
-	public static void runBeforeEachMethods(Object testClassObject) {
+	private static void runBeforeEachMethods(Object testClassObject) {
 		if (testClassObject == null) return;
 		
 		Class<? extends Object> klass = testClassObject.getClass();
