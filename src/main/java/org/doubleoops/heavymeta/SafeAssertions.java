@@ -14,6 +14,9 @@ import org.opentest4j.AssertionFailedError;
  * Non-intercepted versions of (some) assertions one would normally
  * find in {@link org.junit.jupiter.api.Assertions JUnit5's Assertions class}.
  * 
+ * Also includes some useful assertions (e.g., safeAssertElementsUnique) to
+ * streamline meta-tests.
+ * 
  * Use these in meta-tests any time the Assertions class is faked, otherwise
  * the faked versions will be called.
  * 
@@ -40,6 +43,8 @@ public class SafeAssertions {
 	/**
 	 * Asserts that the given method in the given class is a test method,
 	 * i.e., annotated with Test
+	 * <br>
+	 * Note that this is automatically run if a meta-test registers the HeavyMeta extension.
 	 * 
 	 * @param <T> the type name
 	 * @param klass the runtime class object
