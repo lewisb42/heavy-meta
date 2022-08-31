@@ -12,7 +12,7 @@ import org.opentest4j.AssertionFailedError;
 
 /**
  * Non-intercepted versions of (some) assertions one would normally
- * find in {@link org.junit.jupiter.api.Assertions JUnit5's Assertions class}.
+ * find in {@link https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html JUnit5's Assertions class}.
  * 
  * Also includes some useful assertions (e.g., safeAssertElementsUnique) to
  * streamline meta-tests.
