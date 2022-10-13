@@ -7,8 +7,8 @@ import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import examples.modelclasses.Measurement;
-import examples.studentunittests.measurement.TestConstructor;
+import examples.weather.modelclasses.Measurement;
+import examples.weather.studentunittests.measurement.TestConstructor;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;

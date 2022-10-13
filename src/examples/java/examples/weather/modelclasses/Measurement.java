@@ -1,4 +1,4 @@
-package examples.modelclasses;
+package examples.weather.modelclasses;
 
 /**
  * a class-under-test, used for basic constructor tests
