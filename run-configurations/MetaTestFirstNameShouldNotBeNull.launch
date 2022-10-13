@@ -17,6 +17,6 @@
     <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="examples.health.metatests.patient.constructor.MetaTestFirstNameShouldNotBeNull"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="heavy-meta"/>
-    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -javaagent:/Users/lewisb/.m2/repository/org/jmockit/jmockit/1.49/jmockit-1.49.jar"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"></stringAttribute>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -javaagent:${M2_REPO}/jmockit/jmockit/1.49/jmockit-1.49.jar"/>
 </launchConfiguration>
