@@ -1,4 +1,4 @@
-package examples.weather.modelclasses;
+package weather.codeundertest;
 
 import java.util.ArrayList;
 

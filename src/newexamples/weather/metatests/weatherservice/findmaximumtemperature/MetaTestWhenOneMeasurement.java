@@ -1,4 +1,4 @@
-package examples.weather.metatests.weatherservice.findmaximumtemperature;
+package weather.metatests.weatherservice.findmaximumtemperature;
 
 import static org.doubleoops.heavymeta.HeavyMeta.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,12 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.opentest4j.AssertionFailedError;
 
-import examples.weather.modelclasses.Measurement;
-import examples.weather.modelclasses.WeatherService;
-import examples.weather.studentunittests.weatherservice.TestFindMaximumTemperature;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
+import weather.codeundertest.Measurement;
+import weather.codeundertest.WeatherService;
+import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
 /**
  * <strong>Meta-test example</strong>
@@ -29,19 +29,19 @@ import mockit.MockUp;
  * 	<caption>Relevant Classes and Methods</caption>
  * 	<tr>
  * 		<td><strong>Class being unit-tested</strong></td>
- * 		<td>{@link examples.weather.modelclasses.WeatherService WeatherService}</td>
+ * 		<td>{@link weather.codeundertest.WeatherService WeatherService}</td>
  * 	</tr>
  * 	<tr>
  * 		<td><strong>Method being unit-tested</strong></td>
- * 		<td>{@link examples.weather.modelclasses.WeatherService#findMaximumTemperature() findMaximumTemperature()}</td>
+ * 		<td>{@link weather.codeundertest.WeatherService#findMaximumTemperature() findMaximumTemperature()}</td>
  * 	</tr>
  * 	<tr>
  * 		<td><strong>Test class being meta-tested</strong></td>
- * 		<td>{@link examples.weather.studentunittests.weatherservice.TestFindMaximumTemperature TestFindMaximumTemperature}</td>
+ * 		<td>{@link weather.unittests.weatherservice.TestFindMaximumTemperature TestFindMaximumTemperature}</td>
  * 	</tr>
  * 	<tr>
  * 		<td><strong>Unit test method being meta-tested</strong></td>
- * 		<td>{@link examples.weather.studentunittests.weatherservice.TestFindMaximumTemperature#testWhenOneMeasurement() testWhenOneMeasurement}</td>
+ * 		<td>{@link weather.unittests.weatherservice.TestFindMaximumTemperature#testWhenOneMeasurement() testWhenOneMeasurement}</td>
  * 	</tr>
  * </table>
  * 

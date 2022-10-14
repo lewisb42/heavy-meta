@@ -1,4 +1,4 @@
-package examples.weather.studentunittests.measurement;
+package weather.unittests.measurement;
 
 
 
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import examples.weather.modelclasses.Measurement;
+import weather.codeundertest.Measurement;
 
 /**
  * This is a test class that a student might write.

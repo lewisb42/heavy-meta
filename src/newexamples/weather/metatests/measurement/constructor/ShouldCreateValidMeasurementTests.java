@@ -1,4 +1,4 @@
-package examples.weather.metatests.measurement.constructor;
+package weather.metatests.measurement.constructor;
 
 import static org.doubleoops.heavymeta.HeavyMeta.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.opentest4j.AssertionFailedError;
 
-import examples.weather.modelclasses.Measurement;
-import examples.weather.studentunittests.measurement.TestConstructor;
-import examples.weather.studentunittests.weatherservice.TestFindMaximumTemperature;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
+import weather.codeundertest.Measurement;
+import weather.unittests.measurement.TestConstructor;
+import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
 public class ShouldCreateValidMeasurementTests {
 	TestConstructor unitTests;

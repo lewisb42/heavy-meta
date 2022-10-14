@@ -6,7 +6,7 @@ import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import examples.weather.studentunittests.measurement.TestConstructor;
+import weather.unittests.measurement.TestConstructor;
 
 /**
  * @exclude

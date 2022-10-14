@@ -1,4 +1,4 @@
-package examples.weather.metatests.measurement.constructor;
+package weather.metatests.measurement.constructor;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.doubleoops.heavymeta.HeavyMeta.*;
@@ -6,11 +6,11 @@ import static org.doubleoops.heavymeta.HeavyMeta.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import examples.weather.modelclasses.Measurement;
-import examples.weather.studentunittests.measurement.TestConstructor;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
+import weather.codeundertest.Measurement;
+import weather.unittests.measurement.TestConstructor;
 
 class ShouldNotAllowNullLocationTests {
 	TestConstructor unitTests;
