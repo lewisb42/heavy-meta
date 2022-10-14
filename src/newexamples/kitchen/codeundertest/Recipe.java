@@ -1,4 +1,4 @@
-package examples.kitchen.modelclasses;
+package kitchen.codeundertest;
 
 /**
  * Simple model of a recipe with a name and cook time.

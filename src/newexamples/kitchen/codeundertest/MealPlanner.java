@@ -1,4 +1,4 @@
-package examples.kitchen.modelclasses;
+package kitchen.codeundertest;
 
 import org.doubleoops.heavymeta.*;
 /**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/heavy-meta/src/examples/metatest/examples/kitchen/metatests/mealplanner/findquickestrecipe/MetaTestWhenLastIsQuickest.java"/>
+        <listEntry value="/heavy-meta/src/newexamples/kitchen/metatests/mealplanner/findquickestrecipe/MetaTestWhenListIsEmpty.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
@@ -15,7 +15,7 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="examples.kitchen.metatests.mealplanner.findquickestrecipe.MetaTestWhenLastIsQuickest"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="kitchen.metatests.mealplanner.findquickestrecipe.MetaTestWhenListIsEmpty"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="heavy-meta"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -javaagent:${M2_REPO}/jmockit/jmockit/1.49/jmockit-1.49.jar"/>

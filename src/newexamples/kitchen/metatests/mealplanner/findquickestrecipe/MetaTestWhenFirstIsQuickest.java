@@ -1,4 +1,4 @@
-package examples.kitchen.metatests.mealplanner.findquickestrecipe;
+package kitchen.metatests.mealplanner.findquickestrecipe;
 
 import org.doubleoops.heavymeta.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,9 +9,9 @@ import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import examples.kitchen.modelclasses.MealPlanner;
-import examples.kitchen.modelclasses.Recipe;
-import examples.kitchen.studentunittests.mealplanner.TestFindQuickestRecipe;
+import kitchen.codeundertest.MealPlanner;
+import kitchen.codeundertest.Recipe;
+import kitchen.unittests.mealplanner.TestFindQuickestRecipe;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;

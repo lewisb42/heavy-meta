@@ -1,12 +1,12 @@
-package examples.kitchen.studentunittests.mealplanner;
+package kitchen.unittests.mealplanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 import org.junit.jupiter.api.Test;
 
-import examples.kitchen.modelclasses.MealPlanner;
-import examples.kitchen.modelclasses.Recipe;
+import kitchen.codeundertest.MealPlanner;
+import kitchen.codeundertest.Recipe;
 
 // make sure this import it here; otherwise students
 // will import the java.util.ArrayList instead of our
