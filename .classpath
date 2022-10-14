@@ -13,9 +13,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src/examples/java"/>
-	<classpathentry kind="src" path="src/examples/test"/>
-	<classpathentry kind="src" path="src/examples/metatest"/>
 	<classpathentry kind="src" path="src/newexamples"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
