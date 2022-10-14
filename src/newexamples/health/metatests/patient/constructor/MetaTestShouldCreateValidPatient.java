@@ -1,4 +1,4 @@
-package examples.health.metatests.patient.constructor;
+package health.metatests.patient.constructor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import examples.health.modelclasses.Patient;
-import examples.health.studentunittests.patient.TestConstructor;
+import health.codeundertest.Patient;
+import health.unittests.patient.TestConstructor;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;

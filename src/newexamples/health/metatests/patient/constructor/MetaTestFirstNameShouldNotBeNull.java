@@ -1,4 +1,4 @@
-package examples.health.metatests.patient.constructor;
+package health.metatests.patient.constructor;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,8 +13,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
-import examples.health.modelclasses.Patient;
-import examples.health.studentunittests.patient.TestConstructor;
+import health.codeundertest.Patient;
+import health.unittests.patient.TestConstructor;
 import mockit.Mock;
 import mockit.MockUp;
 

@@ -1,10 +1,10 @@
-package examples.health.studentunittests.heartrate;
+package health.unittests.heartrate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import examples.health.modelclasses.HeartRate;
+import health.codeundertest.HeartRate;
 
 
 public class TestGetHeartRateZone {

@@ -1,4 +1,4 @@
-package examples.health.modelclasses;
+package health.codeundertest;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package examples.health.modelclasses;
+package health.codeundertest;
 
 /**
  * This class represents a patient of a clinic.

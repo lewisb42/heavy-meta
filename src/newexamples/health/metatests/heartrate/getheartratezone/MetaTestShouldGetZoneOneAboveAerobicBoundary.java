@@ -1,4 +1,4 @@
-package examples.health.metatests.heartrate.getheartratezone;
+package health.metatests.heartrate.getheartratezone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import examples.health.modelclasses.HeartRate;
-import examples.health.studentunittests.heartrate.TestGetHeartRateZone;
+import health.codeundertest.HeartRate;
+import health.unittests.heartrate.TestGetHeartRateZone;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;

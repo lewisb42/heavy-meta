@@ -1,7 +1,6 @@
-package examples.health.metatests.heartrate.getheartratezone;
+package health.metatests.heartrate.getheartratezone;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 
 import org.doubleoops.heavymeta.HeavyMeta;
 import static org.doubleoops.heavymeta.SafeAssertions.*;
@@ -10,21 +9,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import examples.health.modelclasses.HeartRate;
-import examples.health.studentunittests.heartrate.TestGetHeartRateZone;
+import health.codeundertest.HeartRate;
+import health.unittests.heartrate.TestGetHeartRateZone;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-public class MetaTestShouldGetZoneAtAerobicBoundary {
+public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 
 	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestGetHeartRateZone.class, "testShouldGetZoneAtAerobicBoundary");
+	static HeavyMeta metaTester = new HeavyMeta(TestGetHeartRateZone.class, "testShouldGetZoneOneBelowAerobicBoundary");
 	
 	@Test
 	public void shouldHaveArrangeStage() {
 		
-		final int targetBpm = 140;
+		final int targetBpm = 139;
 		
 		var fakeHeartRate = new MockUp<HeartRate>() {
 			boolean didCreate = false;
@@ -42,7 +41,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 		assertTrue(fakeHeartRate.didCreate,
 				"Did not instantiate a HeartRate object in your Arrange stage.");
 		assertEquals(targetBpm, fakeHeartRate.actualBpm,
-				"Should instantiate the HeartRate object with a bpm at the boundary of 140.");
+				"Should instantiate the HeartRate object with a bpm one below the boundary of 140.");
 	}
 	
 	@Test
@@ -71,7 +70,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 			static boolean didAssert = false;
 			static boolean hasProperExpectedValue = false;
 			
-			final String properExpectedValue = "Aerobic";
+			final String properExpectedValue = "Temperate";
 			
 			@Mock
 			public void assertEquals(Object expected, Object actual, String msg) {
@@ -99,13 +98,13 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 		safeAssertTrue(fakedAssertions.didAssert,
 				"You do not have an assertEquals(String expected, String actual) in your Assert stage.");
 		safeAssertTrue(fakedAssertions.hasProperExpectedValue,
-				"The expected value (first parameter) of assertEquals should be the string for the aerobic zone");
+				"The expected value (first parameter) of assertEquals should be the string for the temperate zone");
 		
 	}
 
 	@Test
 	public void actualValueShouldComeFromActStageReturnValue() {
-		final String bogusReturnValue = "#$EDFGTYUHNJIK<OL";
+		final String bogusReturnValue = "ghu23bnwmg0pd98ypq;3o4";
 		
 		var fakeHeartRate = new MockUp<HeartRate>() {
 		

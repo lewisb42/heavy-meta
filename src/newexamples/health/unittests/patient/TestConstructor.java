@@ -1,10 +1,10 @@
-package examples.health.studentunittests.patient;
+package health.unittests.patient;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
-import examples.health.modelclasses.Patient;
+import health.codeundertest.Patient;
 
 /**
  * Class to test for correct functionality of the
