@@ -72,28 +72,37 @@ public class MetaTestFirstNameShouldNotBeNull {
 	@Test
 	public void shouldHaveAssertThrows() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			static boolean wasCalled = false;
-			static Class<? extends Object> exceptionType = Object.class;
+		var expectations = new Expectations() {
+			boolean assertThrowsWasCalled = false;
+			Class<? extends Object> exceptionType = Object.class;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(assertThrowsWasCalled,
+						"You need an assertThrows as your assertion.");
+				expect(IllegalArgumentException.class.equals(exceptionType),
+						"The first parameter of assertThrows should be the type of the expected exception; here, this is IllegalArgumentException.class.");
+			}
+			
+		};
+		
+		new MockUp<Assertions>() {
+			
+			// NOTE: must make assertThrows non-static here. Otherwise the mocking confuses it.
 			@Mock
-			public static void assertThrows(Class<? extends Object> expectedType, Executable e) {
-				wasCalled = true;
-				exceptionType = expectedType;
+			public void assertThrows(Class<? extends Object> expectedType, Executable e) {
+				expectations.assertThrowsWasCalled = true;
+				expectations.exceptionType = expectedType;
 			}
 			
 			@Mock
-			public static void assertThrows(Class<? extends Object> expectedType, Executable e, String msg) {
+			public void assertThrows(Class<? extends Object> expectedType, Executable e, String msg) {
 				assertThrows(expectedType, e);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.wasCalled,
-				"You need an assertThrows as your assertion.");
-		safeAssertEquals(IllegalArgumentException.class, fakedAssertions.exceptionType,
-				"The first parameter of assertThrows should be the type of the expected exception; here, this is IllegalArgumentException.class.");
+		expectations.assertPassed();
 	}
 	
 	@Test
@@ -105,13 +114,15 @@ public class MetaTestFirstNameShouldNotBeNull {
 			
 			@Override
 			protected void establishExpectations() {
+				// running the test captures the lambda (i.e., Executable object);
+				// we execute it here to see if it called the Patient constructor
 				try {
 					exe.execute();
 				} catch (Throwable e1) {
 					throw new AssertionFailedError("The code inside the () -> { } could not be executed.");
 				}
 				
-				assertTrue(patientWasInstantiated,
+				expect(patientWasInstantiated,
 						"Did not instantiate your Patient inside the assertThrow's () -> { } block.");
 			}
 			
