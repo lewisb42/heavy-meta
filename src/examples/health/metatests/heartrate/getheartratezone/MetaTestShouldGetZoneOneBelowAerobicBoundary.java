@@ -2,6 +2,7 @@ package health.metatests.heartrate.getheartratezone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
 import static org.doubleoops.heavymeta.SafeAssertions.*;
 
@@ -21,35 +22,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 	@RegisterExtension
 	static HeavyMeta metaTester = new HeavyMeta(TestGetHeartRateZone.class, "testShouldGetZoneOneBelowAerobicBoundary");
 	
-	public interface Expectations {
-		
-		/**
-		 * Generally called within the overridden assertPassed() method
-		 * to list out expectations for a meta-test.
-		 * 
-		 * @param cond the condition expected to be true
-		 * @param failureMessage the failure message if not true (will be reported by JUnit)
-		 */
-		default void expect(boolean cond, String failureMessage) {
-			if (!cond) {
-				throw new AssertionFailedError(failureMessage);
-			}
-		}
-		
-		/**
-		 * Called in the meta-test assertion stage to check that all expectations
-		 * were validated.
-		 */
-		default void assertPassed() {
-			establishExpectations();
-		}
-		
-		/**
-		 * Overridden at the beginning of a meta-test to set out what should be
-		 * true at the end of the test.
-		 */
-		void establishExpectations();
-	}
+	
 	
 	@Test
 	public void shouldHaveArrangeStage() {
@@ -60,7 +33,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			int actualBpm = Integer.MAX_VALUE;
 			
 			@Override
-			public void establishExpectations() {
+			protected void establishExpectations() {
 				expect(didCreate, "Did not instantiate a HeartRate object in your Arrange stage.");
 				expect(actualBpm == targetBpm, "Should instantiate the HeartRate object with a bpm one below the boundary of 140.");
 			}
