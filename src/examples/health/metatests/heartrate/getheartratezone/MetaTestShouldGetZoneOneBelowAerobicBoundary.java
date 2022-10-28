@@ -101,6 +101,32 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 				"The expected value (first parameter) of assertEquals should be the string for the temperate zone");
 		
 	}
+	
+	@Test
+	public void actMethodShouldBeCalledOnArrangedObject() {
+		
+		var fakeHeartRate = new MockUp<HeartRate>() {
+			HeartRate arrangedHeartRate = null;
+			HeartRate actedUponHeartRate = null;
+			
+			@Mock
+			public void $init(Invocation inv, int heartRate) {
+				arrangedHeartRate = inv.getInvokedInstance();
+			}
+			
+			@Mock
+			public String getHeartRateZone(Invocation inv) {
+				String realResult = inv.proceed();
+				actedUponHeartRate = inv.getInvokedInstance();
+				return realResult;
+			}
+		};
+		
+		metaTester.runStudentsTestIgnoreFails();
+		
+		assertSame(fakeHeartRate.arrangedHeartRate, fakeHeartRate.actedUponHeartRate,
+				"The HeartRate you created in your Arrange stage is not the one you called getHeartRateZone() upon");
+	}
 
 	@Test
 	public void actualValueShouldComeFromActStageReturnValue() {
