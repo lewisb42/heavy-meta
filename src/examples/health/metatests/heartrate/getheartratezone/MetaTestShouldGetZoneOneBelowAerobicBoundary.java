@@ -40,7 +40,15 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 		 * Called in the meta-test assertion stage to check that all expectations
 		 * were validated.
 		 */
-		void assertPassed();
+		default void assertPassed() {
+			establishExpectations();
+		}
+		
+		/**
+		 * Overridden at the beginning of a meta-test to set out what should be
+		 * true at the end of the test.
+		 */
+		void establishExpectations();
 	}
 	
 	@Test
@@ -52,7 +60,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			int actualBpm = Integer.MAX_VALUE;
 			
 			@Override
-			public void assertPassed() {
+			public void establishExpectations() {
 				expect(didCreate, "Did not instantiate a HeartRate object in your Arrange stage.");
 				expect(actualBpm == targetBpm, "Should instantiate the HeartRate object with a bpm one below the boundary of 140.");
 			}
