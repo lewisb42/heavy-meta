@@ -99,38 +99,49 @@ public class MetaTestFirstNameShouldNotBeNull {
 	@Test
 	public void assertThrowsShouldExecuteTheExceptionThrowingCode() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
+		final var expectations = new Expectations() {
+			Executable exe = null;
+			boolean patientWasInstantiated = false;
+			
+			@Override
+			protected void establishExpectations() {
+				try {
+					exe.execute();
+				} catch (Throwable e1) {
+					throw new AssertionFailedError("The code inside the () -> { } could not be executed.");
+				}
+				
+				assertTrue(patientWasInstantiated,
+						"Did not instantiate your Patient inside the assertThrow's () -> { } block.");
+			}
+			
+		};
+		
+		new MockUp<Assertions>() {
 			static Executable exe = null;
 			
 			@Mock
-			public static void assertThrows(Class<? extends Object> expectedType, Executable e) {
-				exe = e;
+			public void assertThrows(Class<? extends Object> expectedType, Executable e) {
+				expectations.exe = e;
 			}
 			
 			@Mock
-			public static void assertThrows(Class<? extends Object> expectedType, Executable e, String msg) {
-				exe = e;
+			public void assertThrows(Class<? extends Object> expectedType, Executable e, String msg) {
+				expectations.exe = e;
 			}
 		};
 		
-		var fakePatient = new MockUp<Patient>() {
-			boolean wasInstantiated = false;
+		new MockUp<Patient>() {
 			
 			@Mock
 			public void $init(String firstName, String lastName, int age) {
-				wasInstantiated = true;
+				expectations.patientWasInstantiated = true;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		try {
-			fakedAssertions.exe.execute();
-		} catch (Throwable e1) {
-			throw new AssertionFailedError("The code inside the () -> { } could not be executed.");
-		}
+		expectations.assertPassed();		
 		
-		assertTrue(fakePatient.wasInstantiated,
-				"Did not instantiate your Patient inside the assertThrow's () -> { } block.");
 	}
 
 }
