@@ -2,6 +2,7 @@ package health.metatests.heartrate.getheartratezone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
 import static org.doubleoops.heavymeta.SafeAssertions.*;
 
@@ -25,88 +26,122 @@ public class MetaTestShouldGetZoneOneAboveAerobicBoundary {
 		
 		final int targetBpm = 141;
 		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		var expectations = new Expectations() {
 			boolean didCreate = false;
 			int actualBpm = Integer.MAX_VALUE;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(didCreate,
+						"Did not instantiate a HeartRate object in your Arrange stage.");
+				expect(targetBpm == actualBpm,
+						"Should instantiate the HeartRate object with a bpm one above the boundary of 140.");
+			}
+			
+		};
+		
+		new MockUp<HeartRate>() {	
+			
 			@Mock
 			public void $init(int bpm) {
-				didCreate = true;
-				actualBpm = bpm;
+				expectations.didCreate = true;
+				expectations.actualBpm = bpm;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
 		
-		assertTrue(fakeHeartRate.didCreate,
-				"Did not instantiate a HeartRate object in your Arrange stage.");
-		assertEquals(targetBpm, fakeHeartRate.actualBpm,
-				"Should instantiate the HeartRate object with a bpm one above the boundary of 140.");
 	}
 	
 	@Test
 	public void shouldHaveActStage() {
 		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		var expectations = new Expectations() {
 			boolean didAct = false;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(didAct,
+						"Did not call getHeartRateZone() on your HeartRate object in the Act stage.");
+			}
+			
+		};
+		
+		new MockUp<HeartRate>() {
 			
 			@Mock
 			public String getHeartRateZone(Invocation inv) {
-				didAct = true;
+				expectations.didAct = true;
 				return inv.proceed();
 			}
 		};
 
 		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
 		
-		assertTrue(fakeHeartRate.didAct,
-				"Did not call getHeartRateZone() on your HeartRate object in the Act stage.");
 	}
 	
 	@Test
 	public void shouldHaveAssertStage() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			static boolean didAssert = false;
-			static boolean hasProperExpectedValue = false;
+		final String properExpectedValue = "Aerobic";
+		
+		var expectations = new Expectations() {
+			boolean didAssert = false;
+			String expectedValueFromAssertion = "";
 			
-			final String properExpectedValue = "Aerobic";
+			@Override
+			protected void establishExpectations() {
+				expect(didAssert,
+						"You do not have an assertEquals(String expected, String actual) in your Assert stage.");
+				expect(expectedValueFromAssertion.equals(properExpectedValue),
+						"The expected value (first parameter) of assertEquals should be the string for the aerobic zone");
+			}
+			
+		};
+		
+		new MockUp<Assertions>() {
 			
 			@Mock
 			public void assertEquals(Object expected, Object actual, String msg) {
-				checkParameters(expected, actual);
+				captureParameters(expected, actual);
 			}
 			
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
-				checkParameters(expected, actual);
+				captureParameters(expected, actual);
 			}
 
-			private void checkParameters(Object expected, Object actual) {
-				if (expected instanceof String && actual instanceof String) {
-					didAssert = true;
-					
-					if (properExpectedValue.equals(expected)) {
-						hasProperExpectedValue = true;
-					}
-				}
+			private void captureParameters(Object expected, Object actual) {
+				expectations.didAssert = true;
+				expectations.expectedValueFromAssertion = (String)expected;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
 		
-		safeAssertTrue(fakedAssertions.didAssert,
-				"You do not have an assertEquals(String expected, String actual) in your Assert stage.");
-		safeAssertTrue(fakedAssertions.hasProperExpectedValue,
-				"The expected value (first parameter) of assertEquals should be the string for the aerobic zone");
 		
 	}
 
 	@Test
 	public void actualValueShouldComeFromActStageReturnValue() {
+		
 		final String bogusReturnValue = "97y8gyihuoj878ij3ks;3o4";
 		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		var expectations = new Expectations() {
+			String actualValueFromAssertion = "";
+			
+			@Override
+			protected void establishExpectations() {
+				expect(actualValueFromAssertion.equals(bogusReturnValue),
+						"The actual value of your assertEquals does not come from the return of getHeartRateZone. Capture the latter in a local variable and use that variable as the actual value of the assertion (second parameter).");
+			}
+			
+		};
+		
+		new MockUp<HeartRate>() {
 		
 			@Mock
 			public String getHeartRateZone() {
@@ -114,21 +149,15 @@ public class MetaTestShouldGetZoneOneAboveAerobicBoundary {
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
+		new MockUp<Assertions>() {
 			
-			boolean hasProperActualValue = false;
 			@Mock
 			public void assertEquals(Object expected, Object actual, String msg) {
 				checkActualValue(actual);
 			}
 			
 			private void checkActualValue(Object actual) {
-				if (actual instanceof String) {
-					String actualString = (String) actual;
-					if (bogusReturnValue.equals(actualString)) {
-						hasProperActualValue = true;
-					}
-				}
+				expectations.actualValueFromAssertion =  (String)actual;
 			}
 
 			@Mock
@@ -138,8 +167,6 @@ public class MetaTestShouldGetZoneOneAboveAerobicBoundary {
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakedAssertions.hasProperActualValue,
-				"The actual value of your assertEquals does not come from the return of getHeartRateZone. Capture the latter in a local variable and use that variable as the actual value of the assertion (second parameter).");
+		expectations.assertPassed();
 	}
 }
