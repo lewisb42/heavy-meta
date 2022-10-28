@@ -60,7 +60,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 		
 		
 		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		new MockUp<HeartRate>() {
 			
 			@Mock
 			public void $init(int bpm) {
