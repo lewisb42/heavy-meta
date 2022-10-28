@@ -99,7 +99,7 @@ public class MetaTestFirstNameShouldNotBeNull {
 	@Test
 	public void assertThrowsShouldExecuteTheExceptionThrowingCode() {
 		
-		final var expectations = new Expectations() {
+		var expectations = new Expectations() {
 			Executable exe = null;
 			boolean patientWasInstantiated = false;
 			
