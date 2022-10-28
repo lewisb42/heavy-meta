@@ -1,12 +1,10 @@
 package health.metatests.patient.constructor;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
-import static org.doubleoops.heavymeta.SafeAssertions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -28,6 +26,8 @@ public class MetaTestFirstNameShouldNotBeNull {
 	@Test
 	public void shouldHaveArrangeActStage() {
 		
+		
+		
 		var fakePatient = new MockUp<Patient>() {
 			
 			public String firstName = BOGUS_NAME;
@@ -44,32 +44,54 @@ public class MetaTestFirstNameShouldNotBeNull {
 			}
 		};
 		
+		var expectations = new Expectations() {
+			
+			@Override
+			protected void establishExpectations() {
+				expect(fakePatient.wasInstantiated,
+						"You must instantiate a Patient object inside the assertThrows");
+				expect(fakePatient.firstName == null,
+						"The Patient constructor's firstName parameter should be null.");
+				expect(fakePatient.lastName != null,
+						"The Patient constructor's lastName parameter should be valid (i.e., not null or empty");
+				expect(!fakePatient.lastName.isEmpty(), 
+						"The Patient constructor's lastName parameter should be valid (i.e., not null or empty");
+				expect(fakePatient.age > 0,
+						"The Patient constructor's age should be valid, i.e., greater than zero.");
+				
+			}
+			
+		};
+		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		
-		assertTrue(fakePatient.wasInstantiated,
-				"You must instantiate a Patient object inside the assertThrows");
-		assertNull(fakePatient.firstName,
-				"The Patient constructor's firstName parameter should be null.");
-		assertNotNull(fakePatient.lastName,
-				"The Patient constructor's lastName parameter should be valid (i.e., not null or empty");
-		assertFalse(fakePatient.lastName.isEmpty(), 
-				"The Patient constructor's lastName parameter should be valid (i.e., not null or empty");
-		assertTrue(fakePatient.age > 0,
-				"The Patient constructor's age should be valid, i.e., greater than zero.");
+		expectations.assertPassed();
 	}
 
 	@Test
 	public void shouldHaveAssertThrows() {
+		fail("issue with the mocked assertThrows");
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			static boolean wasCalled = false;
-			static Class<? extends Object> exceptionType = Object.class;
+		var expectations = new Expectations() {
+
+			boolean assertionWasCalled = false;
+			Class<? extends Object> exceptionType = Object.class;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(assertionWasCalled,
+						"You need an assertThrows as your assertion.");
+				expect(exceptionType.equals(IllegalArgumentException.class),
+						"The first parameter of assertThrows should be the type of the expected exception; here, this is IllegalArgumentException.class.");
+			}
+			
+		};
+		
+		new MockUp<Assertions>() {	
 			
 			@Mock
 			public static void assertThrows(Class<? extends Object> expectedType, Executable e) {
-				wasCalled = true;
-				exceptionType = expectedType;
+				//expectations.exceptionType = expectedType;
+				//expectations.assertionWasCalled = true;
 			}
 			
 			@Mock
@@ -80,47 +102,62 @@ public class MetaTestFirstNameShouldNotBeNull {
 		
 		metaTester.runStudentsTestIgnoreFails();
 		
-		safeAssertTrue(fakedAssertions.wasCalled,
-				"You need an assertThrows as your assertion.");
-		safeAssertEquals(IllegalArgumentException.class, fakedAssertions.exceptionType,
-				"The first parameter of assertThrows should be the type of the expected exception; here, this is IllegalArgumentException.class.");
+		
 	}
 	
 	@Test
 	public void assertThrowsShouldExecuteTheExceptionThrowingCode() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			static Executable exe = null;
+		// workaround: assertThrows didn't like the anon inner class form
+		class MyExpectations extends Expectations {
+			Executable exe = null;
+			boolean instantiatedPatient = false;
+			
+			@Override
+			protected void establishExpectations() {
+				try {
+					exe.execute();
+				} catch (Throwable e1) {
+					throw new AssertionFailedError("The code inside the () -> { } could not be executed.");
+				}
+				
+				expect(instantiatedPatient,
+						"Did not instantiate your Patient inside the assertThrow's () -> { } block.");
+			}
+			
+			public void setExecutable(Executable e) {
+				this.exe = e;
+			}
+			
+		};
+		
+		MyExpectations expectations = new MyExpectations();
+		
+		new MockUp<Assertions>() {
+			static MyExpectations asdf = expectations;
 			
 			@Mock
 			public static void assertThrows(Class<? extends Object> expectedType, Executable e) {
-				exe = e;
+				asdf.setExecutable(e);
 			}
 			
 			@Mock
 			public static void assertThrows(Class<? extends Object> expectedType, Executable e, String msg) {
-				exe = e;
+				asdf.exe = e;
 			}
 		};
 		
-		var fakePatient = new MockUp<Patient>() {
-			boolean wasInstantiated = false;
+		new MockUp<Patient>() {
 			
 			@Mock
 			public void $init(String firstName, String lastName, int age) {
-				wasInstantiated = true;
+				expectations.instantiatedPatient = true;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		try {
-			fakedAssertions.exe.execute();
-		} catch (Throwable e1) {
-			throw new AssertionFailedError("The code inside the () -> { } could not be executed.");
-		}
 		
-		assertTrue(fakePatient.wasInstantiated,
-				"Did not instantiate your Patient inside the assertThrow's () -> { } block.");
+
 	}
 
 }
