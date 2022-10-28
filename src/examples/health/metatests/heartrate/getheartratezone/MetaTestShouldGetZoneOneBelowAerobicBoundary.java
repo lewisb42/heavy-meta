@@ -56,29 +56,45 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 	
 	@Test
 	public void shouldHaveActStage() {
-		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		var expectations = new Expectations( ) {
 			boolean didAct = false;
+			
+			@Override
+			protected void establishExpectations() {
+				this.expect(didAct, "Did not call getHeartRateZone() on your HeartRate object in the Act stage.");
+			}
+			
+		};
+		
+		new MockUp<HeartRate>() {
 			
 			@Mock
 			public String getHeartRateZone(Invocation inv) {
-				didAct = true;
+				expectations.didAct = true;
 				return inv.proceed();
 			}
 		};
 
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeHeartRate.didAct,
-				"Did not call getHeartRateZone() on your HeartRate object in the Act stage.");
+		expectations.assertPassed();
 	}
 	
 	@Test
 	public void shouldHaveAssertStage() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			static boolean didAssert = false;
-			static boolean hasProperExpectedValue = false;
+		var expectations = new Expectations() {
+			boolean didAssert = false;
+			boolean hasProperExpectedValue = false;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(didAssert, "You do not have an assertEquals(String expected, String actual) in your Assert stage.");
+				expect(hasProperExpectedValue, "The expected value (first parameter) of assertEquals should be the string for the temperate zone");
+			}
+			
+		};
+		
+		new MockUp<Assertions>() {
 			
 			final String properExpectedValue = "Temperate";
 			
@@ -94,55 +110,70 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 
 			private void checkParameters(Object expected, Object actual) {
 				if (expected instanceof String && actual instanceof String) {
-					didAssert = true;
+					expectations.didAssert = true;
 					
 					if (properExpectedValue.equals(expected)) {
-						hasProperExpectedValue = true;
+						expectations.hasProperExpectedValue = true;
 					}
 				}
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.didAssert,
-				"You do not have an assertEquals(String expected, String actual) in your Assert stage.");
-		safeAssertTrue(fakedAssertions.hasProperExpectedValue,
-				"The expected value (first parameter) of assertEquals should be the string for the temperate zone");
+		expectations.assertPassed();
 		
 	}
 	
 	@Test
 	public void actMethodShouldBeCalledOnArrangedObject() {
 		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		var expectations = new Expectations() {
 			HeartRate arrangedHeartRate = null;
 			HeartRate actedUponHeartRate = null;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(arrangedHeartRate == actedUponHeartRate, "The HeartRate you created in your Arrange stage is not the one you called getHeartRateZone() upon");
+				
+			}
+			
+		};
+		
+		new MockUp<HeartRate>() {
+			
 			@Mock
 			public void $init(Invocation inv, int heartRate) {
-				arrangedHeartRate = inv.getInvokedInstance();
+				expectations.arrangedHeartRate = inv.getInvokedInstance();
 			}
 			
 			@Mock
 			public String getHeartRateZone(Invocation inv) {
 				String realResult = inv.proceed();
-				actedUponHeartRate = inv.getInvokedInstance();
+				expectations.actedUponHeartRate = inv.getInvokedInstance();
 				return realResult;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertSame(fakeHeartRate.arrangedHeartRate, fakeHeartRate.actedUponHeartRate,
-				"The HeartRate you created in your Arrange stage is not the one you called getHeartRateZone() upon");
+		expectations.assertPassed();
 	}
 
 	@Test
 	public void actualValueShouldComeFromActStageReturnValue() {
 		final String bogusReturnValue = "ghu23bnwmg0pd98ypq;3o4";
 		
-		var fakeHeartRate = new MockUp<HeartRate>() {
+		var expectations = new Expectations() {
+			boolean hasProperActualValue = false;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(hasProperActualValue,
+						"The actual value of your assertEquals does not come from the return of getHeartRateZone. Capture the latter in a local variable and use that variable as the actual value of the assertion (second parameter).");
+			}
+			
+		};
+		
+		new MockUp<HeartRate>() {
 		
 			@Mock
 			public String getHeartRateZone() {
@@ -150,9 +181,8 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
+		new MockUp<Assertions>() {
 			
-			boolean hasProperActualValue = false;
 			@Mock
 			public void assertEquals(Object expected, Object actual, String msg) {
 				checkActualValue(actual);
@@ -162,7 +192,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 				if (actual instanceof String) {
 					String actualString = (String) actual;
 					if (bogusReturnValue.equals(actualString)) {
-						hasProperActualValue = true;
+						expectations.hasProperActualValue = true;
 					}
 				}
 			}
@@ -174,8 +204,6 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakedAssertions.hasProperActualValue,
-				"The actual value of your assertEquals does not come from the return of getHeartRateZone. Capture the latter in a local variable and use that variable as the actual value of the assertion (second parameter).");
+		expectations.assertPassed();
 	}
 }
