@@ -27,198 +27,220 @@ public class MetaTestWhenListIsEmpty {
 	@Test
 	public void shouldHaveArrangeStage() {
 		
-		var fakeList = new MockUp<ArrayList<Recipe> >() {
-			public static boolean didCreate = false;
-			public static boolean didAddItems = false;
+		var expectations = new Expectations() {
+			boolean didCreateArrayList = false;
+			boolean didNotAddItemsToList = true;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(didCreateArrayList,
+						"Did not create empty ArrayList<Recipe>.");
+				expect(didNotAddItemsToList,
+						"You should not add Recipes to the list, since this is the empty list case");
+			}
+		};
+		
+		new MockUp<ArrayList<Recipe> >() {
 			@Mock
 			public void $init() {
-				didCreate = true;
+				expectations.didCreateArrayList = true;
 			}
 			
 			@Mock
 			public boolean add(Recipe r) {
-				didAddItems = true;
+				expectations.didNotAddItemsToList = false;
 				return true;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeList.didCreate,
-				"Did not create empty ArrayList<Recipe>.");
-		assertFalse(fakeList.didAddItems,
-				"You should not add Recipes to the list, since this is the empty list case");
+		expectations.assertPassed();
 	}
 	
 	@Test
 	public void shouldHaveActStage() {
 		
-		var fakedMealPlanner = new MockUp<MealPlanner>() {
-			public static boolean didAct = false;
-			
+		var expectations = new Expectations() {
+			boolean didAct = false;
+			@Override
+			protected void establishExpectations() {
+				expect(didAct,
+						"You did not call findQuickestRecipe() in your Act stage.");
+			}
+		};
+		
+		new MockUp<MealPlanner>() {
 			@Mock
-			public static Recipe findQuickestRecipe(Invocation inv, ArrayList<Recipe> recipes) {
-				didAct = true;
+			public Recipe findQuickestRecipe(Invocation inv, ArrayList<Recipe> recipes) {
+				expectations.didAct = true;
 				return inv.proceed(recipes);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakedMealPlanner.didAct,
-				"You did not call findQuickestRecipe() in your Act stage.");
+		expectations.assertPassed();
 	}
 	
 	@Test
 	public void shouldHaveAssertStage() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			public static boolean usedAssertEquals = false;
+		var expectations = new Expectations() {
+			boolean usedValidAssertion = false;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(usedValidAssertion,
+						"Did not use a valid assertion; assertEquals or assertNull are good choices here.");
+			}
+		};
+		
+		new MockUp<Assertions>() {
 
-			public static boolean usedAssertNull = false;
-			
-			public static boolean usedValidAssertion() {
-				return usedAssertEquals || usedAssertNull;
+			@Mock
+			public void assertEquals(Object expected, Object actual) {
+				expectations.usedValidAssertion = true;
 			}
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual) {
-				usedAssertEquals = true;
-			}
-			
-			@Mock
-			public static void assertEquals(Object expected, Object actual, String msg) {
+			public void assertEquals(Object expected, Object actual, String msg) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual) {
+			public void assertSame(Object expected, Object actual) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual, String msg) {
+			public void assertSame(Object expected, Object actual, String msg) {
 				assertSame(expected, actual);
 			}
 			
 			@Mock
-			public static void assertNull(Object actual) {
-				usedAssertNull = true;
+			public void assertNull(Object actual) {
+				expectations.usedValidAssertion = true;
 			}
 			
 			@Mock
-			public static void assertNull(Object actual, String msg) {
+			public void assertNull(Object actual, String msg) {
 				assertNull(actual);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.usedValidAssertion(),
-			"Did not use a valid assertion; assertEquals or assertNull are good choices here.");	
+		expectations.assertPassed();	
 	}
 	
 	@Test
 	public void expectedValueShouldBeNull() {
-		var fakedAssertions = new MockUp<Assertions>() {
-			public static boolean expectedIsNull = false;
+		
+		var expectations = new Expectations() {
+			boolean expectedValueFromAssertionIsNull = false;
 			
-			
+			@Override
+			protected void establishExpectations() {
+				expect(expectedValueFromAssertionIsNull,
+						"Expected value of your assertion should be null.");
+			}
+		};
+		
+		new MockUp<Assertions>() {
 			@Mock
-			public static void assertEquals(Object expected, Object actual) {
-				expectedIsNull = (expected == null);
+			public void assertEquals(Object expected, Object actual) {
+				expectations.expectedValueFromAssertionIsNull = (expected == null);
 			}
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual, String msg) {
+			public void assertEquals(Object expected, Object actual, String msg) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual) {
+			public void assertSame(Object expected, Object actual) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual, String msg) {
+			public void assertSame(Object expected, Object actual, String msg) {
 				assertSame(expected, actual);
 			}
 			
 			@Mock
-			public static void assertNull(Object actual) {
-				expectedIsNull = true;
+			public void assertNull(Object actual) {
+				expectations.expectedValueFromAssertionIsNull = true;
 			}
 			
 			@Mock
-			public static void assertNull(Object actual, String msg) {
+			public void assertNull(Object actual, String msg) {
 				assertNull(actual);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.expectedIsNull,
-				"Expected value of your assertion should be null.");
+		expectations.assertPassed();
 	}
 	
 	@Test
 	public void assertStageActualValueShouldComeFromActStage() {
+		// improbable object used as sentinel
+		final Recipe sentinelRecipe = new Recipe("}{POI(*&^^TYHJN", 95638);
 		
-		
-		var fakedMealPlanner = new MockUp<MealPlanner>() {
-			// improbable object used as sentinel
-			public static final Recipe sentinelRecipe = new Recipe("}{POI(*&^^TYHJN", 95638);
+		var expectations = new Expectations() {
+			Recipe actualValueFromAssertion = null;
+			Recipe returnValueFromAct = sentinelRecipe;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(actualValueFromAssertion == returnValueFromAct,
+						"Did not use the return value of findQuickestRecipe as the actual value (2nd parameter) of your assertion.");
+			}
+		};
+		
+		new MockUp<MealPlanner>() {
 			@Mock
-			public static Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
+			public Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
 				return sentinelRecipe;
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			
-			public static boolean gotRecipeFromActStage = false;
+		new MockUp<Assertions>() {
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual) {
+			public void assertEquals(Object expected, Object actual) {
 				if (!(actual instanceof Recipe)) {
 					return;
 				}
 				
-				Recipe actualRecipe = (Recipe) actual;
-				gotRecipeFromActStage = (actualRecipe == fakedMealPlanner.sentinelRecipe);
+				expectations.actualValueFromAssertion = (Recipe) actual;
 			}
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual, String msg) {
+			public void assertEquals(Object expected, Object actual, String msg) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual) {
+			public void assertSame(Object expected, Object actual) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual, String msg) {
+			public void assertSame(Object expected, Object actual, String msg) {
 				assertSame(expected, actual);
 			}
 			
 			@Mock
-			public static void assertNull(Object actual) {
+			public void assertNull(Object actual) {
 				assertEquals(null, actual);
 			}
 			
 			@Mock
-			public static void assertNull(Object actual, String msg) {
+			public void assertNull(Object actual, String msg) {
 				assertEquals(null, actual);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.gotRecipeFromActStage,
-				"Did not use the return value of findQuickestRecipe as the actual value (2nd parameter) of your assertion.");
+		expectations.assertPassed();
 	}
 }
