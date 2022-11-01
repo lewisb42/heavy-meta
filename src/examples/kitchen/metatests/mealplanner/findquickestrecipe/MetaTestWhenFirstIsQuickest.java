@@ -192,11 +192,11 @@ public class MetaTestWhenFirstIsQuickest {
 	public void assertStageExpectedValueShouldBeFirstRecipe() {
 		
 		var expectations = new Expectations() {
-			Recipe returnedFirstRecipe = null;
+			Recipe firstRecipe = null;
 			Recipe expectedValueFirstRecipe = null;
 			@Override
 			protected void establishExpectations() {
-				expect(returnedFirstRecipe == expectedValueFirstRecipe,
+				expect(firstRecipe == expectedValueFirstRecipe,
 						"Your assertion's expected value (1st parameter) should be the same recipe that is first in your list.");
 			}
 		};
@@ -204,12 +204,14 @@ public class MetaTestWhenFirstIsQuickest {
 		new MockUp<MealPlanner>() {
 			@Mock
 			public Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
-				if (recipes.size() > 0) {
-					expectations.returnedFirstRecipe = recipes.get(0);
-				}
-				return expectations.returnedFirstRecipe;
+				expectations.firstRecipe = recipes.get(0);
+				// return improbable recipe here, to avoid
+				// assertEquals(actual, actual) situations
+				return new Recipe("UJMNY", 800000);
 			}
 		};
+		
+		
 		
 		new MockUp<Assertions>() {
 			@Mock
