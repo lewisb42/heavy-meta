@@ -53,10 +53,10 @@ public class TestFindQuickestRecipe {
 		recipes.add(recipe2);
 		
 		Recipe actual = MealPlanner.findQuickestRecipe(recipes);
-		assertEquals(recipe0, actual);
+		//assertEquals(recipe0, actual);
 		
 		// or:
-		// assertSame(recipe0, actual);
+		assertSame(recipe0, actual);
 	}
 	
 	@Test

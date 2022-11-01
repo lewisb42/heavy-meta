@@ -37,4 +37,17 @@ public abstract class Expectations {
 	 * true at the end of the test.
 	 */
 	protected abstract void establishExpectations();
+	
+	/**
+	 * True if all elements in the collection are unique (per Object#equals()).
+	 * 
+	 * @param <E> the type of element in the collection
+	 * @param collection the collection
+	 * @return true if all elements are unique
+	 */
+	public static <E> boolean elementsAreUnique(java.util.Collection<E> collection) {
+		int originalSize = collection.size();
+		java.util.HashSet<E> set = new java.util.HashSet<E>(collection);
+		return (originalSize == set.size());
+	}
 }
