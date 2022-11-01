@@ -182,23 +182,29 @@ public class MetaTestWhenHasSingleElement {
 	public void assertStageExpectedValueShouldBeTheOneAndOnlyRecipe() {
 		
 		var expectations = new Expectations() {
-			Recipe firstRecipe = null;
 			Recipe expectedValueFromAssertion = null;
+			Recipe recipeAddedToList = null;
 			
 			@Override
 			protected void establishExpectations() {
-				expect(firstRecipe == expectedValueFromAssertion,
+				expect(expectedValueFromAssertion == recipeAddedToList,
 						"Your assertion's expected value (1st parameter) should be the same recipe that you added to the list.");
+			}
+		};
+		
+		new MockUp<ArrayList<Recipe>>() {
+			@Mock
+			public boolean add(Recipe r) {
+				expectations.recipeAddedToList = r;
+				return true;
 			}
 		};
 		
 		new MockUp<MealPlanner>() {
 			@Mock
-			public  Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
-				if (recipes.size() > 0) {
-					expectations.firstRecipe = recipes.get(0);
-				}
-				return expectations.firstRecipe;
+			public Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
+				// return junk Recipe to avoid assertEquals(actual, actual) situation
+				return new Recipe("&UHJKUYHJ", 827564);
 			}
 		};
 		
