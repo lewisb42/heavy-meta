@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
+
 import static org.doubleoops.heavymeta.SafeAssertions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -102,7 +104,7 @@ public class MetaTestShouldCreateValidPatient {
 			}
 		};
 		
-		new MockUp<Assertions>() {
+		new MockedUpAssertEqualsForObjects() {
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
 				if (actual.equals(bogusString)) {
@@ -147,7 +149,7 @@ public class MetaTestShouldCreateValidPatient {
 			}
 		};
 		
-		new MockUp<Assertions>() {			
+		new MockedUpAssertEqualsForObjects() {			
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
 				if (actual.equals(bogusString)) {
@@ -200,6 +202,10 @@ public class MetaTestShouldCreateValidPatient {
 				}
 			}
 			
+			@Mock
+			public void assertEquals(int expected, int actual, String msg) {
+				assertEquals(expected, actual);
+			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
