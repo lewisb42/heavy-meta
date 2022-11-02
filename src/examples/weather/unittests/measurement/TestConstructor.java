@@ -56,6 +56,7 @@ public class TestConstructor {
 	public void testShouldCreateValidMeasurement() {
 		Measurement measurement = new Measurement(new String("Carrollton"), 100);
 		assertEquals(new String("Carrollton"), measurement.getLocation());
+		// Bad: assertEquals(new String("Carrollton"), "Carrollton");
 		assertEquals(100, measurement.getTemperatureInCelsius());
 	}
 }

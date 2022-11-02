@@ -102,6 +102,45 @@ public class MetaTestShouldCreateValidMeasurement {
 		expectations.assertPassed();
 	}
 	
+	@Test
+	public void locationAssertionActualValueShouldComeFromGetLocation() {
+		final String sentinelLocation = "INGUKNIGIUH";
+		
+		var expectations = new Expectations() {
+			String actualValueFromAssertion = null;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(actualValueFromAssertion.equals(sentinelLocation),
+						"Did not use the return value of getLocation() as the actual value for your location assertion");
+			}
+		};
+		
+		new MockUp<Measurement>() {
+			@Mock
+			public String getLocation() {
+				return sentinelLocation;
+			};
+		};
+		
+		new MockUp<Assertions>() {
+			@Mock
+			public void assertEquals(Object expected, Object actual) {
+				if (actual instanceof String) {
+					expectations.actualValueFromAssertion = (String) actual;
+				}
+			}
+			
+			@Mock
+			public void assertEquals(Object expected, Object actual, String msg) {
+				assertEquals(expected, actual);
+			}
+		};
+		
+		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
+	}
+	
 	@Disabled("template only")
 	@Test
 	public void template() {
