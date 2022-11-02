@@ -216,8 +216,7 @@ public class MetaTestWhenMiddleIsQuickest {
 			}
 		};
 		
-		new MockUp<Assertions>() {	
-			
+		new MockedUpAssertEqualsForObjects() {
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
 				if (!(expected instanceof Recipe)) {
@@ -225,21 +224,6 @@ public class MetaTestWhenMiddleIsQuickest {
 				}
 				
 				expectations.assertStageExpectedValue = (Recipe) expected;
-			}
-			
-			@Mock
-			public void assertEquals(Object expected, Object actual, String msg) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual, String msg) {
-				assertSame(expected, actual);
 			}
 		};
 		
