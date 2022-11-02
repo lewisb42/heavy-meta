@@ -4,8 +4,6 @@ import org.doubleoops.heavymeta.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
-
-import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -106,28 +104,13 @@ public class MetaTestWhenFirstIsQuickest {
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
+		new MockedUpAssertEqualsForObjects() {
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
 				if ((expected instanceof Recipe) && (actual instanceof Recipe)) {
 					expectations.usedAssertEquals = true;
 					return;
 				}
-			}
-			
-			@Mock
-			public void assertEquals(Object expected, Object actual, String msg) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual, String msg) {
-				assertSame(expected, actual);
 			}
 		};
 		
@@ -157,7 +140,7 @@ public class MetaTestWhenFirstIsQuickest {
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
+		new MockedUpAssertEqualsForObjects() {
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
 				if (!(actual instanceof Recipe)) {
@@ -166,21 +149,6 @@ public class MetaTestWhenFirstIsQuickest {
 				
 				Recipe actualRecipe = (Recipe) actual;
 				expectations.gotRecipeFromActStage = (actualRecipe == sentinelRecipe);
-			}
-			
-			@Mock
-			public void assertEquals(Object expected, Object actual, String msg) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual, String msg) {
-				assertSame(expected, actual);
 			}
 		};
 		
@@ -211,9 +179,7 @@ public class MetaTestWhenFirstIsQuickest {
 			}
 		};
 		
-		
-		
-		new MockUp<Assertions>() {
+		new MockedUpAssertEqualsForObjects() {
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
 				if (!(expected instanceof Recipe)) {
@@ -221,21 +187,6 @@ public class MetaTestWhenFirstIsQuickest {
 				}
 				
 				expectations.expectedValueFirstRecipe = (Recipe) expected;
-			}
-			
-			@Mock
-			public void assertEquals(Object expected, Object actual, String msg) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual) {
-				assertEquals(expected, actual);
-			}
-			
-			@Mock
-			public void assertSame(Object expected, Object actual, String msg) {
-				assertSame(expected, actual);
 			}
 		};
 		
