@@ -1,19 +1,15 @@
 package weather.metatests.weatherservice.findmaximumtemperature;
 
-import static org.doubleoops.heavymeta.HeavyMeta.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.FakedAssertions;
 import org.doubleoops.heavymeta.HeavyMeta;
 import org.doubleoops.heavymeta.SafeAssertions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.opentest4j.AssertionFailedError;
 
 import mockit.Invocation;
 import mockit.Mock;
@@ -22,33 +18,6 @@ import weather.codeundertest.Measurement;
 import weather.codeundertest.WeatherService;
 import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
-/**
- * <strong>Meta-test example</strong>
- * 
- * <table style="border: solid 1px black;">
- * 	<caption>Relevant Classes and Methods</caption>
- * 	<tr>
- * 		<td><strong>Class being unit-tested</strong></td>
- * 		<td>{@link weather.codeundertest.WeatherService WeatherService}</td>
- * 	</tr>
- * 	<tr>
- * 		<td><strong>Method being unit-tested</strong></td>
- * 		<td>{@link weather.codeundertest.WeatherService#findMaximumTemperature() findMaximumTemperature()}</td>
- * 	</tr>
- * 	<tr>
- * 		<td><strong>Test class being meta-tested</strong></td>
- * 		<td>{@link weather.unittests.weatherservice.TestFindMaximumTemperature TestFindMaximumTemperature}</td>
- * 	</tr>
- * 	<tr>
- * 		<td><strong>Unit test method being meta-tested</strong></td>
- * 		<td>{@link weather.unittests.weatherservice.TestFindMaximumTemperature#testWhenOneMeasurement() testWhenOneMeasurement}</td>
- * 	</tr>
- * </table>
- * 
- * 
- * @author Lewis Baumstark
- *
- */
 public class MetaTestWhenOneMeasurement {
 	
 	@RegisterExtension
@@ -65,45 +34,49 @@ public class MetaTestWhenOneMeasurement {
 	@Test
 	public void shouldHaveArrangeStage() {
 		
-		var fakeWeatherService = new MockUp<WeatherService>() {
-			public boolean createdWeatherService = false;
-			public int measurementCount = 0;
+		var expectations = new Expectations() {
+			boolean didCreateWeatherService = false;
+			boolean didCreateMeasurement = false;
+			int numberMeasurementsAdded = 0;
+			Measurement addedMeasurement = null;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(didCreateWeatherService,
+						"Did not initialize a WeatherService object in Arrange stage");
+				
+				expect(didCreateMeasurement,
+						"Did not initialize a Measurement object in Arrange stgge");
+				
+				expect(numberMeasurementsAdded == 1 && addedMeasurement != null,
+						"Did not add exactly 1 Measurement to the WeatherService.");
+			}
+		};
+		
+		new MockUp<WeatherService>() {
 			@Mock
 			public void $init(Invocation inv) {
-				createdWeatherService = true;
+				expectations.didCreateWeatherService = true;
 				inv.proceed();
 			}
 			
 			@Mock
 			public void add(Measurement m) {
-				measurementCount++;
+				expectations.addedMeasurement = m;
+				expectations.numberMeasurementsAdded++;
 			}
 		};
 		
-		var fakeMeasurement = new MockUp<Measurement>() {
-			public Measurement createdMeasurement = null;
-			
-			public boolean didCreate = false;
-			
+		new MockUp<Measurement>() {
 			@Mock
 			public void $init(Invocation inv, String location, int temperature) {
-				didCreate = true;
+				expectations.didCreateMeasurement = true;
 				inv.proceed(location, temperature);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeWeatherService.createdWeatherService,
-				"Did not initialize a WeatherService object in Arrange stage");
-		
-		assertTrue(fakeMeasurement.didCreate,
-				"Did not initialize a Measurement object in Arrange stgge");
-		
-		assertEquals(1, fakeWeatherService.measurementCount,
-				"Did not add exactly 1 Measurement to the WeatherService.");
-
+		expectations.assertPassed();
 	}
 	
 	/**
@@ -115,20 +88,27 @@ public class MetaTestWhenOneMeasurement {
 	 */
 	@Test
 	public void shouldHaveActStage() {
-		var fakeWeatherService = new MockUp<WeatherService>() {
-			public boolean didAct = false;
+		
+		var expectations = new Expectations( ) {
+			boolean didAct = false;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(didAct,
+						"Did not not call findMaximumTemperature() in the Act stage");
+			}
+		};
+		
+		new MockUp<WeatherService>() {
 			@Mock
 			public int findMaximumTemperature(Invocation inv) {
-				didAct = true;
+				expectations.didAct = true;
 				return inv.proceed();
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeWeatherService.didAct,
-				"Did not not call findMaximumTemperature() in the Act stage");
+		expectations.assertPassed();
 	}
 
 	/**
@@ -140,10 +120,20 @@ public class MetaTestWhenOneMeasurement {
 	 */
 	@Test
 	public void shouldHaveAssertStage() {
+		
+		var expectations = new Expectations( ) {
+
+			@Override
+			protected void establishExpectations() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
 		new FakedAssertions();
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
+		expectations.assertPassed();
 		SafeAssertions.safeAssertTrue(FakedAssertions.didAssertEqualsIntInt(), 
 				"You did not use an appropriate assertion (e.g., assertEquals) in your Assert stage");
 	}
@@ -151,6 +141,15 @@ public class MetaTestWhenOneMeasurement {
 	@Test
 	public void actualValueOfAssertionShouldComeFromActMethod() {
 		final int sentinelValue = 82739274;
+		
+		var expectations = new Expectations( ) {
+
+			@Override
+			protected void establishExpectations() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 		
 		var fakeAssertions = new MockUp<Assertions>() {
 			public static int actualValue = Integer.MAX_VALUE;
@@ -172,13 +171,23 @@ public class MetaTestWhenOneMeasurement {
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
+		expectations.assertPassed();
 		SafeAssertions.safeAssertEquals(fakeAssertions.actualValue, sentinelValue,
 				"Use the return value of your findMaximumTemperature() as the actual value (2nd parameter) of your assertEquals()");
 	}
 	
 	@Test
 	public void expectedValueShouldBeSameAsReturnOfFindMaximumTemperature() {
+		
+		var expectations = new Expectations( ) {
+
+			@Override
+			protected void establishExpectations() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
 		var fakeAssertions = new MockUp<Assertions>() {
 			public static int expectedValue = Integer.MAX_VALUE;
 			
@@ -200,7 +209,7 @@ public class MetaTestWhenOneMeasurement {
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
+		expectations.assertPassed();
 		SafeAssertions.safeAssertEquals(fakeAssertions.expectedValue, fakeWeatherService.actualValue,
 				"The expected value of the assertion must match the return value of findMaximumTemperature()");
 	}
