@@ -54,7 +54,6 @@ public class TestConstructor {
 	
 	@Test
 	public void testShouldCreateValidMeasurement() {
-		// May have to tell student the exact parameter values to use
 		Measurement measurement = new Measurement(new String("Carrollton"), 100);
 		assertEquals(new String("Carrollton"), measurement.getLocation());
 		assertEquals(100, measurement.getTemperatureInCelsius());

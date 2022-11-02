@@ -4,6 +4,7 @@ import static org.doubleoops.heavymeta.HeavyMeta.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import weather.codeundertest.Measurement;
 import weather.unittests.measurement.TestConstructor;
 import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
-public class ShouldCreateValidMeasurementTests {
+public class MetaTestShouldCreateValidMeasurement {
 	TestConstructor unitTests;
 
 	@RegisterExtension
@@ -26,19 +27,34 @@ public class ShouldCreateValidMeasurementTests {
 	@Test
 	public void shouldHaveArrangeStage() {
 		
-		var fakeMeasurement = new MockUp<Measurement>() {
-			boolean didCreate = false;
+		var expectations = new Expectations() {
+			boolean didCreateMeasurement = false;
+			String locationParam = null;
+			int temperatureParam = Integer.MIN_VALUE;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(didCreateMeasurement,
+						"Did not instantiate a Measurement object in the Arrange stage.");
+				expect(locationParam != null && !locationParam.isEmpty(),
+						"Use a non-null, non-empty String for the location parameter");
+				expect(temperatureParam >= -273,
+						"Use a temperature parameter >= -273");
+				
+			}
+		};
+		
+		new MockUp<Measurement>() {			
 			@Mock
-			public void $init(String location, int temperature) {
-				didCreate = true;
+			public void $init(Invocation inv, String location, int temperature) {
+				expectations.didCreateMeasurement = true;
+				expectations.locationParam = location;
+				expectations.temperatureParam = temperature;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeMeasurement.didCreate,
-				"Did not instantiate a Measurement object in the Arrange stage.");
+		expectations.assertPassed();
 	}
 }
 
