@@ -141,18 +141,115 @@ public class MetaTestShouldCreateValidMeasurement {
 		expectations.assertPassed();
 	}
 	
-	@Disabled("template only")
 	@Test
-	public void template() {
+	public void locationAssertionExpectedValueShouldThatInConstructor() {
+		
 		var expectations = new Expectations() {
-
+			String assertionExpectedValue = null;
+			String locationFromConstructor = null;
+			
 			@Override
 			protected void establishExpectations() {
-				// TODO Auto-generated method stub
-				
+				expect(assertionExpectedValue.equals(locationFromConstructor),
+						"Expected value of your location assertion should be the same String as the location you passed to the constructor");
 			}
 		};
 		
+		new MockUp<Measurement>() {
+			@Mock
+			public void $init(String location, int temp) {
+				expectations.locationFromConstructor = location;
+			}
+		};
+		
+		new MockUp<Assertions>() {
+			@Mock
+			public void assertEquals(Object expected, Object actual) {
+				if (expected instanceof String) {
+					expectations.assertionExpectedValue = (String) expected;
+				}
+			}
+			
+			@Mock
+			public void assertEquals(Object expected, Object actual, String msg) {
+				assertEquals(expected, actual);
+			}
+		};
+		
+		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
+	}
+	
+	@Test
+	public void temperatureAssertionActualValueShouldComeFromGetTemperatureInCelcius() {
+		final int sentinelTemperature = Integer.MIN_VALUE;
+		
+		var expectations = new Expectations() {
+			int actualValueFromAssertion = Integer.MAX_VALUE;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(actualValueFromAssertion == sentinelTemperature,
+						"Did not use the return value of getTemperatureInCelsius() as the actual value for your temperature assertion");
+			}
+		};
+		
+		new MockUp<Measurement>() {
+			@Mock
+			public int getTemperatureInCelsius() {
+				return sentinelTemperature;
+			};
+		};
+		
+		new MockUp<Assertions>() {
+			@Mock
+			public void assertEquals(int expected, int actual) {
+				expectations.actualValueFromAssertion = actual;
+			}
+			
+			@Mock
+			public void assertEquals(int expected, int actual, String msg) {
+				assertEquals(expected, actual);
+			}
+		};
+		
+		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
+	}
+	
+	@Test
+	public void temperatureAssertionExpectedValueShouldThatInConstructor() {
+		
+		var expectations = new Expectations() {
+			int assertionExpectedValue = Integer.MAX_VALUE;
+			int temperatureFromConstructor = Integer.MIN_VALUE;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(assertionExpectedValue == temperatureFromConstructor,
+						"Expected value of your temperature assertion should be the same int as the temperature you passed to the constructor");
+			}
+		};
+		
+		new MockUp<Measurement>() {
+			@Mock
+			public void $init(Invocation inv, String location, int temp) {
+				expectations.temperatureFromConstructor = temp;
+				inv.proceed(location, temp);
+			}
+		};
+		
+		new MockUp<Assertions>() {
+			@Mock
+			public void assertEquals(int expected, int actual) {
+				expectations.assertionExpectedValue = expected;
+			}
+			
+			@Mock
+			public void assertEquals(int expected, int actual, String msg) {
+				assertEquals(expected, actual);
+			}
+		};
 		
 		metaTester.runStudentsTestIgnoreFails();
 		expectations.assertPassed();
