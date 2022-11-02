@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.FakedAssertions;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MockedUpAssertEqualsForInt;
 import org.doubleoops.heavymeta.SafeAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -122,20 +123,24 @@ public class MetaTestWhenOneMeasurement {
 	public void shouldHaveAssertStage() {
 		
 		var expectations = new Expectations( ) {
-
+			boolean usedValidAssertion = false;
+			
 			@Override
 			protected void establishExpectations() {
-				// TODO Auto-generated method stub
-				
+				expect(usedValidAssertion, 
+						"You did not use an appropriate assertion (e.g., assertEquals) in your Assert stage");
 			}
 		};
 		
-		new FakedAssertions();
+		new MockedUpAssertEqualsForInt() {
+			@Mock
+			public void assertEquals(int expected, int actual) {
+				expectations.usedValidAssertion = true;
+			}
+		};
 		
 		metaTester.runStudentsTestIgnoreFails();
 		expectations.assertPassed();
-		SafeAssertions.safeAssertTrue(FakedAssertions.didAssertEqualsIntInt(), 
-				"You did not use an appropriate assertion (e.g., assertEquals) in your Assert stage");
 	}
 	
 	@Test
@@ -143,25 +148,23 @@ public class MetaTestWhenOneMeasurement {
 		final int sentinelValue = 82739274;
 		
 		var expectations = new Expectations( ) {
-
+			int assertionActualValue = Integer.MIN_VALUE;
+			
 			@Override
 			protected void establishExpectations() {
-				// TODO Auto-generated method stub
-				
+				expect(assertionActualValue == sentinelValue,
+						"Use the return value of your findMaximumTemperature() as the actual value (2nd parameter) of your assertEquals()");
 			}
 		};
 		
-		var fakeAssertions = new MockUp<Assertions>() {
-			public static int actualValue = Integer.MAX_VALUE;
-			
+		new MockedUpAssertEqualsForInt() {		
 			@Mock
-			public static void assertEquals(int e, int a) {
-				actualValue = a;
+			public void assertEquals(int e, int a) {
+				expectations.assertionActualValue = a;
 			}
 		};
 		
-		var fakeWeatherService = new MockUp<WeatherService>() {
-			
+		new MockUp<WeatherService>() {
 			@Mock
 			public int findMaximumTemperature() {
 				// return something unlikely;
@@ -172,45 +175,38 @@ public class MetaTestWhenOneMeasurement {
 		
 		metaTester.runStudentsTestIgnoreFails();
 		expectations.assertPassed();
-		SafeAssertions.safeAssertEquals(fakeAssertions.actualValue, sentinelValue,
-				"Use the return value of your findMaximumTemperature() as the actual value (2nd parameter) of your assertEquals()");
 	}
 	
 	@Test
-	public void expectedValueShouldBeSameAsReturnOfFindMaximumTemperature() {
+	public void expectedValueShouldEqualMeasurementsTemperature() {
 		
 		var expectations = new Expectations( ) {
-
+			int assertionsExpectedValue = Integer.MIN_VALUE;
+			int measurementsTemperature = Integer.MAX_VALUE;
+			
 			@Override
 			protected void establishExpectations() {
-				// TODO Auto-generated method stub
-				
+				expect(assertionsExpectedValue == measurementsTemperature,
+						"Your assertion's expected value should equal the temperature you passed to the constructor");
 			}
 		};
 		
-		var fakeAssertions = new MockUp<Assertions>() {
-			public static int expectedValue = Integer.MAX_VALUE;
-			
+		new MockedUpAssertEqualsForInt() {
 			@Mock
-			public static void assertEquals(int e, int a) {
-				expectedValue = e;
+			public void assertEquals(int e, int a) {
+				expectations.assertionsExpectedValue = e;
 			}
 		};
 		
-		var fakeWeatherService = new MockUp<WeatherService>() {
-			
-			public int actualValue = Integer.MAX_VALUE;
-			
+		new MockUp<Measurement>() {
 			@Mock
-			public int findMaximumTemperature(Invocation inv) {
-				actualValue = inv.proceed();
-				return actualValue; 
+			public void $init(Invocation inv, String location, int temperature) {
+				expectations.measurementsTemperature = temperature;
+				inv.proceed(location, temperature);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
 		expectations.assertPassed();
-		SafeAssertions.safeAssertEquals(fakeAssertions.expectedValue, fakeWeatherService.actualValue,
-				"The expected value of the assertion must match the return value of findMaximumTemperature()");
 	}
 }
