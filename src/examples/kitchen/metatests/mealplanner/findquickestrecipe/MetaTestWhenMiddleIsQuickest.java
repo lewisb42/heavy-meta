@@ -27,210 +27,223 @@ public class MetaTestWhenMiddleIsQuickest {
 	@Test
 	public void shouldHaveArrangeStage() {
 		
-		var fakeList = new MockUp<ArrayList<Recipe> >() {
-			public boolean didCreate = false;
-			public java.util.ArrayList<Recipe> capturedRecipes =
+		var expectations = new Expectations() {
+			boolean didCreateArrayList = false;
+			java.util.ArrayList<Recipe> capturedRecipes =
 					new java.util.ArrayList<Recipe>();
 			
+			@Override
+			protected void establishExpectations() {
+				// TODO Auto-generated method stub
+				expect(didCreateArrayList,
+						"Did not create an ArrayList of Recipes in your Arrange stage.");
+				
+				expect(capturedRecipes.size() >= 3,
+						"Did not add at least 3 Recipe objects to your list");
+						
+				expect(elementsAreUnique(capturedRecipes),
+						"You added at least one Recipe object to the list twice. Instead, create 3 unique Recipe objects and add each one individually.");
+			}
+		};
+		
+		new MockUp<ArrayList<Recipe> >() {
 			@Mock
 			public void $init() {
-				didCreate = true;
+				expectations.didCreateArrayList = true;
 			}
 			
 			@Mock
 			public boolean add(Object obj) {
 				
 				if (obj instanceof Recipe) {
-					capturedRecipes.add((Recipe)obj);
+					expectations.capturedRecipes.add((Recipe)obj);
 				}
 				return true;
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeList.didCreate,
-				"Did not create an ArrayList of Recipes in your Arrange stage.");
-		
-		assertTrue(fakeList.capturedRecipes.size() >= 3,
-				"Did not add at least 3 Recipe objects to your list");
-				
-		safeAssertElementsUnique(fakeList.capturedRecipes,
-				"You added at least one Recipe object to the list twice. Instead, create 3 unique Recipe objects and add each one individually.");
+		expectations.assertPassed();
 	}
 	
 	@Test
 	public void shouldHaveActStage() {
 		
-		var fakeList = new MockUp<MealPlanner>() {
-			public static boolean didAct = false;
+		var expectations = new Expectations() {
+			boolean didAct = false;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(didAct,
+						"Did not call findQuickestRecipe() in your Act stage");
+			}
+		};
+		
+		new MockUp<MealPlanner>() {
 			@Mock
-			public static Recipe findQuickestRecipe(Invocation inv, ArrayList<Recipe> recipes) {
-				didAct = true;
+			public Recipe findQuickestRecipe(Invocation inv, ArrayList<Recipe> recipes) {
+				expectations.didAct = true;
 				return inv.proceed(recipes);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		assertTrue(fakeList.didAct,
-				"Did not call findQuickestRecipe() in your Act stage");
+		expectations.assertPassed();
 	}
 
 	@Test
 	public void shouldHaveAssertStage() {
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			public static boolean usedAssertEquals = false;
-			public static boolean usedAssertSame = false;
+		var expectations = new Expectations() {
+			boolean usedValidAssertion = false;
 			
-			public static boolean usedValidAssertion() {
-				return usedAssertEquals || usedAssertSame;
+			@Override
+			protected void establishExpectations() {
+				expect(usedValidAssertion,
+						"Invalid (or no) useful assertion found. Try an assertEquals with the Recipe object.");
 			}
+		};
+		
+		new MockUp<Assertions>() {
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual) {
+			public void assertEquals(Object expected, Object actual) {
 				if ((expected instanceof Recipe) && (actual instanceof Recipe)) {
-					usedAssertEquals = true;
+					expectations.usedValidAssertion = true;
 					return;
 				}
 			}
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual, String msg) {
+			public void assertEquals(Object expected, Object actual, String msg) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual) {
+			public void assertSame(Object expected, Object actual) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual, String msg) {
+			public void assertSame(Object expected, Object actual, String msg) {
 				assertSame(expected, actual);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.usedValidAssertion(),
-				"Invalid (or no) useful assertion found. Try an assertEquals with the Recipe object.");
+		expectations.assertPassed();
 	}
 
 	@Test
 	public void assertStageActualValueShouldComeFromActStage() {
+		// improbable object used as sentinel
+		final Recipe sentinelRecipe = new Recipe("][po98uyBVFTYHJU", 93426);		
 		
-		
-		var fakedMealPlanner = new MockUp<MealPlanner>() {
-			// improbable object used as sentinel
-			public static final Recipe sentinelRecipe = new Recipe("][po98uyBVFTYHJU", 93426);
+		var expectations = new Expectations() {
+			Recipe actualValueFromAssertion = null;
 			
+			@Override
+			protected void establishExpectations() {
+				expect(actualValueFromAssertion == sentinelRecipe,
+						"Did not use the return value of findQuickestRecipe as the actual value (2nd parameter) of your assertion.");
+			}
+		};
+		
+		new MockUp<MealPlanner>() {	
 			@Mock
-			public static Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
+			public Recipe findQuickestRecipe(ArrayList<Recipe> recipes) {
 				return sentinelRecipe;
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			
-			public static boolean gotRecipeFromActStage = false;
+		new MockUp<Assertions>() {
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual) {
+			public void assertEquals(Object expected, Object actual) {
 				if (!(actual instanceof Recipe)) {
 					return;
 				}
 				
-				Recipe actualRecipe = (Recipe) actual;
-				gotRecipeFromActStage = (actualRecipe == fakedMealPlanner.sentinelRecipe);
+				expectations.actualValueFromAssertion = (Recipe) actual;
 			}
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual, String msg) {
+			public void assertEquals(Object expected, Object actual, String msg) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual) {
+			public void assertSame(Object expected, Object actual) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual, String msg) {
+			public void assertSame(Object expected, Object actual, String msg) {
 				assertSame(expected, actual);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedAssertions.gotRecipeFromActStage,
-				"Did not use the return value of findQuickestRecipe as the actual value (2nd parameter) of your assertion.");
+		expectations.assertPassed();
 	}
 	
 	@Test
 	public void assertStageExpectedValueShouldBeAMiddleRecipe() {
 		
-		var fakedMealPlanner = new MockUp<MealPlanner>() {
-			public static boolean recipeIsInMiddle = false;
-			public static Recipe capturedRecipe = null;
+		var expectations = new Expectations() {
+			ArrayList<Recipe> capturedRecipes = new ArrayList<Recipe>();
+			Recipe assertStageExpectedValue = null;
 			
-			@Mock
-			public static Recipe findQuickestRecipe(Invocation inv, ArrayList<Recipe> recipes) {
-				capturedRecipe = inv.proceed(recipes);
-				
-				if (recipes.size() == 0) {
-					return capturedRecipe;
-				}
-				
-				Recipe firstRecipe = recipes.get(0);
-				Recipe lastRecipe = recipes.get(recipes.size() - 1);
-				
-				if (capturedRecipe != firstRecipe && capturedRecipe != lastRecipe) {
-					recipeIsInMiddle = true;
-				}
-				
-				return capturedRecipe;
+			@Override
+			protected void establishExpectations() {
+				expect(isMiddleValue(assertStageExpectedValue, capturedRecipes),
+						"You did not add Recipes to your list such that the quickest one is in the interior of the list");
+			}
+
+			private boolean isMiddleValue(Recipe recipe, ArrayList<Recipe> list) {
+				if (!list.contains(recipe)) return false;
+				if (recipe == list.get(0)) return false;
+				if (recipe == list.get(list.size()-1)) return false;
+				return true;
 			}
 		};
 		
-		var fakedAssertions = new MockUp<Assertions>() {
-			
-			public static Recipe expectedRecipe = null;
+		new MockUp<MealPlanner>() {
+			@Mock
+			public Recipe findQuickestRecipe(Invocation inv, ArrayList<Recipe> recipes) {
+				expectations.capturedRecipes = recipes;
+				return inv.proceed(recipes);
+			}
+		};
+		
+		new MockUp<Assertions>() {	
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual) {
+			public void assertEquals(Object expected, Object actual) {
 				if (!(expected instanceof Recipe)) {
 					return;
 				}
 				
-				expectedRecipe = (Recipe) expected;
+				expectations.assertStageExpectedValue = (Recipe) expected;
 			}
 			
 			@Mock
-			public static void assertEquals(Object expected, Object actual, String msg) {
+			public void assertEquals(Object expected, Object actual, String msg) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual) {
+			public void assertSame(Object expected, Object actual) {
 				assertEquals(expected, actual);
 			}
 			
 			@Mock
-			public static void assertSame(Object expected, Object actual, String msg) {
+			public void assertSame(Object expected, Object actual, String msg) {
 				assertSame(expected, actual);
 			}
 		};
 		
 		metaTester.runStudentsTestIgnoreFails();
-		
-		safeAssertTrue(fakedMealPlanner.recipeIsInMiddle,
-				"You did not add Recipes to your list such that the quickest one is in the interior of the list");
-		
-		safeAssertEquals(fakedAssertions.expectedRecipe, fakedMealPlanner.capturedRecipe,
-				"Your assertion's expected value (1st parameter) should be a middle recipe (not first or last in the list).");
-		
+		expectations.assertPassed();
 	}
 }
