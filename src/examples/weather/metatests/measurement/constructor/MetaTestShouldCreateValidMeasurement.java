@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.opentest4j.AssertionFailedError;
@@ -52,6 +54,66 @@ public class MetaTestShouldCreateValidMeasurement {
 				expectations.temperatureParam = temperature;
 			}
 		};
+		
+		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
+	}
+	
+	@Test
+	public void shouldHaveAssertStage() {
+		var expectations = new Expectations() {
+			boolean hasLocationAssertion = false;
+			boolean hasTemperatureAssertion = false;
+			
+			@Override
+			protected void establishExpectations() {
+				expect(hasLocationAssertion,
+						"Did not have an assertEquals to check the Measurement's getLocation()");
+				expect(hasTemperatureAssertion,
+						"Did not have an assertEquals to check the Measurement's getTemperatureInCelsius()");
+			}
+		};
+		
+		new MockUp<Assertions>() {
+			@Mock
+			public void assertEquals(Object expected, Object actual) {
+				if (expected instanceof String && actual instanceof String) {
+					expectations.hasLocationAssertion = true;
+				}
+			}
+			
+			@Mock
+			public void assertEquals(Object expected, Object actual, String msg) {
+				assertEquals(expected, actual);
+			}
+			
+			@Mock
+			public void assertEquals(int expected, int actual) {
+				expectations.hasTemperatureAssertion = true;
+			}
+			
+			@Mock
+			public void assertEquals(int expected, int actual, String msg) {
+				assertEquals(expected, actual);
+			}
+		};
+		
+		metaTester.runStudentsTestIgnoreFails();
+		expectations.assertPassed();
+	}
+	
+	@Disabled("template only")
+	@Test
+	public void template() {
+		var expectations = new Expectations() {
+
+			@Override
+			protected void establishExpectations() {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		
 		
 		metaTester.runStudentsTestIgnoreFails();
 		expectations.assertPassed();
