@@ -1,14 +1,8 @@
 package weather.metatests.weatherservice.findmaximumtemperature;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.FakedAssertions;
 import org.doubleoops.heavymeta.HeavyMeta;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForInt;
-import org.doubleoops.heavymeta.SafeAssertions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
