@@ -1,12 +1,8 @@
 package health.metatests.patient.constructor;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
-
-import static org.doubleoops.heavymeta.SafeAssertions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

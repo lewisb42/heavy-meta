@@ -1,11 +1,9 @@
 package kitchen.metatests.mealplanner.findquickestrecipe;
 
-import org.doubleoops.heavymeta.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Assertions;
-
+import org.doubleoops.heavymeta.ArrayList;
+import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -15,8 +13,6 @@ import kitchen.unittests.mealplanner.TestFindQuickestRecipe;
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
-
-import static org.doubleoops.heavymeta.SafeAssertions.*;
 
 public class MetaTestWhenMiddleIsQuickest {
 

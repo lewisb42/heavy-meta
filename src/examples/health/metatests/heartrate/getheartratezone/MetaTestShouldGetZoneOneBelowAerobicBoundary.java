@@ -1,15 +1,10 @@
 package health.metatests.heartrate.getheartratezone;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
-import static org.doubleoops.heavymeta.SafeAssertions.*;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.opentest4j.AssertionFailedError;
 
 import health.codeundertest.HeartRate;
 import health.unittests.heartrate.TestGetHeartRateZone;

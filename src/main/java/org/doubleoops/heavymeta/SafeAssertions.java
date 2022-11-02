@@ -23,7 +23,7 @@ import org.opentest4j.AssertionFailedError;
  * @author Lewis Baumstark
  *
  */
-public class SafeAssertions {
+class SafeAssertions {
 
 	/**
 	 * Asserts that all elements in the collection are unique (per Object#equals()).

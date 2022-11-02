@@ -1,10 +1,5 @@
 package health.metatests.patient.constructor;
 
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.doubleoops.heavymeta.SafeAssertions.*;
-
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
 import org.junit.jupiter.api.Assertions;
