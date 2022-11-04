@@ -2,6 +2,7 @@ package health.metatests.heartrate.getheartratezone;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -155,49 +156,35 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 
 	@Test
 	public void actualValueShouldComeFromActStageReturnValue() {
-		final String bogusReturnValue = "ghu23bnwmg0pd98ypq;3o4";
+		final String sentinelValue = "ghu23bnwmg0pd98ypq;3o4";
 		
+		// Expect stage
 		var expectations = new Expectations() {
-			boolean hasProperActualValue = false;
+			String assertionsActualValue = null;
 			
 			@Override
 			protected void establishExpectations() {
-				expect(hasProperActualValue,
+				expect(sentinelValue.equals(assertionsActualValue),
 						"The actual value of your assertEquals does not come from the return of getHeartRateZone. Capture the latter in a local variable and use that variable as the actual value of the assertion (second parameter).");
 			}
-			
 		};
 		
+		// Instrument stage
 		new MockUp<HeartRate>() {
-		
 			@Mock
 			public String getHeartRateZone() {
-				return bogusReturnValue;
+				return sentinelValue;
 			}
 		};
 		
-		new MockUp<Assertions>() {
-			
-			@Mock
-			public void assertEquals(Object expected, Object actual, String msg) {
-				checkActualValue(actual);
-			}
-			
-			private void checkActualValue(Object actual) {
-				if (actual instanceof String) {
-					String actualString = (String) actual;
-					if (bogusReturnValue.equals(actualString)) {
-						expectations.hasProperActualValue = true;
-					}
-				}
-			}
-
+		new MockedUpAssertEqualsForObjects() {
 			@Mock
 			public void assertEquals(Object expected, Object actual) {
-				checkActualValue(actual);
+				expectations.assertionsActualValue = (String) actual;
 			}
 		};
 		
+		// Act and Verify stages
 		metaTester.runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
