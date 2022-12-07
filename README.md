@@ -22,8 +22,7 @@ Add the following as *compile* (not test) dependencies to your pom.xml:
 Setup the project:
 
 - Make sure the heavymeta.jar is added to the project's build path.
-
-
+- In the workspace preferences, under Java -> Installed JRE's, add an M2_REPO variable for your JRE, and point it at the .m2/repository directory your Eclipse is using for maven (mine is C:\Users\username\\.m2\repository).
 
 # Running
 See the [jmockit](https://jmockit.github.io/tutorial/Introduction.html#runningTests) documentation for adding 
