@@ -20,7 +20,7 @@ public class TestGetHeartRateZone {
 	public void testShouldGetZoneOneAboveAerobicBoundary() {
 		HeartRate rate = new HeartRate(141);
 		String actualZone = rate.getHeartRateZone();
-		assertEquals("Aerobic", "Aerobic"); //actualZone);
+		assertEquals("Aerobic", actualZone);
 	}
 
 	@Test

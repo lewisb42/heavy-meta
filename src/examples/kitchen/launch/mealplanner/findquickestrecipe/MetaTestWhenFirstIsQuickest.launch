@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/heavy-meta/src/newexamples/kitchen/metatests/mealplanner/findquickestrecipe/MetaTestWhenFirstIsQuickest.java"/>
+        <listEntry value="/heavy-meta/src/examples/kitchen/metatests/mealplanner/findquickestrecipe/MetaTestWhenFirstIsQuickest.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
     </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="M2_REPO" value="C:\Users\lewis\.m2\repository"/>
+    </mapAttribute>
     <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
@@ -18,5 +22,5 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="kitchen.metatests.mealplanner.findquickestrecipe.MetaTestWhenFirstIsQuickest"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="heavy-meta"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -javaagent:${M2_REPO}/jmockit/jmockit/1.49/jmockit-1.49.jar"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -javaagent:${M2_REPO}/org/jmockit/jmockit/1.49/jmockit-1.49.jar"/>
 </launchConfiguration>
