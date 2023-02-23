@@ -107,13 +107,16 @@ public class HeavyMeta implements AfterAllCallback {
 		try {
 			SafeAssertions.assertIsTestMethod(this.testClass, this.testMethodName);
 		} catch (AssertionFailedError e) {
-			message += e.getMessage();
+			message += "Method " + this.testMethodName + " is not annotated with @Test.";
 		}
 		
 		try {
 			runStudentsTestExpectToPass();
 		} catch (AssertionFailedError e) {
-			message +=  " " + e.getMessage();
+			if (!message.isEmpty()) {
+				message += " Additionally, ";
+			}
+			message +=  "Your unit test does not pass as-written. Other feedback may give clues as to why this is so.";
 		}
 		
 		if (!message.isEmpty()) {
