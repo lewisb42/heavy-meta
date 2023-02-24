@@ -1,5 +1,7 @@
 package org.doubleoops.heavymeta;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -103,26 +105,19 @@ public class HeavyMeta implements AfterAllCallback {
 
 	@Override
 	public void afterAll(ExtensionContext context) throws Exception {
-		String message = "";
-		try {
-			SafeAssertions.assertIsTestMethod(this.testClass, this.testMethodName);
-		} catch (AssertionFailedError e) {
-			message += "Method " + this.testMethodName + " is not annotated with @Test.";
-		}
-		
-		try {
-			runStudentsTestExpectToPass();
-		} catch (AssertionFailedError e) {
-			if (!message.isEmpty()) {
-				message += " Additionally, ";
-			}
-			message +=  "Your unit test does not pass as-written. Other feedback may give clues as to why this is so.";
-		}
-		
-		if (!message.isEmpty()) {
-			throw new AssertionFailedError(message);
-		}
+		assertAll(
+				() -> checkForTestAnnotation(),
+				() -> runStudentsTestExpectToPass()
+				);
 	}
+	
+	/**
+	 * Ensures a student's submitted test is annotated with \@Test
+	 */
+	public void checkForTestAnnotation() {
+		SafeAssertions.assertIsTestMethod(this.testClass, this.testMethodName);
+	}
+
 	
 	/**
 	 * Helper to run the student's unit test, with no expectation of passing or failing.
