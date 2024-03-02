@@ -2,6 +2,7 @@ package health.metatests.heartrate.getheartratezone;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -12,10 +13,14 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-public class MetaTestShouldGetZoneAtAerobicBoundary {
+public class MetaTestShouldGetZoneAtAerobicBoundary extends MetaTestBase {
 
-	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestGetHeartRateZone.class, "testShouldGetZoneAtAerobicBoundary");
+	private static final Class<TestGetHeartRateZone> DEFAULT_TEST_CLASS = TestGetHeartRateZone.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testShouldGetZoneAtAerobicBoundary";
+	
+	public MetaTestShouldGetZoneAtAerobicBoundary() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {
@@ -45,7 +50,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -72,7 +77,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 			}
 		};
 
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -112,7 +117,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 
@@ -157,7 +162,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 				
 	}
