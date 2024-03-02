@@ -2,6 +2,7 @@ package weather.metatests.weatherservice.findmaximumtemperature;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
+import org.doubleoops.heavymeta.MetaTestConfig;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForInt;
 import org.junit.jupiter.api.Test;
 
@@ -12,14 +13,12 @@ import weather.codeundertest.Measurement;
 import weather.codeundertest.WeatherService;
 import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
+@MetaTestConfig
+(
+	testClass=TestFindMaximumTemperature.class,
+	testMethodName="testWhenOneMeasurement"
+)
 public class MetaTestWhenOneMeasurement extends MetaTestBase {
-	private static final Class<?> DEFAULT_TEST_CLASS = TestFindMaximumTemperature.class;
-	private static final String DEFAULT_TEST_METHOD_NAME = "testWhenOneMeasurement";
-	
-	public MetaTestWhenOneMeasurement() {
-		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
-	}
-	
 	
 	/**
 	 * Meta-test that ensures the proper Arrange components exist for this test:

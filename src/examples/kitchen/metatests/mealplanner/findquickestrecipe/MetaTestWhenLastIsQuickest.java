@@ -3,6 +3,7 @@ package kitchen.metatests.mealplanner.findquickestrecipe;
 import org.doubleoops.heavymeta.ArrayList;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
+import org.doubleoops.heavymeta.MetaTestConfig;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +14,12 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
+@MetaTestConfig
+(
+	testClass=TestFindQuickestRecipe.class,
+	testMethodName="testWhenLastIsQuickest"
+)
 public class MetaTestWhenLastIsQuickest extends MetaTestBase {
-	private static final Class<?> DEFAULT_TEST_CLASS = TestFindQuickestRecipe.class;
-	private static final String DEFAULT_TEST_METHOD_NAME = "testWhenLastIsQuickest";
-	
-	public MetaTestWhenLastIsQuickest() {
-		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
-	}
-
 	@Test
 	public void shouldHaveArrangeStage() {
 		

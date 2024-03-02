@@ -2,6 +2,7 @@ package weather.metatests.measurement.constructor;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
+import org.doubleoops.heavymeta.MetaTestConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +12,12 @@ import mockit.MockUp;
 import weather.codeundertest.Measurement;
 import weather.unittests.measurement.TestConstructor;
 
+@MetaTestConfig
+(
+	testClass=TestConstructor.class,
+	testMethodName="testShouldCreateValidMeasurement"
+)
 public class MetaTestShouldCreateValidMeasurement extends MetaTestBase {
-	private static final Class<?> DEFAULT_TEST_CLASS = TestConstructor.class;
-	private static final String DEFAULT_TEST_METHOD_NAME = "testShouldCreateValidMeasurement";
-	
-	public MetaTestShouldCreateValidMeasurement() {
-		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
-	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {

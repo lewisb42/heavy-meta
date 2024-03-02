@@ -2,6 +2,7 @@ package health.metatests.patient.constructor;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
+import org.doubleoops.heavymeta.MetaTestConfig;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,15 +13,13 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-
+@MetaTestConfig
+(
+	testClass=TestConstructor.class,
+	testMethodName="testShouldCreateValidPatient"
+)
 public class MetaTestShouldCreateValidPatient extends MetaTestBase {
-	private static final Class<TestConstructor> DEFAULT_TEST_CLASS = TestConstructor.class;
-	private static final String DEFAULT_TEST_METHOD_NAME = "testShouldCreateValidPatient";
-	
-	public MetaTestShouldCreateValidPatient() {
-		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
-	}
-	
+		
 	@Test
 	public void shouldHaveArrangeActStage() {
 		var expectations = new Expectations() {
