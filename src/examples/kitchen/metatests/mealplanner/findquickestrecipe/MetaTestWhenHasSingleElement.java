@@ -2,7 +2,7 @@ package kitchen.metatests.mealplanner.findquickestrecipe;
 
 import org.doubleoops.heavymeta.ArrayList;
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Test;

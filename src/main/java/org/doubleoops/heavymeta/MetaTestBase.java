@@ -12,7 +12,7 @@ import org.opentest4j.AssertionFailedError;
 /**
  * Base class of meta-tests.
  */
-@ExtendWith(HeavyMeta.class)
+@ExtendWith(StandardMetaTestChecks.class)
 public abstract class MetaTestBase {
 
 	private Class<? extends Object> testClass;

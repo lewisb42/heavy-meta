@@ -1,7 +1,7 @@
 package health.metatests.heartrate.getheartratezone;
 
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
