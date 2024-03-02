@@ -1,30 +1,23 @@
 package weather.metatests.measurement.constructor;
 
-import static org.doubleoops.heavymeta.HeavyMeta.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.opentest4j.AssertionFailedError;
 
 import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 import weather.codeundertest.Measurement;
 import weather.unittests.measurement.TestConstructor;
-import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
-public class MetaTestShouldCreateValidMeasurement {
-	TestConstructor unitTests;
-
-	@RegisterExtension
-	private static HeavyMeta metaTester = new HeavyMeta(TestConstructor.class, "testShouldCreateValidMeasurement");
+public class MetaTestShouldCreateValidMeasurement extends MetaTestBase {
+	private static final Class<?> DEFAULT_TEST_CLASS = TestConstructor.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testShouldCreateValidMeasurement";
+	
+	public MetaTestShouldCreateValidMeasurement() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {
@@ -55,7 +48,7 @@ public class MetaTestShouldCreateValidMeasurement {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -98,7 +91,7 @@ public class MetaTestShouldCreateValidMeasurement {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -137,7 +130,7 @@ public class MetaTestShouldCreateValidMeasurement {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -176,7 +169,7 @@ public class MetaTestShouldCreateValidMeasurement {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -213,7 +206,7 @@ public class MetaTestShouldCreateValidMeasurement {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -251,7 +244,7 @@ public class MetaTestShouldCreateValidMeasurement {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 }
