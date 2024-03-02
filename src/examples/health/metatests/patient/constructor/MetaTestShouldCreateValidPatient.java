@@ -1,11 +1,10 @@
 package health.metatests.patient.constructor;
 
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import health.codeundertest.Patient;
 import health.unittests.patient.TestConstructor;
@@ -14,10 +13,13 @@ import mockit.Mock;
 import mockit.MockUp;
 
 
-public class MetaTestShouldCreateValidPatient {
+public class MetaTestShouldCreateValidPatient extends MetaTestBase {
+	private static final Class<TestConstructor> DEFAULT_TEST_CLASS = TestConstructor.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testShouldCreateValidPatient";
 	
-	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestConstructor.class, "testShouldCreateValidPatient");
+	public MetaTestShouldCreateValidPatient() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
 	
 	@Test
 	public void shouldHaveArrangeActStage() {
@@ -66,7 +68,7 @@ public class MetaTestShouldCreateValidPatient {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -111,7 +113,7 @@ public class MetaTestShouldCreateValidPatient {
 			
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();	
 	}
 
@@ -155,7 +157,7 @@ public class MetaTestShouldCreateValidPatient {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 
@@ -204,7 +206,7 @@ public class MetaTestShouldCreateValidPatient {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 

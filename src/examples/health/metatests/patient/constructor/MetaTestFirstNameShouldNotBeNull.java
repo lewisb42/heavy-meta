@@ -2,6 +2,7 @@ package health.metatests.patient.constructor;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -9,17 +10,23 @@ import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
 import health.codeundertest.Patient;
+import health.unittests.heartrate.TestGetHeartRateZone;
 import health.unittests.patient.TestConstructor;
 import mockit.Mock;
 import mockit.MockUp;
 
-public class MetaTestFirstNameShouldNotBeNull {
+public class MetaTestFirstNameShouldNotBeNull extends MetaTestBase {
 	
 	static String BOGUS_NAME = "678yuhjnkif9u87guyhijlkj,khuy7ty";
 	
-	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestConstructor.class, "testFirstNameShouldNotBeNull");
-
+	private static final Class<TestConstructor> DEFAULT_TEST_CLASS = TestConstructor.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testFirstNameShouldNotBeNull";
+	
+	public MetaTestFirstNameShouldNotBeNull() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
+	
+	
 	@Test
 	public void shouldHaveArrangeActStage() {
 		
@@ -60,7 +67,7 @@ public class MetaTestFirstNameShouldNotBeNull {
 			
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 
@@ -96,7 +103,7 @@ public class MetaTestFirstNameShouldNotBeNull {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -145,7 +152,7 @@ public class MetaTestFirstNameShouldNotBeNull {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();		
 		
 	}
