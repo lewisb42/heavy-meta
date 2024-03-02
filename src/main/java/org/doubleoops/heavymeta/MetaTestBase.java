@@ -29,10 +29,27 @@ public abstract class MetaTestBase {
 	 * @throws AssertionFailedError if the test method does not exist on the test class, or if the test class cannot be instantiated with a zero-parameter constructor
 	 */
 	public MetaTestBase(Class<? extends Object> testClass, String testMethodName) {
-		if (testClass == null) {
-			throw new IllegalArgumentException("testClass can't be null");
+		setTestClass(testClass);
+		setTestMethodName(testMethodName);
+	}
+
+	/**
+	 * Only intended to be implicitly used by children annotated with MetaTestConfig.
+	 */
+	protected MetaTestBase() {
+		MetaTestConfig config = getClass().getAnnotation(MetaTestConfig.class);
+		if (config==null) {
+			throw new IllegalStateException("MetaTest created without configuration annotation (MetaTestConfig)");
 		}
-		
+		Class<?> testClass = config.testClass();
+		String testMethodName = config.testMethodName();
+		setTestClass(testClass);
+		setTestMethodName(testMethodName);
+	}
+
+
+
+	private void setTestMethodName(String testMethodName) {
 		if (testMethodName == null) {
 			throw new IllegalArgumentException("testMethodName can't be null");
 		}
@@ -41,7 +58,7 @@ public abstract class MetaTestBase {
 			throw new IllegalArgumentException("testMethodName can't be blank/empty");
 		}
 		
-		this.testClass = testClass;
+		
 		this.testMethodName = testMethodName;
 		
 		try {
@@ -50,13 +67,24 @@ public abstract class MetaTestBase {
 			e.printStackTrace();
 			throw new AssertionFailedError("could not find test method " + testMethodName + " on class " + testClass.getName());
 		} 
+	}
+
+
+
+
+	private void setTestClass(Class<? extends Object> testClass) {
+		if (testClass == null) {
+			throw new IllegalArgumentException("testClass can't be null");
+		}
+		
+		this.testClass = testClass;
 		
 		try {
 			this.testClassInstance = testClass.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new AssertionFailedError("could not instantiate an object of type " + testClass.getName());
-		} 
+		}
 	}
 
 
