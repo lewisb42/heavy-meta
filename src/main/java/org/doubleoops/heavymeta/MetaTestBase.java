@@ -9,22 +9,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
+/**
+ * Base class of meta-tests.
+ */
 @ExtendWith(HeavyMeta.class)
 public abstract class MetaTestBase {
-
-	
-	/*
-	 * TODO: re-design the extension so that:
-	 * -- this extension is declarative (i.e., via annotation not field)
-	 * -- afterAll gets the class and method info from its ExecutionContext parameter
-	 * -- ExecutionContext searches annotated object for specific class and method fields
-	 * 		-- hopefully in the inherited MetaTest class
-	 * -- speaking of the MetaTest class, just about everything not related to the 
-	 * 		afterAll() should be moved into that. It should have a constructor that sets
-	 * 		the class and method fields
-	 * -- don't forget that ExtendWith is inherited, so we should be able to tag it onto
-	 *    MetaTestBase and not have to do so with classes that extend MetaTestBase
-	 */
 
 	private Class<? extends Object> testClass;
 	private String testMethodName;
@@ -32,7 +21,7 @@ public abstract class MetaTestBase {
 	private Object testClassInstance;
 	
 	/**
-	 * Configures the extension to run the given test method from the given class.
+	 * Configures the meta test to run the given test method from the given class.
 	 * 
 	 * @param testClass the test-class-under-(meta)test.
 	 * @param testMethodName the name of the test-method-under-(meta)test

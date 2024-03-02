@@ -2,6 +2,7 @@ package health.metatests.heartrate.getheartratezone;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,10 +14,14 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
+public class MetaTestShouldGetZoneOneBelowAerobicBoundary extends MetaTestBase {
 
-	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestGetHeartRateZone.class, "testShouldGetZoneOneBelowAerobicBoundary");
+	private static final Class<TestGetHeartRateZone> DEFAULT_TEST_CLASS = TestGetHeartRateZone.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testShouldGetZoneOneBelowAerobicBoundary";
+	
+	public MetaTestShouldGetZoneOneBelowAerobicBoundary() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
 	
 	
 	
@@ -46,7 +51,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -71,7 +76,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			}
 		};
 
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -115,7 +120,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 		
 	}
@@ -150,7 +155,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 
@@ -185,7 +190,7 @@ public class MetaTestShouldGetZoneOneBelowAerobicBoundary {
 		};
 		
 		// Act and Verify stages
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 }
