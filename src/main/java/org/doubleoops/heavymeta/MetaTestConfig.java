@@ -6,13 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Applied to meta-test constructors to indicate the
+ * Applied to meta-test classes to indicate the
  * test class and test method the meta-test will analyze.
  * 
- * Used by ParameterResolver's to know what default values
- * to instantiate the meta-test class with, in the absence
- * of something (like the Mosh tool) that injects its own
- * parameter values.
+ * These are ignored by tools like Mosh, which inject their
+ * own values at runtime.
  */
 @Retention(value=RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
