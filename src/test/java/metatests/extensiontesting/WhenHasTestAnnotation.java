@@ -3,6 +3,7 @@ package metatests.extensiontesting;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -13,11 +14,12 @@ import weather.unittests.measurement.TestConstructor;
  * @author lewisb
  *
  */
-class WhenHasTestAnnotation {
+class WhenHasTestAnnotation extends MetaTestBase {
 
-	@RegisterExtension
-	private static HeavyMeta extension = new HeavyMeta(TestConstructor.class, "testShouldCreateValidMeasurement");
-	
+	public WhenHasTestAnnotation() {
+		super(TestConstructor.class, "testShouldCreateValidMeasurement");
+	}
+
 	@Test
 	void test() {
 		assertTrue(true);
