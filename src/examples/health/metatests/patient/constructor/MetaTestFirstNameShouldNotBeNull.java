@@ -3,7 +3,7 @@ package health.metatests.patient.constructor;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestConfig;
+import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -16,7 +16,7 @@ import health.unittests.patient.TestConstructor;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestConfig
+@MetaTestDefaultConfiguration
 (
 	testClass=TestConstructor.class,
 	testMethodName="testFirstNameShouldNotBeNull"

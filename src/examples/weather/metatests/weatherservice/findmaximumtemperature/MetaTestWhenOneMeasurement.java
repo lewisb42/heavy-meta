@@ -2,7 +2,7 @@ package weather.metatests.weatherservice.findmaximumtemperature;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestConfig;
+import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForInt;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import weather.codeundertest.Measurement;
 import weather.codeundertest.WeatherService;
 import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
-@MetaTestConfig
+@MetaTestDefaultConfiguration
 (
 	testClass=TestFindMaximumTemperature.class,
 	testMethodName="testWhenOneMeasurement"

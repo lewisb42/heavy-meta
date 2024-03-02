@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(value=RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface MetaTestConfig {
+public @interface MetaTestDefaultConfiguration {
 	public Class<?> testClass();
 	public String testMethodName();
 }

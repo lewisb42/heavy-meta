@@ -2,7 +2,7 @@ package health.metatests.patient.constructor;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestConfig;
+import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestConfig
+@MetaTestDefaultConfiguration
 (
 	testClass=TestConstructor.class,
 	testMethodName="testShouldCreateValidPatient"

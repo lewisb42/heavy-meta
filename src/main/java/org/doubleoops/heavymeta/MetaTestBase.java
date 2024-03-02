@@ -37,7 +37,7 @@ public abstract class MetaTestBase {
 	 * Only intended to be implicitly used by children annotated with MetaTestConfig.
 	 */
 	protected MetaTestBase() {
-		MetaTestConfig config = getClass().getAnnotation(MetaTestConfig.class);
+		MetaTestDefaultConfiguration config = getClass().getAnnotation(MetaTestDefaultConfiguration.class);
 		if (config==null) {
 			throw new IllegalStateException("MetaTest created without configuration annotation (MetaTestConfig)");
 		}

@@ -3,7 +3,7 @@ package health.metatests.heartrate.getheartratezone;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestConfig;
+import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestConfig
+@MetaTestDefaultConfiguration
 (
 	testClass=TestGetHeartRateZone.class,
 	testMethodName="testShouldGetZoneOneBelowAerobicBoundary"

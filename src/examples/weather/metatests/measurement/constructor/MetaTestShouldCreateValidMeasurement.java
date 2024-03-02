@@ -2,7 +2,7 @@ package weather.metatests.measurement.constructor;
 
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestConfig;
+import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import mockit.MockUp;
 import weather.codeundertest.Measurement;
 import weather.unittests.measurement.TestConstructor;
 
-@MetaTestConfig
+@MetaTestDefaultConfiguration
 (
 	testClass=TestConstructor.class,
 	testMethodName="testShouldCreateValidMeasurement"
