@@ -2,10 +2,9 @@ package kitchen.metatests.mealplanner.findquickestrecipe;
 
 import org.doubleoops.heavymeta.ArrayList;
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import kitchen.codeundertest.MealPlanner;
 import kitchen.codeundertest.Recipe;
@@ -14,11 +13,14 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-public class MetaTestWhenListIsEmpty {
-
+public class MetaTestWhenListIsEmpty extends MetaTestBase {
+	private static final Class<?> DEFAULT_TEST_CLASS = TestFindQuickestRecipe.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testWhenListIsEmpty";
 	
-	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestFindQuickestRecipe.class, "testWhenListIsEmpty");
+	public MetaTestWhenListIsEmpty() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
+
 	
 	@Test
 	public void shouldHaveArrangeStage() {
@@ -49,7 +51,7 @@ public class MetaTestWhenListIsEmpty {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -73,7 +75,7 @@ public class MetaTestWhenListIsEmpty {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -108,7 +110,7 @@ public class MetaTestWhenListIsEmpty {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();	
 	}
 	
@@ -142,7 +144,7 @@ public class MetaTestWhenListIsEmpty {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -191,7 +193,7 @@ public class MetaTestWhenListIsEmpty {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 }

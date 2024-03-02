@@ -3,6 +3,7 @@ package kitchen.metatests.mealplanner.findquickestrecipe;
 import org.doubleoops.heavymeta.ArrayList;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.HeavyMeta;
+import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -14,12 +15,14 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-public class MetaTestWhenMiddleIsQuickest {
+public class MetaTestWhenMiddleIsQuickest extends MetaTestBase {
+	private static final Class<?> DEFAULT_TEST_CLASS = TestFindQuickestRecipe.class;
+	private static final String DEFAULT_TEST_METHOD_NAME = "testWhenMiddleIsQuickest";
+	
+	public MetaTestWhenMiddleIsQuickest() {
+		super(DEFAULT_TEST_CLASS, DEFAULT_TEST_METHOD_NAME);
+	}
 
-	
-	@RegisterExtension
-	static HeavyMeta metaTester = new HeavyMeta(TestFindQuickestRecipe.class, "testWhenMiddleIsQuickest");
-	
 	@Test
 	public void shouldHaveArrangeStage() {
 		
@@ -58,7 +61,7 @@ public class MetaTestWhenMiddleIsQuickest {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -83,7 +86,7 @@ public class MetaTestWhenMiddleIsQuickest {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 
@@ -110,7 +113,7 @@ public class MetaTestWhenMiddleIsQuickest {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 
@@ -147,7 +150,7 @@ public class MetaTestWhenMiddleIsQuickest {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
@@ -191,7 +194,7 @@ public class MetaTestWhenMiddleIsQuickest {
 			}
 		};
 		
-		metaTester.runStudentsTestIgnoreFails();
+		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 }
