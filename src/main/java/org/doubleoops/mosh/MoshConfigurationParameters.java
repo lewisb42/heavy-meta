@@ -1,6 +1,7 @@
 package org.doubleoops.mosh;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.platform.engine.ConfigurationParameters;
 
@@ -27,6 +28,12 @@ final class MoshConfigurationParameters implements ConfigurationParameters {
 	public int size() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Set<String> keySet() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

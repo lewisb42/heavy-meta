@@ -19,13 +19,21 @@ public class TestFindMaximumTemperature {
 	@Test
 	public void testWhenNoMeasurements() {
 		WeatherService ws = new WeatherService();
-		assertEquals(Integer.MIN_VALUE, ws.findMaximumTemperature());
+		int actual = ws.findMaximumTemperature();
+		assertEquals(Integer.MIN_VALUE, actual);
 	}
 	
 	@Test
 	public void testWhenOneMeasurement() {
-		weatherService.add(new Measurement("Atlanta", 75));
-		assertEquals(75, weatherService.findMaximumTemperature());
+		// Arrange
+		WeatherService ws = new WeatherService();
+		ws.add(new Measurement("Atlanta", 75));
+		
+		// Act
+		int actual = ws.findMaximumTemperature();
+		
+		// Assert
+		assertEquals(75, actual);
 	}
 
 	@Test

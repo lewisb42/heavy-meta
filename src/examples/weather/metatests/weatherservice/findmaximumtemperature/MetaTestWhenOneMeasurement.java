@@ -5,6 +5,9 @@ import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForInt;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 
 import mockit.Invocation;
 import mockit.Mock;
@@ -13,6 +16,7 @@ import weather.codeundertest.Measurement;
 import weather.codeundertest.WeatherService;
 import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @MetaTestDefaultConfiguration
 (
 	testClass=TestFindMaximumTemperature.class,
@@ -29,6 +33,7 @@ public class MetaTestWhenOneMeasurement extends MetaTestBase {
 	 * </ol>
 	 */
 	@Test
+	@Order(1)
 	public void shouldHaveArrangeStage() {
 		
 		var expectations = new Expectations() {
@@ -84,6 +89,7 @@ public class MetaTestWhenOneMeasurement extends MetaTestBase {
 	 * was called.
 	 */
 	@Test
+	@Order(2)
 	public void shouldHaveActStage() {
 		
 		var expectations = new Expectations( ) {
@@ -116,8 +122,9 @@ public class MetaTestWhenOneMeasurement extends MetaTestBase {
 	 * was called.
 	 */
 	@Test
+	@Order(3)
 	public void shouldHaveAssertStage() {
-		
+		// Expect stage
 		var expectations = new Expectations( ) {
 			boolean usedValidAssertion = false;
 			
@@ -128,6 +135,7 @@ public class MetaTestWhenOneMeasurement extends MetaTestBase {
 			}
 		};
 		
+		// Instrument stage
 		new MockedUpAssertEqualsForInt() {
 			@Mock
 			public void assertEquals(int expected, int actual) {
@@ -135,11 +143,13 @@ public class MetaTestWhenOneMeasurement extends MetaTestBase {
 			}
 		};
 		
+		// Act and Verify stages
 		runStudentsTestIgnoreFails();
 		expectations.assertPassed();
 	}
 	
 	@Test
+	@Order(4)
 	public void actualValueOfAssertionShouldComeFromActMethod() {
 		final int sentinelValue = 82739274;
 		
@@ -174,6 +184,7 @@ public class MetaTestWhenOneMeasurement extends MetaTestBase {
 	}
 	
 	@Test
+	@Order(5)
 	public void expectedValueShouldEqualMeasurementsTemperature() {
 		
 		var expectations = new Expectations( ) {
