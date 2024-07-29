@@ -1,27 +1,13 @@
 package org.doubleoops.mosh;
 
-import org.doubleoops.heavymeta.MetaTestBase;
-
-import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
-import static org.junit.platform.engine.discovery.PackageNameFilter.includePackageNames;
-
-import org.junit.platform.engine.DiscoveryFilter;
-import org.junit.platform.engine.FilterResult;
-
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
-import org.junit.platform.engine.UniqueId;
-import org.junit.platform.engine.discovery.ClassNameFilter;
-import org.junit.platform.launcher.LauncherDiscoveryListener;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.LauncherSession;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
-
-import health.metatests.heartrate.getheartratezone.MetaTestShouldGetZoneAtAerobicBoundary;
 
 /**
  * Executor for the mosh tool.
@@ -34,28 +20,7 @@ public class MoshEngine {
 	 */
 	public void run() {
 
-		 var metaTestFilter = new ClassNameFilter() {
-			 
-			@Override
-			public FilterResult apply(String className) {
-				try {
-					var klazz = Class.forName(className);
-					if (MetaTestBase.class.isAssignableFrom(klazz)) {
-						return FilterResult.included("Child of MetaTestBase");
-					}
-				} catch (ClassNotFoundException e) {
-					//System.err.println(className + " Class not found");
-					return FilterResult.excluded("Class not found");
-				} catch (ClassCastException e) {
-					//System.err.println(className + " Not a child of MetaTestBase");
-					return FilterResult.excluded("Not a child of MetaTestBase");
-				}
-				
-				//System.err.println(className + " defaulty exclusions");
-				return FilterResult.excluded("Not a child of MetaTestBase");
-			}
-			 
-		 };
+		 var metaTestFilter = new MetaTestFilter();
 		
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
