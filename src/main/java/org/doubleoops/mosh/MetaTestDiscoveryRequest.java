@@ -15,6 +15,12 @@ class MetaTestDiscoveryRequest implements EngineDiscoveryRequest {
 
 	@Override
 	public <T extends DiscoverySelector> List<T> getSelectorsByType(Class<T> selectorType) {
+		// TODO: discover classes that extend MetaTestBase
+		/* TODO: ??? 2nd selector for vanilla @Test's???
+		 * Can we use this selection process to gather those
+		 * in, but use the results as class/methodname combos
+		 * for running metatests?
+		 */ 
 		return Collections.emptyList();
 	}
 
