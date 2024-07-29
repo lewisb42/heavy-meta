@@ -2,12 +2,21 @@ package org.doubleoops.mosh;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+
+import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.LauncherSession;
+import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.reporting.legacy.xml.LegacyXmlReportGeneratingListener;
+import org.junit.platform.reporting.open.xml.OpenTestReportGeneratingListener;
 
 /**
  * Executor for the mosh tool.
@@ -31,21 +40,30 @@ public class MoshEngine {
 						//includeClassNamePatterns("^(.+[.]MetaTest.*)$") // note: gunk at beginning of regex is for fully-qualified w/ package
 						metaTestFilter
 					)
+					.configurationParameter("junit.platform.reporting.open.xml.enabled", "true")
 					.build();
 		
 		try (LauncherSession session = LauncherFactory.openSession()) {
 			TestPlan testPlan = session.getLauncher().discover(discoveryRequest);
 			
-			testPlan.accept(new TestPlan.Visitor() {
-				public void visit(TestIdentifier testIdentifier) {
-					// TODO: may need to "filter" out vanilla @Test's at this stage
-					if (isMetaTestClass(testIdentifier)) {
-						System.out.println(testIdentifier.getDisplayName());
-					}
-				}
-			});
+//			testPlan.accept(new TestPlan.Visitor() {
+//				public void visit(TestIdentifier testIdentifier) {
+//					// TODO: may need to "filter" out vanilla @Test's at this stage
+//					if (isMetaTestClass(testIdentifier)) {
+//						System.out.println(testIdentifier.getDisplayName());
+//						runDefaultMetaTests(testIdentifier);
+//					}
+//				}
+//			});
+			
+			
+				var openxml = new OpenTestReportGeneratingListener();
+				session.getLauncher().execute(testPlan, openxml);
+				//summary.getSummary().printTo(writer);
+		
 		}
 	}
+
 
 	protected static boolean isMetaTestClass(TestIdentifier testIdentifier) {
 		if (!testIdentifier.isContainer()) return false;

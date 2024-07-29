@@ -3,15 +3,23 @@ package org.doubleoops.heavymeta;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.platform.engine.TestExecutionResult;
 import org.opentest4j.AssertionFailedError;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestReporter;
 
 /**
  * Base class of meta-tests.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(StandardMetaTestChecks.class)
 public abstract class MetaTestBase {
 
@@ -47,7 +55,11 @@ public abstract class MetaTestBase {
 		setTestMethodName(testMethodName);
 	}
 
-
+	@BeforeAll
+	public void reportStudentUnitTestInfo(TestReporter reporter) {
+		reporter.publishEntry("studentUnitTestClass", this.testClass.getSimpleName());
+		reporter.publishEntry("studentUnitTestName", this.testMethodName);
+	}
 
 	private void setTestMethodName(String testMethodName) {
 		if (testMethodName == null) {
@@ -214,4 +226,15 @@ public abstract class MetaTestBase {
 		return false;
 	}
 
+	/**
+	 * Formats the method-under-test as:
+	 * 
+	 * <class name>::<method name>
+	 * 
+	 * @return the method's name as specified above
+	 */
+	public String getMethodUnderTestName() {
+		var className = testClass.getName();
+		return testClass.getName() + "::" + testMethodName;
+	}
 }

@@ -1,11 +1,14 @@
 package health.metatests.heartrate.getheartratezone;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import health.codeundertest.HeartRate;
@@ -23,7 +26,7 @@ public class MetaTestShouldGetZoneAtAerobicBoundary extends MetaTestBase {
 	
 	@Test
 	public void shouldHaveArrangeStage() {
-		
+		fail();
 		final int targetBpm = 140;
 		
 		var expectations = new Expectations() {
