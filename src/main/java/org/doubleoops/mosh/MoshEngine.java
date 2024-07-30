@@ -44,11 +44,9 @@ public class MoshEngine {
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
 	/**
 	 * Called by main() to set the tool in motion.
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
+	 * @throws Exception 
 	 */
-	public void run() throws ParserConfigurationException, SAXException, IOException {
+	public void run() throws Exception {
 
 		 var metaTestFilter = new MetaTestFilter();
 		
@@ -79,8 +77,9 @@ public class MoshEngine {
 	 * The open-xml reporting listener generates an event-based
 	 * xml file. For our analysis it needs to be in their hierachical (tree-based)
 	 * form. They handily provide tooling for this.
+	 * @throws Exception 
 	 */
-	private void convertReportToHierachicalForm() {
+	private void convertReportToHierachicalForm() throws Exception {
 		Path reportsDir = Path.of(OPEN_XML_REPORT_DIR);
 		Path eventsXmlFile = null;
 		
@@ -96,15 +95,7 @@ public class MoshEngine {
 			
 			Path hierarchicalXmlFile = Path.of(OPEN_XML_REPORT_DIR, HIERARCHICAL_XML_FILENAME);
 			var converter = new DefaultConverter();
-			try {
-				converter.convert(eventsXmlFile, hierarchicalXmlFile);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			converter.convert(eventsXmlFile, hierarchicalXmlFile);
 		}
 	}
 
