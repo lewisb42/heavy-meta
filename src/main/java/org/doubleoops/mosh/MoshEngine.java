@@ -4,11 +4,14 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,12 +46,15 @@ public class MoshEngine {
 	private static final String OPEN_XML_REPORT_DIR = "./open-xml-reports";
 
 	private List<PackageSelector> packages;
+	private List<MoshRecord> records;
 	
 	public MoshEngine(String... packages) {
 		this.packages = new ArrayList<PackageSelector>();
 		for (var p : packages) {
 			this.packages.add(selectPackage(p));
 		}
+		
+		records = new ArrayList<MoshRecord>();
 	}
 	
 	
@@ -78,7 +84,52 @@ public class MoshEngine {
 		
 		convertReportToHierachicalForm();
 		parseHierarchicalXmlToFlatTable();
+		generateGraderReport(System.out);
 	}
+
+	private void generateGraderReport(PrintStream out) {
+		class Tally {
+			int passes = 0;
+			int fails = 0;
+			double percentage() { return ((double)passes) / total(); }
+			double total() { return passes + fails; }
+		}
+		
+		// key is canonical name from MoshRecord
+		Map<String, Tally> tallies = new HashMap<String, Tally>();
+		
+		// create a blank table
+		for (var record : records) {
+			var key = record.canonicalName();
+			if (!tallies.containsKey(key)) {
+				tallies.put(key, new Tally());
+			}
+		}
+		
+		// tally up SUCCESS vs. FAIL/ERROR
+		for (var record : records) {
+			var key = record.canonicalName();
+			var tally = tallies.get(key);
+			if (record.status.equals("SUCCESSFUL")) {
+				tally.passes++;
+			} else {
+				tally.fails++;
+			}
+		}
+		
+		// write out the report
+		tallies.forEach((canonicalName, tally) -> {
+			String result = canonicalName + "{ ";
+			result += "pass:" + tally.passes;
+			result += " ";
+			result += "fail:" + tally.fails;
+			result += " ";
+			result += String.format("percent:%.1f", 100*tally.percentage());
+			result += " }";
+			out.println(result);
+		});
+	}
+
 
 	/**
 	 * The open-xml reporting listener generates an event-based
@@ -106,16 +157,11 @@ public class MoshEngine {
 		}
 	}
 
-	private static void cleanReportDirectory() {
-		try {
+	private static void cleanReportDirectory() throws IOException {
 			FileUtils.cleanDirectory(new File(OPEN_XML_REPORT_DIR));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
-	private static void parseHierarchicalXmlToFlatTable() throws ParserConfigurationException, SAXException, IOException {
+	private void parseHierarchicalXmlToFlatTable() throws ParserConfigurationException, SAXException, IOException {
 		var infile = Path.of(OPEN_XML_REPORT_DIR, HIERARCHICAL_XML_FILENAME).toFile();
 		var docBuilder = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder();
 		var doc = docBuilder.parse(infile);
@@ -139,10 +185,13 @@ public class MoshEngine {
 				String metaTestMethodName = findMetaTestMethodName(metaTestMethod);
 				String status = findMetaTestStatus(metaTestMethod);
 				
-				
-				
-				var line = String.join(",", common, metaTestMethodName, status);
-				System.out.println(line);
+				var record = new MoshRecord(
+						classUnderTest,
+						methodUnderTest,
+						metaTestClassName,
+						metaTestMethodName,
+						status);
+				records.add(record);
 			}
 		}
 	}
@@ -224,23 +273,25 @@ public class MoshEngine {
 		return type.equals("CONTAINER");
 	}
 
-	private class MoshRecord {
-		String classUnderTest;
-		String methodUnderTest;
-		String metaTestClass;
-		String metaTestMethod;
-		boolean didPass;
+	static class MoshRecord {
+		final String classUnderTest;
+		final String methodUnderTest; // qualified with its class name, e.g., "MyClass::testStuff"
+		final String metaTestClass;
+		final String metaTestMethod;
+		final String status;
 		
 		public MoshRecord(String classUnderTest, String methodUnderTest, String metaTestClass, String metaTestMethod,
-				boolean didPass) {
+				String status) {
 			super();
 			this.classUnderTest = classUnderTest;
 			this.methodUnderTest = methodUnderTest;
 			this.metaTestClass = metaTestClass;
 			this.metaTestMethod = metaTestMethod;
-			this.didPass = didPass;
+			this.status = status;
 		}
 		
-		
+		public String canonicalName() {
+			return "[StudentSubmission: " + classUnderTest + "::" + methodUnderTest + "] MetaTest: " + metaTestClass;
+		}
 	}
 }
