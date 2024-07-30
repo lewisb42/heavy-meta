@@ -31,6 +31,12 @@ import org.xml.sax.SAXException;
  */
 public class MoshEngine {
 
+	/*
+	 * used as placeholder in generated csv table for when the xml
+	 * experienced unexpected things. Doing this as silent-fail-and-move-on
+	 * strategy.
+	 */
+	private static final String UNDEFINED = "UNDEFINED";
 	private static final String EVENTS_XML_FILENAME_REGEX = "junit-platform-events.*\\.xml";
 	private static final String HIERARCHICAL_XML_FILENAME = "heavy-meta-report.xml";
 	private static final String OPEN_XML_REPORT_DIR = "./open-xml-reports";
@@ -145,16 +151,29 @@ public class MoshEngine {
 	
 	private static String findMetaTestStatus(Element metaTestMethod) {
 		var resultElmts = metaTestMethod.getElementsByTagName("result");
-		return ((Element)resultElmts.item(0)).getAttribute("status");
+		
+		if (resultElmts.getLength() == 0) {
+			return UNDEFINED;
+		}
+		
+		var status = ((Element)resultElmts.item(0)).getAttribute("status");
+		if (status == null) {
+			return UNDEFINED;
+		} else {
+			return status;
+		}
 	}
 
 	private static String findMetaTestMethodName(Element metaTestMethod) {
 		// TODO Auto-generated method stub
-		return metaTestMethod.getAttribute("name");
+		var name = metaTestMethod.getAttribute("name");
+		if (name == null || name.isBlank()) return UNDEFINED;
+		return name;
 	}
 
 	private static String retrieveEntryTagText(Element metaTest, String key) {
 		var entries = metaTest.getElementsByTagName("entry");
+		
 		for (int i = 0; i < entries.getLength(); i++) {
 			var entry = (Element)entries.item(i);
 			var keyAttr = entry.getAttribute("key") ;
@@ -163,7 +182,7 @@ public class MoshEngine {
 			}
 		}
 		
-		throw new IllegalStateException("metaTest element seems to not have entry for " + key);
+		return UNDEFINED;
 	}
 
 	private static List<Element> collectMetaTestClasses(Document doc) {
