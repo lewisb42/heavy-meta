@@ -129,10 +129,30 @@ public class MoshEngine {
 			
 			var common = String.join(",", metaTestClassName, classUnderTest, methodUnderTest);
 			 
-			
+			var metaTestMethods = metaTestClass.getElementsByTagName("h:child");
+			for (int i = 0; i < metaTestMethods.getLength(); i++) {
+				var metaTestMethod = (Element)metaTestMethods.item(i);
+				String metaTestMethodName = findMetaTestMethodName(metaTestMethod);
+				String status = findMetaTestStatus(metaTestMethod);
+				
+				
+				
+				var line = String.join(",", common, metaTestMethodName, status);
+				System.out.println(line);
+			}
 		}
 	}
 	
+	private static String findMetaTestStatus(Element metaTestMethod) {
+		var resultElmts = metaTestMethod.getElementsByTagName("result");
+		return ((Element)resultElmts.item(0)).getAttribute("status");
+	}
+
+	private static String findMetaTestMethodName(Element metaTestMethod) {
+		// TODO Auto-generated method stub
+		return metaTestMethod.getAttribute("name");
+	}
+
 	private static String retrieveEntryTagText(Element metaTest, String key) {
 		var entries = metaTest.getElementsByTagName("entry");
 		for (int i = 0; i < entries.getLength(); i++) {
