@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
@@ -16,6 +21,11 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 
 import org.opentest4j.reporting.tooling.converter.DefaultConverter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 /**
  * Executor for the mosh tool.
  */
@@ -28,8 +38,11 @@ public class MoshEngine {
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
 	/**
 	 * Called by main() to set the tool in motion.
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws ParserConfigurationException 
 	 */
-	public void run() {
+	public void run() throws ParserConfigurationException, SAXException, IOException {
 
 		 var metaTestFilter = new MetaTestFilter();
 		
@@ -53,6 +66,7 @@ public class MoshEngine {
 		}
 		
 		convertReportToHierachicalForm();
+		parseHierarchicalXmlToFlatTable();
 	}
 
 	/**
@@ -72,7 +86,7 @@ public class MoshEngine {
 				break; // just need the first entry
 			}
 			
-			if (eventsXmlFile == null) throw new IllegalArgumentException();
+			if (eventsXmlFile == null) throw new IllegalStateException();
 			
 			Path hierarchicalXmlFile = Path.of(OPEN_XML_REPORT_DIR, HIERARCHICAL_XML_FILENAME);
 			var converter = new DefaultConverter();
@@ -95,5 +109,100 @@ public class MoshEngine {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static void parseHierarchicalXmlToFlatTable() throws ParserConfigurationException, SAXException, IOException {
+		var infile = Path.of(OPEN_XML_REPORT_DIR, HIERARCHICAL_XML_FILENAME).toFile();
+		var docBuilder = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder();
+		var doc = docBuilder.parse(infile);
+		doc.getDocumentElement().normalize();
+		
+		var metaTests = collectMetaTests(doc);
+		
+		// debug
+		//metaTests.forEach(t -> System.out.println(t.getAttribute("name")));
+		
+		for (var metaTest: metaTests) {
+			String metaTestName = metaTest.getAttribute("name");
+			String classUnderTest = retrieveEntryTagText(metaTest, "studentUnitTestClass");
+			String methodUnderTest = retrieveEntryTagText(metaTest, "studentUnitTestName");;
+			
+			var result = String.join(",", metaTestName, classUnderTest, methodUnderTest);
+			System.out.println(result);
+		}
+	}
+	
+	private static String retrieveEntryTagText(Element metaTest, String key) {
+		var entries = metaTest.getElementsByTagName("entry");
+		for (int i = 0; i < entries.getLength(); i++) {
+			var entry = (Element)entries.item(i);
+			var keyAttr = entry.getAttribute("key") ;
+			if (keyAttr.equals(key)) {
+				return entry.getTextContent();
+			}
+		}
+		
+		throw new IllegalStateException("metaTest element seems to not have entry for " + key);
+	}
+
+	private static List<Element> collectMetaTests(Document doc) {
+		var hChilds = doc.getElementsByTagName("h:child");
+		
+		List<Element> metaTests = new ArrayList<Element>();
+		
+		/*
+		 * Yes, I know how to for-each and use streams, etc.
+		 * NodeList is NOT iterable or streamable so I have to
+		 * fall back to standard for-loop. Don't judge.
+		 */
+		for (int i = 0; i < hChilds.getLength(); i++) {
+			var elmt = (Element)hChilds.item(i);
+			if (isMetaTestElement(elmt)) {
+				metaTests.add(elmt);
+			}
+		}
+		
+		return metaTests;
+	}
+
+	/*
+	 * Meta-tests show up as containers in the xml, e.g.
+	 * 
+	 * <h:child ...>
+	 * 	<metadata>
+	 * 		<junit:type>CONTAINER</junit:type>
+	 * 	</metadata>
+	 * </h:child ...>
+	 * 
+	 * Notes:
+	 * -- the root container should not be passed to this;
+	 * 	precondition (unenforced) is that elmt is h:child
+	 */
+	private static boolean isMetaTestElement(Element elmt) {
+		var junitTypeElements = elmt.getElementsByTagName("junit:type");
+		if (junitTypeElements.getLength() == 0) return false;
+		var typeElement = junitTypeElements.item(0);
+		var type = typeElement.getFirstChild().getNodeValue();
+		return type.equals("CONTAINER");
+	}
+
+	private class MoshRecord {
+		String classUnderTest;
+		String methodUnderTest;
+		String metaTestClass;
+		String metaTestMethod;
+		boolean didPass;
+		
+		public MoshRecord(String classUnderTest, String methodUnderTest, String metaTestClass, String metaTestMethod,
+				boolean didPass) {
+			super();
+			this.classUnderTest = classUnderTest;
+			this.methodUnderTest = methodUnderTest;
+			this.metaTestClass = metaTestClass;
+			this.metaTestMethod = metaTestMethod;
+			this.didPass = didPass;
+		}
+		
+		
 	}
 }
