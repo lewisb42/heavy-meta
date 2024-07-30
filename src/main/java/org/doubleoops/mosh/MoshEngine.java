@@ -21,6 +21,8 @@ import org.opentest4j.reporting.tooling.converter.DefaultConverter;
  */
 public class MoshEngine {
 
+	private static final String EVENTS_XML_FILENAME_REGEX = "junit-platform-events.*\\.xml";
+	private static final String HIERARCHICAL_XML_FILENAME = "heavy-meta-report.xml";
 	private static final String OPEN_XML_REPORT_DIR = "./open-xml-reports";
 
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
@@ -63,7 +65,7 @@ public class MoshEngine {
 		Path eventsXmlFile = null;
 		
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(reportsDir, f -> {
-			return f.toFile().getName().matches("junit-platform-events.*\\.xml");
+			return f.toFile().getName().matches(EVENTS_XML_FILENAME_REGEX);
 		})) {
 			for (Path file: stream) {
 				eventsXmlFile = file;
@@ -72,7 +74,7 @@ public class MoshEngine {
 			
 			if (eventsXmlFile == null) throw new IllegalArgumentException();
 			
-			Path hierarchicalXmlFile = Path.of(OPEN_XML_REPORT_DIR, "mytree.xml");
+			Path hierarchicalXmlFile = Path.of(OPEN_XML_REPORT_DIR, HIERARCHICAL_XML_FILENAME);
 			var converter = new DefaultConverter();
 			try {
 				converter.convert(eventsXmlFile, hierarchicalXmlFile);
