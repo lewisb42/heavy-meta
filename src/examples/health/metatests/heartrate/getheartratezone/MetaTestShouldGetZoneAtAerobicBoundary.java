@@ -26,7 +26,6 @@ public class MetaTestShouldGetZoneAtAerobicBoundary extends MetaTestBase {
 	
 	@Test
 	public void shouldHaveArrangeStage() {
-		fail();
 		final int targetBpm = 140;
 		
 		var expectations = new Expectations() {

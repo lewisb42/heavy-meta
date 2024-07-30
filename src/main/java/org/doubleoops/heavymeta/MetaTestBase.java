@@ -23,10 +23,10 @@ import org.junit.jupiter.api.TestReporter;
 @ExtendWith(StandardMetaTestChecks.class)
 public abstract class MetaTestBase {
 
-	private Class<? extends Object> testClass;
-	private String testMethodName;
-	private Method testMethod;
-	private Object testClassInstance;
+	private final Class<? extends Object> testClass;
+	private final String testMethodName;
+	private final Method testMethod;
+	private final Object testClassInstance;
 	
 	/**
 	 * Configures the meta test to run the given test method from the given class.
@@ -36,23 +36,40 @@ public abstract class MetaTestBase {
 	 * @throws IllegalArgumentException if testClass or testMethodName is null, or if testMethodName is blank
 	 * @throws AssertionFailedError if the test method does not exist on the test class, or if the test class cannot be instantiated with a zero-parameter constructor
 	 */
-	public MetaTestBase(Class<? extends Object> testClass, String testMethodName) {
-		setTestClass(testClass);
-		setTestMethodName(testMethodName);
+	public MetaTestBase(Class<? extends Object> testClass, String testMethodName)  {
+		this.testClass = validateTestClass(testClass);
+		this.testMethodName = validateTestMethodName(testMethodName, testClass);
+		try {
+			this.testMethod = this.testClass.getDeclaredMethod(testMethodName);
+			this.testClassInstance = this.testClass.getDeclaredConstructor().newInstance();
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new IllegalArgumentException();
+		}
 	}
 
 	/**
 	 * Only intended to be implicitly used by children annotated with MetaTestConfig.
 	 */
-	protected MetaTestBase() {
+	protected MetaTestBase()  {
 		MetaTestDefaultConfiguration config = getClass().getAnnotation(MetaTestDefaultConfiguration.class);
 		if (config==null) {
 			throw new IllegalStateException("MetaTest created without configuration annotation (MetaTestConfig)");
 		}
 		Class<?> testClass = config.testClass();
 		String testMethodName = config.testMethodName();
-		setTestClass(testClass);
-		setTestMethodName(testMethodName);
+		this.testClass = validateTestClass(testClass);
+		this.testMethodName = validateTestMethodName(testMethodName, testClass);
+		try {
+			this.testMethod = this.testClass.getDeclaredMethod(testMethodName);
+			this.testClassInstance = this.testClass.getDeclaredConstructor().newInstance();
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new IllegalArgumentException();
+		}
+		
 	}
 
 	@BeforeAll
@@ -61,7 +78,7 @@ public abstract class MetaTestBase {
 		reporter.publishEntry("studentUnitTestName", this.testMethodName);
 	}
 
-	private void setTestMethodName(String testMethodName) {
+	private String validateTestMethodName(String testMethodName, Class<?> testClass) {
 		if (testMethodName == null) {
 			throw new IllegalArgumentException("testMethodName can't be null");
 		}
@@ -70,33 +87,32 @@ public abstract class MetaTestBase {
 			throw new IllegalArgumentException("testMethodName can't be blank/empty");
 		}
 		
-		
-		this.testMethodName = testMethodName;
-		
 		try {
-			this.testMethod = testClass.getDeclaredMethod(testMethodName);
+			testClass.getDeclaredMethod(testMethodName);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new AssertionFailedError("could not find test method " + testMethodName + " on class " + testClass.getName());
 		} 
+		
+		return testMethodName;
 	}
 
 
 
 
-	private void setTestClass(Class<? extends Object> testClass) {
+	private Class<?> validateTestClass(Class<? extends Object> testClass) {
 		if (testClass == null) {
 			throw new IllegalArgumentException("testClass can't be null");
 		}
 		
-		this.testClass = testClass;
-		
 		try {
-			this.testClassInstance = testClass.getDeclaredConstructor().newInstance();
+			testClass.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new AssertionFailedError("could not instantiate an object of type " + testClass.getName());
 		}
+		
+		return testClass;
 	}
 
 
