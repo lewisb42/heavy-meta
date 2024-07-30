@@ -88,46 +88,30 @@ public class MoshEngine {
 	}
 
 	private void generateGraderReport(PrintStream out) {
-		class Tally {
-			int passes = 0;
-			int fails = 0;
-			double percentage() { return ((double)passes) / total(); }
-			double total() { return passes + fails; }
-		}
+		var docRoot = new MoshDocument();
 		
-		// key is canonical name from MoshRecord
-		Map<String, Tally> tallies = new HashMap<String, Tally>();
-		
-		// create a blank table
-		for (var record : records) {
-			var key = record.canonicalName();
-			if (!tallies.containsKey(key)) {
-				tallies.put(key, new Tally());
+		// create the top-level MTNode's
+		for (var r : records) {
+			var name = r.metaTestClass;
+			if (!docRoot.metaTests.containsKey(name)) {
+				var mtNode = new MTNode(name);
+				docRoot.metaTests.put(name, mtNode);
 			}
 		}
 		
-		// tally up SUCCESS vs. FAIL/ERROR
-		for (var record : records) {
-			var key = record.canonicalName();
-			var tally = tallies.get(key);
-			if (record.status.equals("SUCCESSFUL")) {
-				tally.passes++;
-			} else {
-				tally.fails++;
+		// create the STNode's (children of MTNode's)
+		for (var r : records) {
+			var mtNode = docRoot.metaTests.get(r.metaTestClass);
+			if (!mtNode.studentTests.containsKey(r.methodUnderTest)) {
+				var stNode = new STNode(r.methodUnderTest, r.classUnderTest);
+				mtNode.studentTests.put(r.methodUnderTest, stNode);
+				if (r.status.equals("SUCCESSFUL")) {
+					stNode.passes.metaTestMethods.add(r.metaTestMethod);
+				} else {
+					stNode.fails.metaTestMethods.add(r.metaTestMethod);
+				}
 			}
 		}
-		
-		// write out the report
-		tallies.forEach((canonicalName, tally) -> {
-			String result = canonicalName + "{ ";
-			result += "pass:" + tally.passes;
-			result += " ";
-			result += "fail:" + tally.fails;
-			result += " ";
-			result += String.format("percent:%.1f", 100*tally.percentage());
-			result += " }";
-			out.println(result);
-		});
 	}
 
 
@@ -288,10 +272,6 @@ public class MoshEngine {
 			this.metaTestClass = metaTestClass;
 			this.metaTestMethod = metaTestMethod;
 			this.status = status;
-		}
-		
-		public String canonicalName() {
-			return "[StudentSubmission: " + classUnderTest + "::" + methodUnderTest + "] MetaTest: " + metaTestClass;
 		}
 	}
 }

@@ -1,7 +1,9 @@
 package org.doubleoops.mosh;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 class MoshDocument {
-	private List<MTNode> metaTests;
+	// key is meta-test class name
+	Map<String, MTNode> metaTests = new HashMap<String, MTNode>();
 }
