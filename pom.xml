@@ -31,5 +31,10 @@
   		<artifactId>junit-platform-reporting</artifactId>
   		<version>1.10.3</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.opentest4j.reporting</groupId>
+  		<artifactId>open-test-reporting-tooling</artifactId>
+  		<version>0.1.0-M2</version>
+  	</dependency>
   </dependencies>
 </project>

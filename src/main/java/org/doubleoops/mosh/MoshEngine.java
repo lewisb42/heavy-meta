@@ -37,37 +37,15 @@ public class MoshEngine {
 						selectPackage("health.metatests")
 					)
 					.filters(
-						//includeClassNamePatterns("^(.+[.]MetaTest.*)$") // note: gunk at beginning of regex is for fully-qualified w/ package
 						metaTestFilter
 					)
 					.configurationParameter("junit.platform.reporting.open.xml.enabled", "true")
+					.configurationParameter("junit.platform.reporting.output.dir", "./open-xml-reports")
 					.build();
 		
 		try (LauncherSession session = LauncherFactory.openSession()) {
 			TestPlan testPlan = session.getLauncher().discover(discoveryRequest);
-			
-//			testPlan.accept(new TestPlan.Visitor() {
-//				public void visit(TestIdentifier testIdentifier) {
-//					// TODO: may need to "filter" out vanilla @Test's at this stage
-//					if (isMetaTestClass(testIdentifier)) {
-//						System.out.println(testIdentifier.getDisplayName());
-//						runDefaultMetaTests(testIdentifier);
-//					}
-//				}
-//			});
-			
-			
-				var openxml = new OpenTestReportGeneratingListener();
-				session.getLauncher().execute(testPlan, openxml);
-				//summary.getSummary().printTo(writer);
-		
+			session.getLauncher().execute(testPlan);
 		}
-	}
-
-
-	protected static boolean isMetaTestClass(TestIdentifier testIdentifier) {
-		if (!testIdentifier.isContainer()) return false;
-		
-		return true;
 	}
 }
