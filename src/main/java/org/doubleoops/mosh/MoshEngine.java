@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.platform.engine.discovery.PackageSelector;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.LauncherSession;
 import org.junit.platform.launcher.TestPlan;
@@ -41,6 +42,16 @@ public class MoshEngine {
 	private static final String HIERARCHICAL_XML_FILENAME = "heavy-meta-report.xml";
 	private static final String OPEN_XML_REPORT_DIR = "./open-xml-reports";
 
+	private List<PackageSelector> packages;
+	
+	public MoshEngine(String... packages) {
+		this.packages = new ArrayList<PackageSelector>();
+		for (var p : packages) {
+			this.packages.add(selectPackage(p));
+		}
+	}
+	
+	
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
 	/**
 	 * Called by main() to set the tool in motion.
@@ -52,12 +63,8 @@ public class MoshEngine {
 		
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
-					.selectors(
-						selectPackage("health.metatests")
-					)
-					.filters(
-						metaTestFilter
-					)
+					.selectors(packages)
+					.filters(metaTestFilter)
 					.configurationParameter("junit.platform.reporting.open.xml.enabled", "true")
 					.configurationParameter("junit.platform.reporting.output.dir", OPEN_XML_REPORT_DIR)
 					.build();

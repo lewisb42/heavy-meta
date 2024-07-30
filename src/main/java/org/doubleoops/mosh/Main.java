@@ -12,7 +12,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			(new MoshEngine()).run();
+			(new MoshEngine("kitchen.metatests", "health.metatests")).run();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
