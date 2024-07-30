@@ -117,18 +117,19 @@ public class MoshEngine {
 		var doc = docBuilder.parse(infile);
 		doc.getDocumentElement().normalize();
 		
-		var metaTests = collectMetaTests(doc);
+		var metaTestClasses = collectMetaTestClasses(doc);
 		
 		// debug
 		//metaTests.forEach(t -> System.out.println(t.getAttribute("name")));
 		
-		for (var metaTest: metaTests) {
-			String metaTestName = metaTest.getAttribute("name");
-			String classUnderTest = retrieveEntryTagText(metaTest, "studentUnitTestClass");
-			String methodUnderTest = retrieveEntryTagText(metaTest, "studentUnitTestName");;
+		for (var metaTestClass: metaTestClasses) {
+			String metaTestClassName = metaTestClass.getAttribute("name");
+			String classUnderTest = retrieveEntryTagText(metaTestClass, "studentUnitTestClass");
+			String methodUnderTest = retrieveEntryTagText(metaTestClass, "studentUnitTestName");;
 			
-			var result = String.join(",", metaTestName, classUnderTest, methodUnderTest);
-			System.out.println(result);
+			var common = String.join(",", metaTestClassName, classUnderTest, methodUnderTest);
+			 
+			
 		}
 	}
 	
@@ -145,7 +146,7 @@ public class MoshEngine {
 		throw new IllegalStateException("metaTest element seems to not have entry for " + key);
 	}
 
-	private static List<Element> collectMetaTests(Document doc) {
+	private static List<Element> collectMetaTestClasses(Document doc) {
 		var hChilds = doc.getElementsByTagName("h:child");
 		
 		List<Element> metaTests = new ArrayList<Element>();
