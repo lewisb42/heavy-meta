@@ -1,6 +1,7 @@
 package org.doubleoops.mosh;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.platform.engine.discovery.ClassSelector;
 import org.junit.platform.engine.discovery.PackageSelector;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.LauncherSession;
@@ -46,15 +48,29 @@ public class MoshEngine {
 	private static final String OPEN_XML_REPORT_DIR = "./open-xml-reports";
 
 	private List<PackageSelector> packages;
+	private List<ClassSelector> classes;
 	private List<MoshRecord> records;
 	
-	public MoshEngine(String... packages) {
+	public MoshEngine() {
 		this.packages = new ArrayList<PackageSelector>();
+		this.classes = new ArrayList<ClassSelector>();
+		records = new ArrayList<MoshRecord>();
+	}
+	
+	public void addPackages(String... packages) {
+		
 		for (var p : packages) {
 			this.packages.add(selectPackage(p));
 		}
+			
+	}
+	
+	public void addClasses(String... classes) {
 		
-		records = new ArrayList<MoshRecord>();
+		for (var c : classes) {
+			this.classes.add(selectClass(c));
+		}
+		
 	}
 	
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
