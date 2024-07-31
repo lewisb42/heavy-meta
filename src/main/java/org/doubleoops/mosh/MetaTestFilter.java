@@ -4,7 +4,7 @@ import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.platform.engine.FilterResult;
 import org.junit.platform.engine.discovery.ClassNameFilter;
 
-public class MetaTestFilter implements ClassNameFilter {
+class MetaTestFilter implements ClassNameFilter {
 
 	@Override
 	public FilterResult apply(String className) {
