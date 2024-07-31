@@ -51,26 +51,49 @@ public class MoshEngine {
 	private List<ClassSelector> metaTestClasses;
 	private List<MoshRecord> records;
 	
-	public MoshEngine() {
+	private MoshEngine() {
 		this.metaTestPackages = new ArrayList<PackageSelector>();
 		this.metaTestClasses = new ArrayList<ClassSelector>();
 		records = new ArrayList<MoshRecord>();
 	}
 	
-	public void addMetaTestPackages(String... packages) {
+	/**
+	 * Use this to build a MoshEngine (instead of instantiating directly).
+	 * 
+	 * @return a new MoshEngine instance.
+	 */
+	public static MoshEngine newInstance() {
+		return new MoshEngine();
+	}
+	
+	/**
+	 * Adds the indicated packages to be searched for MetaTest classes.
+	 * 
+	 * @param packages the package names
+	 * @return this MoshEngine object (to be used in building)
+	 */
+	public MoshEngine addMetaTestPackages(String... packages) {
 		
 		for (var p : packages) {
 			this.metaTestPackages.add(selectPackage(p));
 		}
-			
+		
+		return this;
 	}
 	
-	public void addMetaTestClasses(String... classes) {
+	/**
+	 * Adds the indicated classes. If they are not MetaTests they will be ignored.
+	 * 
+	 * @param classes the class names
+	 * @return this MoshEngine object (to be used in building)
+	 */
+	public MoshEngine addMetaTestClasses(String... classes) {
 		
 		for (var c : classes) {
 			this.metaTestClasses.add(selectClass(c));
 		}
 		
+		return this;
 	}
 	
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");

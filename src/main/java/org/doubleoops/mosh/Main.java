@@ -12,9 +12,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		try {
-			var e = new MoshEngine();
-			e.addMetaTestPackages("kitchen.metatests", "health.metatests");
-			e.run();
+			MoshEngine.newInstance()
+				.addMetaTestPackages("kitchen.metatests", "health.metatests")
+				.run();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
