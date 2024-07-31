@@ -12,4 +12,20 @@ class MTNode {
 	final Map<String, STNode> studentTests = new HashMap<String, STNode>();
 	
 	public MTNode(String name) { this.name = name; }
+	
+	public void createSTNodeIfAbsent(
+			String classUnderTest, 
+			String methodUnderTest, 
+			String metaTestMethod, 
+			String status) {
+		if (!studentTests.containsKey(methodUnderTest)) {
+			var stNode = new STNode(methodUnderTest, classUnderTest);
+			studentTests.put(methodUnderTest, stNode);
+			if (status.equals("SUCCESSFUL")) {
+				stNode.passed(metaTestMethod);
+			} else {
+				stNode.failed(metaTestMethod);
+			}
+		}
+	}
 }

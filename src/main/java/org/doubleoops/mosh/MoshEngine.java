@@ -92,25 +92,17 @@ public class MoshEngine {
 		
 		// create the top-level MTNode's
 		for (var r : records) {
-			var name = r.metaTestClass;
-			if (!docRoot.metaTests.containsKey(name)) {
-				var mtNode = new MTNode(name);
-				docRoot.metaTests.put(name, mtNode);
-			}
+			docRoot.createMTNodeIfAbsent(r.metaTestClass);
 		}
 		
 		// create the STNode's (children of MTNode's)
 		for (var r : records) {
-			var mtNode = docRoot.metaTests.get(r.metaTestClass);
-			if (!mtNode.studentTests.containsKey(r.methodUnderTest)) {
-				var stNode = new STNode(r.methodUnderTest, r.classUnderTest);
-				mtNode.studentTests.put(r.methodUnderTest, stNode);
-				if (r.status.equals("SUCCESSFUL")) {
-					stNode.passes.metaTestMethods.add(r.metaTestMethod);
-				} else {
-					stNode.fails.metaTestMethods.add(r.metaTestMethod);
-				}
-			}
+			var mtNode = docRoot.getMTNode(r.metaTestClass);
+			mtNode.createSTNodeIfAbsent(
+					r.classUnderTest, 
+					r.methodUnderTest, 
+					r.metaTestMethod, 
+					r.status);
 		}
 	}
 
