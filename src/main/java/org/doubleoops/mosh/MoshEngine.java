@@ -57,7 +57,6 @@ public class MoshEngine {
 		records = new ArrayList<MoshRecord>();
 	}
 	
-	
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
 	/**
 	 * Called by main() to set the tool in motion.
@@ -84,10 +83,17 @@ public class MoshEngine {
 		
 		convertReportToHierachicalForm();
 		parseHierarchicalXmlToFlatTable();
-		generateGraderReport(System.out);
+		buildReportTree();
 	}
 
-	private void generateGraderReport(PrintStream out) {
+	/**
+	 * Creates a tree-based structure with the results of running the mosh tool.
+	 * This structure should be consumable (with appropriate adapters) by UI controls
+	 * like Eclipse's TreeViewer or SWT's Tree.
+	 * 
+	 * @return the report
+	 */
+	MoshDocument buildReportTree() {
 		var docRoot = new MoshDocument();
 		
 		// create the top-level MTNode's
@@ -104,6 +110,7 @@ public class MoshEngine {
 					r.metaTestMethod, 
 					r.status);
 		}
+		return docRoot;
 	}
 
 
