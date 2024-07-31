@@ -47,28 +47,28 @@ public class MoshEngine {
 	private static final String HIERARCHICAL_XML_FILENAME = "heavy-meta-report.xml";
 	private static final String OPEN_XML_REPORT_DIR = "./open-xml-reports";
 
-	private List<PackageSelector> packages;
-	private List<ClassSelector> classes;
+	private List<PackageSelector> metaTestPackages;
+	private List<ClassSelector> metaTestClasses;
 	private List<MoshRecord> records;
 	
 	public MoshEngine() {
-		this.packages = new ArrayList<PackageSelector>();
-		this.classes = new ArrayList<ClassSelector>();
+		this.metaTestPackages = new ArrayList<PackageSelector>();
+		this.metaTestClasses = new ArrayList<ClassSelector>();
 		records = new ArrayList<MoshRecord>();
 	}
 	
-	public void addPackages(String... packages) {
+	public void addMetaTestPackages(String... packages) {
 		
 		for (var p : packages) {
-			this.packages.add(selectPackage(p));
+			this.metaTestPackages.add(selectPackage(p));
 		}
 			
 	}
 	
-	public void addClasses(String... classes) {
+	public void addMetaTestClasses(String... classes) {
 		
 		for (var c : classes) {
-			this.classes.add(selectClass(c));
+			this.metaTestClasses.add(selectClass(c));
 		}
 		
 	}
@@ -84,7 +84,7 @@ public class MoshEngine {
 		
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
-					.selectors(packages)
+					.selectors(metaTestPackages)
 					.filters(metaTestFilter)
 					.configurationParameter("junit.platform.reporting.open.xml.enabled", "true")
 					.configurationParameter("junit.platform.reporting.output.dir", OPEN_XML_REPORT_DIR)
