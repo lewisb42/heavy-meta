@@ -50,6 +50,7 @@ public class MoshEngine {
 	private List<PackageSelector> metaTestPackages;
 	private List<ClassSelector> metaTestClasses;
 	private List<MoshRecord> records;
+	private final MoshDocument docRoot = new MoshDocument();
 	
 	private MoshEngine() {
 		this.metaTestPackages = new ArrayList<PackageSelector>();
@@ -87,7 +88,7 @@ public class MoshEngine {
 	 * @param classes the class names
 	 * @return this MoshEngine object (to be used in building)
 	 */
-	public MoshEngine addMetaTestClasses(String... classes) {
+	public MoshEngine addMetaTestClasses(Class<?>... classes) {
 		
 		for (var c : classes) {
 			this.metaTestClasses.add(selectClass(c));
@@ -129,11 +130,8 @@ public class MoshEngine {
 	 * Creates a tree-based structure with the results of running the mosh tool.
 	 * This structure should be consumable (with appropriate adapters) by UI controls
 	 * like Eclipse's TreeViewer or SWT's Tree.
-	 * 
-	 * @return the report
 	 */
-	MoshDocument buildReportTree() {
-		var docRoot = new MoshDocument();
+	void buildReportTree() {
 		
 		// create the top-level MTNode's
 		for (var r : records) {
@@ -149,9 +147,11 @@ public class MoshEngine {
 					r.metaTestMethod, 
 					r.status);
 		}
-		return docRoot;
 	}
 
+	public MoshDocument report() {
+		return docRoot;
+	}
 
 	/**
 	 * The open-xml reporting listener generates an event-based

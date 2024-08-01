@@ -5,7 +5,9 @@ import java.util.Map;
 
 class MoshDocument {
 	// key is meta-test class name
-	final Map<String, MTNode> metaTests = new HashMap<String, MTNode>();
+	private final Map<String, MTNode> metaTests = new HashMap<String, MTNode>();
+	
+	public boolean isEmpty() { return metaTests.isEmpty(); }
 	
 	/**
 	 * Creates a new meta-test node in the document if it does
