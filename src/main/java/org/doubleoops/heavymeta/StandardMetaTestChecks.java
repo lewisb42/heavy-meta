@@ -32,21 +32,14 @@ public class StandardMetaTestChecks implements AfterAllCallback {
 
 	@Override
 	public void afterAll(ExtensionContext context) throws Exception {
-		Class<?> metaTestClass = context.getRequiredTestClass();
+		MetaTestBase metaTestInstance = (MetaTestBase)context.getRequiredTestInstance();
 		
-		if (!MetaTestBase.class.isAssignableFrom(metaTestClass)) {
-			throw new ClassCastException("ExtensionContext is not a meta-test class");
-		}
-		
-		Object metaTestClassInstance = metaTestClass.getDeclaredConstructor().newInstance();
 		assertAll(
 				() -> {
-					Method method = metaTestClass.getMethod("checkForTestAnnotation");
-					method.invoke(metaTestClassInstance);
+					metaTestInstance.checkForTestAnnotation();
 				},
 				() -> {
-					Method method = metaTestClass.getMethod("runStudentsTestExpectToPass");
-					method.invoke(metaTestClassInstance);
+					metaTestInstance.runStudentsTestExpectToPass();
 				}
 			);
 	}

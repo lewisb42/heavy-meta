@@ -21,6 +21,7 @@ import org.junit.jupiter.api.TestReporter;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(StandardMetaTestChecks.class)
+@ExtendWith(StudentTestMethodResolver.class)
 public abstract class MetaTestBase {
 
 	private final Class<? extends Object> testClass;

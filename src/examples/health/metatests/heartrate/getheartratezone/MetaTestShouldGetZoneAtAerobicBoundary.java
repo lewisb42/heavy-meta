@@ -2,6 +2,10 @@ package health.metatests.heartrate.getheartratezone;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
@@ -17,12 +21,19 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestGetHeartRateZone.class,
-	testMethodName="testShouldGetZoneAtAerobicBoundary"
-)
+//@MetaTestDefaultConfiguration
+//(
+//	testClass=TestGetHeartRateZone.class,
+//	testMethodName="testShouldGetZoneAtAerobicBoundary"
+//)
 public class MetaTestShouldGetZoneAtAerobicBoundary extends MetaTestBase {
+	
+	public MetaTestShouldGetZoneAtAerobicBoundary(
+				@DefaultString("testShouldGetZoneAtAerobicBoundary")
+				String testMethodName
+			) {
+		super(TestGetHeartRateZone.class,  "testShouldGetZoneAtAerobicBoundary");
+	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {
