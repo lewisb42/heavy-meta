@@ -3,8 +3,10 @@ package org.doubleoops.mosh.testdata;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.doubleoops.heavymeta.MetaTestBase;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("testdata")
 public class MetaTestSeveralMethodsSomePassSomeFail extends MetaTestBase {
 
 	public MetaTestSeveralMethodsSomePassSomeFail(Class<? extends Object> testClass, String testMethodName) {

@@ -61,7 +61,6 @@ public class MoshEngine {
 	private MoshEngine() {
 		metaTestPackages = new ArrayList<PackageSelector>();
 		metaTestClasses = new ArrayList<ClassSelector>();
-		records = new ArrayList<MoshRecord>();
 		studentTestClasses = new ArrayList<Class<?>>();
 	}
 	
@@ -131,8 +130,8 @@ public class MoshEngine {
 	 * @throws Exception 
 	 */
 	private void executeMetaTestsFor(Class<?> studentTestClass, String studentTestMethod) throws Exception {
-
-		 var metaTestFilter = new MetaTestFilter();
+		records = new ArrayList<MoshRecord>();
+		var metaTestFilter = new MetaTestFilter();
 		
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
