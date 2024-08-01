@@ -9,6 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import org.doubleoops.heavymeta.MetaTestBase;
+import org.doubleoops.mosh.testdata.MetaTestOneFailingMethod;
+import org.doubleoops.mosh.testdata.MetaTestOneMethodWithMixedPassFail;
+import org.doubleoops.mosh.testdata.MetaTestOnePassingMethod;
+import org.doubleoops.mosh.testdata.StudentTestsOneMethod;
+import org.doubleoops.mosh.testdata.StudentTestsSeveralMethods;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
