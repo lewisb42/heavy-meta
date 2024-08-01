@@ -1,5 +1,7 @@
 package org.doubleoops.mosh;
 
+import java.util.List;
+
 class STNode {
 	final String methodName;
 	final String className;
@@ -21,11 +23,19 @@ class STNode {
 	public int passCount() { return passedMetaTests.count(); }
 	public int failCount() { return failedMetaTests.count(); }
 	
-	public void passed(String metaTestMethod) {
+	public List<String> getPassedMethodNames() {
+		return passedMetaTests.getMethodNames();
+	}
+	
+	public List<String> getFailedMethodNames() {
+		return failedMetaTests.getMethodNames();
+	}
+	
+	public void markAsPassed(String metaTestMethod) {
 		passedMetaTests.add(metaTestMethod);
 	}
 	
-	public void failed(String metaTestMethod) {
+	public void markAsFailed(String metaTestMethod) {
 		failedMetaTests.add(metaTestMethod);
 	}
 }

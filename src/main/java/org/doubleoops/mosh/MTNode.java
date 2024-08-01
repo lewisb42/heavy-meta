@@ -26,9 +26,9 @@ class MTNode {
 			var stNode = new STNode(methodUnderTest, classUnderTest);
 			studentTests.put(methodUnderTest, stNode);
 			if (status.equals("SUCCESSFUL")) {
-				stNode.passed(metaTestMethod);
+				stNode.markAsPassed(metaTestMethod);
 			} else {
-				stNode.failed(metaTestMethod);
+				stNode.markAsFailed(metaTestMethod);
 			}
 		}
 	}

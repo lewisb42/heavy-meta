@@ -1,6 +1,7 @@
 package org.doubleoops.mosh;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class PFNode {
@@ -10,5 +11,9 @@ class PFNode {
 	
 	public void add(String metaTestMethod) {
 		metaTestMethods.add(metaTestMethod);
+	}
+
+	public List<String> getMethodNames() {
+		return Collections.unmodifiableList(metaTestMethods);
 	}
 }
