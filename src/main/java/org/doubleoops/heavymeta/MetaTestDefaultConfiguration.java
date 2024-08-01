@@ -11,9 +11,12 @@ import java.lang.annotation.Target;
  * 
  * These are ignored by tools like Mosh, which inject their
  * own values at runtime.
+ * 
+ * TODO: if the constructor-based way works out, remove
+ * the TYPE from the annotation target.
  */
 @Retention(value=RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR })
 public @interface MetaTestDefaultConfiguration {
 	public Class<?> testClass();
 	public String testMethodName();
