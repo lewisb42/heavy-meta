@@ -29,10 +29,13 @@ import mockit.MockUp;
 public class MetaTestShouldGetZoneAtAerobicBoundary extends MetaTestBase {
 	
 	public MetaTestShouldGetZoneAtAerobicBoundary(
+				@DefaultClass(TestGetHeartRateZone.class)
+				Class<?> testClass,
+				
 				@DefaultString("testShouldGetZoneAtAerobicBoundary")
 				String testMethodName
 			) {
-		super(TestGetHeartRateZone.class,  "testShouldGetZoneAtAerobicBoundary");
+		super(testClass,  testMethodName);
 	}
 	
 	@Test
