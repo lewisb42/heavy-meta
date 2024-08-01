@@ -3,17 +3,13 @@ package health.metatests.patient.constructor;
 import org.doubleoops.heavymeta.DefaultClass;
 import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 
 import health.codeundertest.Patient;
-import health.unittests.heartrate.TestGetHeartRateZone;
 import health.unittests.patient.TestConstructor;
 import mockit.Mock;
 import mockit.MockUp;

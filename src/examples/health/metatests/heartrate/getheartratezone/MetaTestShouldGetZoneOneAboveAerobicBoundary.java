@@ -1,6 +1,5 @@
 package health.metatests.heartrate.getheartratezone;
 
-import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.doubleoops.heavymeta.DefaultClass;
 import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;

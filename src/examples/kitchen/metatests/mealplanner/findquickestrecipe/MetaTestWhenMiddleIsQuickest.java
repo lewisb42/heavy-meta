@@ -4,12 +4,9 @@ import org.doubleoops.heavymeta.ArrayList;
 import org.doubleoops.heavymeta.DefaultClass;
 import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
-import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
-import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
 import org.doubleoops.heavymeta.MockedUpAssertEqualsForObjects;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import kitchen.codeundertest.MealPlanner;
 import kitchen.codeundertest.Recipe;
