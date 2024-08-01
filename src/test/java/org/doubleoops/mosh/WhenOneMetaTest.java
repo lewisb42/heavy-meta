@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
-public class WhenOneMetaTestAndNoStudentTests {
+public class WhenOneMetaTest {
 
 	private MoshEngine engine;
 	
