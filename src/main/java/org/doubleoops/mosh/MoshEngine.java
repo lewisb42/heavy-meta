@@ -6,10 +6,12 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,8 @@ import org.xml.sax.SAXException;
  */
 public class MoshEngine {
 
+	public static final String STUDENT_TEST_METHOD_CONFIG_KEY = "org.doubleoops.mosh.studenttestmethod";
+	public static final String STUDENT_TEST_CLASS_CONFIG_KEY = "org.doubleoops.mosh.studenttestclass";
 	/*
 	 * used as placeholder in generated csv table for when the xml
 	 * experienced unexpected things. Doing this as silent-fail-and-move-on
@@ -52,10 +56,13 @@ public class MoshEngine {
 	private List<MoshRecord> records;
 	private final MoshDocument docRoot = new MoshDocument();
 	
+	private List<Class<?>> studentTestClasses;
+	
 	private MoshEngine() {
-		this.metaTestPackages = new ArrayList<PackageSelector>();
-		this.metaTestClasses = new ArrayList<ClassSelector>();
+		metaTestPackages = new ArrayList<PackageSelector>();
+		metaTestClasses = new ArrayList<ClassSelector>();
 		records = new ArrayList<MoshRecord>();
+		studentTestClasses = new ArrayList<Class<?>>();
 	}
 	
 	/**
@@ -90,7 +97,7 @@ public class MoshEngine {
 	 * @return this engine
 	 */
 	public MoshEngine addStudentTestClasses(Class<?>... classes) {
-		
+		studentTestClasses.addAll(Arrays.asList(classes));
 		return this;
 	}
 	
@@ -109,12 +116,21 @@ public class MoshEngine {
 		return this;
 	}
 	
+	public void run() throws Exception {
+		for (var klazz : studentTestClasses) {
+			Method[] methods = klazz.getDeclaredMethods();
+			for (var method : methods) {
+				executeMetaTestsFor(klazz, method.getName());
+			}
+		}
+	}
+	
 	//private static final UniqueId ID = UniqueId.root("mosh","engine");
 	/**
 	 * Called by main() to set the tool in motion.
 	 * @throws Exception 
 	 */
-	public void run() throws Exception {
+	private void executeMetaTestsFor(Class<?> studentTestClass, String studentTestMethod) throws Exception {
 
 		 var metaTestFilter = new MetaTestFilter();
 		
@@ -125,6 +141,8 @@ public class MoshEngine {
 					.filters(metaTestFilter)
 					.configurationParameter("junit.platform.reporting.open.xml.enabled", "true")
 					.configurationParameter("junit.platform.reporting.output.dir", OPEN_XML_REPORT_DIR)
+					.configurationParameter(STUDENT_TEST_CLASS_CONFIG_KEY, studentTestClass.getName())
+					.configurationParameter(STUDENT_TEST_METHOD_CONFIG_KEY, studentTestMethod)
 					.build();
 		
 		cleanReportDirectory();
@@ -145,6 +163,8 @@ public class MoshEngine {
 	 * like Eclipse's TreeViewer or SWT's Tree.
 	 */
 	void buildReportTree() {
+		
+		if (records.isEmpty()) return;
 		
 		// create the top-level MTNode's
 		for (var r : records) {
@@ -324,10 +344,5 @@ public class MoshEngine {
 			this.metaTestMethod = metaTestMethod;
 			this.status = status;
 		}
-	}
-
-	public void addStudentTestClasses(Class<?> studentsTestOnePassingMethod) {
-		// TODO Auto-generated method stub
-		
 	}
 }
