@@ -21,12 +21,17 @@ class MTNode {
 			String classUnderTest, 
 			String methodUnderTest) {
 		
-		if (!studentTests.containsKey(methodUnderTest)) {
+		var key = buildSTNodeKey(classUnderTest, methodUnderTest);
+		if (!studentTests.containsKey(key)) {
 			var stNode = new STNode(methodUnderTest, classUnderTest);
-			studentTests.put(methodUnderTest, stNode);
+			studentTests.put(key, stNode);
 			return stNode;
 		} else {
-			return studentTests.get(methodUnderTest);
+			return studentTests.get(key);
 		}
+	}
+	
+	private static String buildSTNodeKey(String classUnderTest, String methodUnderTest) {
+		return String.join("::", classUnderTest, methodUnderTest);
 	}
 }
