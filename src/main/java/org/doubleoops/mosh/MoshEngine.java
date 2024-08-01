@@ -171,14 +171,17 @@ public class MoshEngine {
 			docRoot.createMTNodeIfAbsent(r.metaTestClass);
 		}
 		
-		// create the STNode's (children of MTNode's)
+		// create/update the STNode's (children of MTNode's)
 		for (var r : records) {
 			var mtNode = docRoot.getMTNode(r.metaTestClass);
-			mtNode.createSTNodeIfAbsent(
+			var stNode = mtNode.createSTNodeIfAbsent(
 					r.classUnderTest, 
-					r.methodUnderTest, 
-					r.metaTestMethod, 
-					r.status);
+					r.methodUnderTest);
+			if (r.status.equals("SUCCESSFUL")) {
+				stNode.markAsPassed(r.metaTestMethod);
+			} else {
+				stNode.markAsFailed(r.metaTestMethod);
+			}
 		}
 	}
 

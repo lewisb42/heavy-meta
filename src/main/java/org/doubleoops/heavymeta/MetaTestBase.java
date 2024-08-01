@@ -51,13 +51,6 @@ public abstract class MetaTestBase {
 		}
 	}
 
-	/**
-	 * Original implementation deprecated; only kept here as
-	 * a way to force upgrades, if needed. :)
-	 */
-	protected MetaTestBase()  {
-		throw new UnsupportedOperationException();
-	}
 
 	@BeforeAll
 	public void reportStudentUnitTestInfo(TestReporter reporter) {

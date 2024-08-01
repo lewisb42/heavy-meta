@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
-public class WhenOneMetaTest {
+public class WhenOneMetaTestClassOneMethod {
 
 	private MoshEngine engine;
 	

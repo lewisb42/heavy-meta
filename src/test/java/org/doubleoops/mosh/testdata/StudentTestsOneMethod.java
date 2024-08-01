@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class StudentTestsOneMethod {
 
 	@Test
-	void test1() {
+	public void test1() {
 		
 	}
 }

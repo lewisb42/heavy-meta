@@ -17,19 +17,16 @@ class MTNode {
 		return studentTests.get(name);
 	}
 	
-	public void createSTNodeIfAbsent(
+	public STNode createSTNodeIfAbsent(
 			String classUnderTest, 
-			String methodUnderTest, 
-			String metaTestMethod, 
-			String status) {
+			String methodUnderTest) {
+		
 		if (!studentTests.containsKey(methodUnderTest)) {
 			var stNode = new STNode(methodUnderTest, classUnderTest);
 			studentTests.put(methodUnderTest, stNode);
-			if (status.equals("SUCCESSFUL")) {
-				stNode.markAsPassed(metaTestMethod);
-			} else {
-				stNode.markAsFailed(metaTestMethod);
-			}
+			return stNode;
+		} else {
+			return studentTests.get(methodUnderTest);
 		}
 	}
 }
