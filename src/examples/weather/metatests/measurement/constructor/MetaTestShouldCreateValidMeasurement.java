@@ -1,5 +1,7 @@
 package weather.metatests.measurement.constructor;
 
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
@@ -12,12 +14,17 @@ import mockit.MockUp;
 import weather.codeundertest.Measurement;
 import weather.unittests.measurement.TestConstructor;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestConstructor.class,
-	testMethodName="testShouldCreateValidMeasurement"
-)
+
 public class MetaTestShouldCreateValidMeasurement extends MetaTestBase {
+	
+	public MetaTestShouldCreateValidMeasurement(
+			@DefaultClass(TestConstructor.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testShouldCreateValidMeasurement")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {

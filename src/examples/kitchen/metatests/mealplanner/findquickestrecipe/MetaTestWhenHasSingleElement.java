@@ -1,6 +1,8 @@
 package kitchen.metatests.mealplanner.findquickestrecipe;
 
 import org.doubleoops.heavymeta.ArrayList;
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
@@ -16,12 +18,16 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestFindQuickestRecipe.class,
-	testMethodName="testWhenHasSingleElement"
-)
 public class MetaTestWhenHasSingleElement extends MetaTestBase {
+	
+	public MetaTestWhenHasSingleElement(
+			@DefaultClass(TestFindQuickestRecipe.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testWhenHasSingleElement")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {

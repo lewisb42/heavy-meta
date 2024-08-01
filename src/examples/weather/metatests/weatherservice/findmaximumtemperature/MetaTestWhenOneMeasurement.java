@@ -1,5 +1,7 @@
 package weather.metatests.weatherservice.findmaximumtemperature;
 
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
@@ -17,12 +19,16 @@ import weather.codeundertest.WeatherService;
 import weather.unittests.weatherservice.TestFindMaximumTemperature;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@MetaTestDefaultConfiguration
-(
-	testClass=TestFindMaximumTemperature.class,
-	testMethodName="testWhenOneMeasurement"
-)
 public class MetaTestWhenOneMeasurement extends MetaTestBase {
+	
+	public MetaTestWhenOneMeasurement(
+			@DefaultClass(TestFindMaximumTemperature.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testWhenOneMeasurement")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
 	
 	/**
 	 * Meta-test that ensures the proper Arrange components exist for this test:

@@ -1,5 +1,7 @@
 package health.metatests.heartrate.getheartratezone;
 
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
@@ -15,13 +17,17 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestGetHeartRateZone.class,
-	testMethodName="testShouldGetZoneOneBelowAerobicBoundary"
-)
 public class MetaTestShouldGetZoneOneBelowAerobicBoundary extends MetaTestBase {
 
+	public MetaTestShouldGetZoneOneBelowAerobicBoundary(
+			@DefaultClass(TestGetHeartRateZone.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testShouldGetZoneOneBelowAerobicBoundary")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
+	
 	@Test
 	public void shouldHaveArrangeStage() {
 		final int targetBpm = 139;

@@ -1,6 +1,8 @@
 package health.metatests.heartrate.getheartratezone;
 
 import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.jupiter.api.Assertions;
@@ -12,12 +14,16 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestGetHeartRateZone.class,
-	testMethodName="testShouldGetZoneOneAboveAerobicBoundary"
-)
 public class MetaTestShouldGetZoneOneAboveAerobicBoundary extends MetaTestBase {
+	
+	public MetaTestShouldGetZoneOneAboveAerobicBoundary(
+			@DefaultClass(TestGetHeartRateZone.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testShouldGetZoneOneAboveAerobicBoundary")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
 	
 	@Test
 	public void shouldHaveArrangeStage() {

@@ -1,5 +1,7 @@
 package health.metatests.patient.constructor;
 
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.StandardMetaTestChecks;
 import org.doubleoops.heavymeta.MetaTestBase;
@@ -16,12 +18,16 @@ import health.unittests.patient.TestConstructor;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestConstructor.class,
-	testMethodName="testFirstNameShouldNotBeNull"
-)
 public class MetaTestFirstNameShouldNotBeNull extends MetaTestBase {
+	
+	public MetaTestFirstNameShouldNotBeNull(
+			@DefaultClass(TestConstructor.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testFirstNameShouldNotBeNull")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
 	
 	static String BOGUS_NAME = "678yuhjnkif9u87guyhijlkj,khuy7ty";
 	

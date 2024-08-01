@@ -52,26 +52,11 @@ public abstract class MetaTestBase {
 	}
 
 	/**
-	 * Only intended to be implicitly used by children annotated with MetaTestConfig.
+	 * Original implementation deprecated; only kept here as
+	 * a way to force upgrades, if needed. :)
 	 */
 	protected MetaTestBase()  {
-		MetaTestDefaultConfiguration config = getClass().getAnnotation(MetaTestDefaultConfiguration.class);
-		if (config==null) {
-			throw new IllegalStateException("MetaTest created without configuration annotation (MetaTestConfig)");
-		}
-		Class<?> testClass = config.testClass();
-		String testMethodName = config.testMethodName();
-		this.testClass = validateTestClass(testClass);
-		this.testMethodName = validateTestMethodName(testMethodName, testClass);
-		try {
-			this.testMethod = this.testClass.getDeclaredMethod(testMethodName);
-			this.testClassInstance = this.testClass.getDeclaredConstructor().newInstance();
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new IllegalArgumentException();
-		}
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@BeforeAll

@@ -1,5 +1,7 @@
 package health.metatests.patient.constructor;
 
+import org.doubleoops.heavymeta.DefaultClass;
+import org.doubleoops.heavymeta.DefaultString;
 import org.doubleoops.heavymeta.Expectations;
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.doubleoops.heavymeta.MetaTestDefaultConfiguration;
@@ -13,13 +15,17 @@ import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
 
-@MetaTestDefaultConfiguration
-(
-	testClass=TestConstructor.class,
-	testMethodName="testShouldCreateValidPatient"
-)
 public class MetaTestShouldCreateValidPatient extends MetaTestBase {
 		
+	public MetaTestShouldCreateValidPatient(
+			@DefaultClass(TestConstructor.class)
+			Class<? extends Object> testClass, 
+			
+			@DefaultString("testShouldCreateValidPatient")
+			String testMethodName)  {
+		super(testClass, testMethodName);
+	}
+	
 	@Test
 	public void shouldHaveArrangeActStage() {
 		var expectations = new Expectations() {
