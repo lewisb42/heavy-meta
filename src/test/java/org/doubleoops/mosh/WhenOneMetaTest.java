@@ -127,6 +127,40 @@ public class WhenOneMetaTest {
 	}
 	
 	@Test
+	void whenSeveralStudentTestMethodsWhereSomePassTheMetaTestAndSomeFail() throws Exception {
+		engine.addMetaTestClasses(MetaTestOneMethodWithMixedPassFail.class);
+		engine.addStudentTestClasses(StudentTestsSeveralMethods.class);
+		engine.run();
+		var report = engine.report();
+		var mtNode = report.getMTNode("MetaTestOneMethodWithMixedPassFail");
+		assertNotNull(mtNode);
+		
+		STNode stNode1 = mtNode.getSTNode("test1");
+		assertNotNull(stNode1);
+		assertEquals(0, stNode1.passCount());
+		assertEquals(1, stNode1.failCount());
+		assertEquals(0.0, stNode1.percentagePasses(), 0.0001);
+		assertTrue(stNode1.getFailedMethodNames().contains("metaTestMethod1()"));
+		assertTrue(stNode1.getPassedMethodNames().isEmpty());
+		
+		STNode stNode2 = mtNode.getSTNode("test2");
+		assertNotNull(stNode2);
+		assertEquals(1, stNode2.passCount());
+		assertEquals(0, stNode2.failCount());
+		assertEquals(100.0, stNode2.percentagePasses(), 0.0001);
+		assertTrue(stNode2.getPassedMethodNames().contains("metaTestMethod1()"));
+		assertTrue(stNode2.getFailedMethodNames().isEmpty());
+		
+		STNode stNode3 = mtNode.getSTNode("test3");
+		assertNotNull(stNode3);
+		assertEquals(0, stNode3.passCount());
+		assertEquals(1, stNode3.failCount());
+		assertEquals(0.0, stNode3.percentagePasses(), 0.0001);
+		assertTrue(stNode3.getFailedMethodNames().contains("metaTestMethod1()"));
+		assertTrue(stNode3.getPassedMethodNames().isEmpty());
+	}
+	
+	@Test
 	void whenStudentTestClassIsNull() {
 		assertThrows(Exception.class, () -> {
 			new MetaTestOnePassingMethod(null, "studentTestMethod1");

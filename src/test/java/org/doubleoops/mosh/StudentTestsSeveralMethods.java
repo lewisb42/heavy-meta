@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Test;
 public class StudentTestsSeveralMethods {
 
 	@Test
-	void test1() {
+	public void test1() {
 		
 	}
 	
 	@Test
-	void test2() {
+	public void test2() {
 		
 	}
 	
 	@Test
-	void test3() {
+	public void test3() {
 		
 	}
 }
