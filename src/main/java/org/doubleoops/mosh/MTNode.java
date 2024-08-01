@@ -13,6 +13,10 @@ class MTNode {
 	
 	public MTNode(String name) { this.name = name; }
 	
+	public STNode getSTNode(String name) {
+		return studentTests.get(name);
+	}
+	
 	public void createSTNodeIfAbsent(
 			String classUnderTest, 
 			String methodUnderTest, 

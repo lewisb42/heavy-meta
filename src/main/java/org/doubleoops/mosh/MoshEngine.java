@@ -83,6 +83,18 @@ public class MoshEngine {
 	}
 	
 	/**
+	 * Adds the indicated student-submitted classes to be checked for matching
+	 * test methods.
+	 * 
+	 * @param classes the classes to add
+	 * @return this engine
+	 */
+	public MoshEngine addStudentTestClasses(Class<?>... classes) {
+		
+		return this;
+	}
+	
+	/**
 	 * Adds the indicated classes. If they are not MetaTests they will be ignored.
 	 * 
 	 * @param classes the class names
@@ -109,6 +121,7 @@ public class MoshEngine {
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
 					.selectors(metaTestPackages)
+					.selectors(metaTestClasses)
 					.filters(metaTestFilter)
 					.configurationParameter("junit.platform.reporting.open.xml.enabled", "true")
 					.configurationParameter("junit.platform.reporting.output.dir", OPEN_XML_REPORT_DIR)
@@ -311,5 +324,10 @@ public class MoshEngine {
 			this.metaTestMethod = metaTestMethod;
 			this.status = status;
 		}
+	}
+
+	public void addStudentTestClasses(Class<?> studentsTestOnePassingMethod) {
+		// TODO Auto-generated method stub
+		
 	}
 }

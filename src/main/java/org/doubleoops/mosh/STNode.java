@@ -18,6 +18,9 @@ class STNode {
 		return 100 * p / (p + f);
 	}
 	
+	public int passCount() { return passedMetaTests.count(); }
+	public int failCount() { return failedMetaTests.count(); }
+	
 	public void passed(String metaTestMethod) {
 		passedMetaTests.add(metaTestMethod);
 	}
