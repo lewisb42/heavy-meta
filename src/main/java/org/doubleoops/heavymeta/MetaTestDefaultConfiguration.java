@@ -17,6 +17,7 @@ import java.lang.annotation.Target;
  */
 @Retention(value=RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.CONSTRUCTOR })
+@Deprecated
 public @interface MetaTestDefaultConfiguration {
 	public Class<?> testClass();
 	public String testMethodName();
