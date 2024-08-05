@@ -19,7 +19,10 @@ public class StudentTestClassResolver extends TypeBasedParameterResolver<Class<?
 		
 		if (testClass.isPresent()) {
 			try {
-				return getClass().getClassLoader().loadClass(testClass.get());
+				var myklass = getClass();
+				var loader = myklass.getClassLoader();
+				var studentsClass = loader.loadClass(testClass.get());
+				return studentsClass;
 			} catch (ClassNotFoundException e) {
 				throw new ParameterResolutionException("Could not load class");
 			}

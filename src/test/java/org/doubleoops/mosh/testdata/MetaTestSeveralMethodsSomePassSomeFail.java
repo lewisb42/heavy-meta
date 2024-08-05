@@ -20,7 +20,7 @@ public class MetaTestSeveralMethodsSomePassSomeFail extends MetaTestBase {
 	
 	@Test
 	void metaTestMethod2() {
-		
+		System.out.println("executed metaTestmethod2");
 	}
 	
 	@Test

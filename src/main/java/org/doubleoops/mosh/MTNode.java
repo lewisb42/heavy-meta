@@ -13,8 +13,9 @@ class MTNode {
 	
 	public MTNode(String name) { this.name = name; }
 	
-	public STNode getSTNode(String name) {
-		return studentTests.get(name);
+	public STNode getSTNode(String studentClassName, String studentMethodName) {
+		var compositeKey = buildSTNodeKey(studentClassName, studentMethodName);
+		return studentTests.get(compositeKey);
 	}
 	
 	public STNode createSTNodeIfAbsent(

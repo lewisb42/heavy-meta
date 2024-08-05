@@ -1,5 +1,7 @@
 package org.doubleoops.mosh;
 
+import health.unittests.heartrate.TestGetHeartRateZone;
+
 /**
  * Main class for the mosh project.
  */
@@ -14,6 +16,7 @@ public class Main {
 		try {
 			MoshEngine.newInstance()
 				.addMetaTestPackages("kitchen.metatests", "health.metatests")
+				.addStudentTestClasses(TestGetHeartRateZone.class)
 				.run();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -38,4 +38,6 @@ class STNode {
 	public void markAsFailed(String metaTestMethod) {
 		failedMetaTests.add(metaTestMethod);
 	}
+	
+	
 }
