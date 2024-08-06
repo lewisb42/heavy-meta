@@ -27,16 +27,16 @@ class WhenOneMetaTestClassSeveralMethods {
 		var report = engine.report();
 		var mtNode = report.getMTNode("MetaTestSeveralMethodsSomePassSomeFail");
 		assertNotNull(mtNode);
-		STNode stNode = mtNode.getSTNode("StudentTestsOneMethod", "test1");
+		STNode stNode = mtNode.getSTNode("org.doubleoops.mosh.testdata.StudentTestsOneMethod", "test1");
 		assertNotNull(stNode);
 		assertEquals(2, stNode.passCount());
 		assertEquals(3, stNode.failCount());
 		assertEquals(40.0, stNode.percentagePasses(), 0.0001);
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2()"));
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5()"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5"));
 	}
 	
 	@Test
@@ -48,38 +48,38 @@ class WhenOneMetaTestClassSeveralMethods {
 		var report = engine.report();
 		var mtNode = report.getMTNode("MetaTestSeveralMethodsSomePassSomeFail");
 		assertNotNull(mtNode);
-		STNode stNode = mtNode.getSTNode("StudentTestsSeveralMethods", "test1");
+		STNode stNode = mtNode.getSTNode("org.doubleoops.mosh.testdata.StudentTestsSeveralMethods", "test1");
 		assertNotNull(stNode);
 		assertEquals(2, stNode.passCount());
 		assertEquals(3, stNode.failCount());
 		assertEquals(40.0, stNode.percentagePasses(), 0.0001);
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2()"));
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5()"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5"));
 		
-		stNode = mtNode.getSTNode("StudentTestsSeveralMethods", "test2");
+		stNode = mtNode.getSTNode("org.doubleoops.mosh.testdata.StudentTestsSeveralMethods", "test2");
 		assertNotNull(stNode);
 		assertEquals(2, stNode.passCount());
 		assertEquals(3, stNode.failCount());
 		assertEquals(40.0, stNode.percentagePasses(), 0.0001);
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2()"));
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5()"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5"));
 		
-		stNode = mtNode.getSTNode("StudentTestsSeveralMethods", "test3");
+		stNode = mtNode.getSTNode("org.doubleoops.mosh.testdata.StudentTestsSeveralMethods", "test3");
 		assertNotNull(stNode);
 		assertEquals(2, stNode.passCount());
 		assertEquals(3, stNode.failCount());
 		assertEquals(40.0, stNode.percentagePasses(), 0.0001);
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2()"));
-		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3()"));
-		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5()"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod2"));
+		assertTrue(stNode.getPassedMethodNames().contains("metaTestMethod4"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod1"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod3"));
+		assertTrue(stNode.getFailedMethodNames().contains("metaTestMethod5"));
 	}
 
 }
