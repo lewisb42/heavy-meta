@@ -51,13 +51,6 @@ public abstract class MetaTestBase {
 		}
 	}
 
-
-	@BeforeAll
-	public void reportStudentUnitTestInfo(TestReporter reporter) {
-		reporter.publishEntry("studentUnitTestClass", this.testClass.getSimpleName());
-		reporter.publishEntry("studentUnitTestName", this.testMethodName);
-	}
-
 	private String validateTestMethodName(String testMethodName, Class<?> testClass) {
 		if (testMethodName == null) {
 			throw new IllegalArgumentException("testMethodName can't be null");
