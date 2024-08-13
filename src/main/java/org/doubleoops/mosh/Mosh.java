@@ -154,6 +154,13 @@ public class Mosh {
 			}
 		}
 		
-		return dynamicContainer(studentTestMethodName, dynTests);
+		URI stUri = uriFor(studentTestClass, studentTestMethodName);
+		return dynamicContainer(studentTestMethodName, stUri, dynTests.stream());
+	}
+
+	private URI uriFor(Class<?> studentTestClass, String studentTestMethodName) {
+		var path = String.join(":", "method", studentTestClass.getCanonicalName());
+		path = String.join("#", path, studentTestMethodName);
+		return URI.create(path);
 	}
 }
