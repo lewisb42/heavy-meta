@@ -147,7 +147,8 @@ public class Mosh {
 		for (var mtMethod : metaTestClass.getMethods()) {
 			if (mtMethod.isAnnotationPresent(Test.class)) {
 				var displayName = mtMethod.getName();
-				var dynTest = dynamicTest(displayName, () -> {
+				URI mtMethodUri = uriFor(metaTestClass, displayName);
+				var dynTest = dynamicTest(displayName, mtMethodUri, () -> {
 					mtMethod.invoke(mtInstance);
 				});
 				dynTests.add(dynTest);
