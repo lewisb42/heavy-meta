@@ -25,39 +25,20 @@ public class Mosh {
 	private final List<Method> metaTestMethods = new ArrayList<Method>();
 	private final List<Method> studentTestMethods = new ArrayList<Method>();
 	
-	private PackageNameFilter systemPackagesFilter;
 	
 	public Mosh() {
-		systemPackagesFilter = PackageNameFilter.excludePackageNames(
-				"java", "javax", "sun", "org.junit");
 		discoverMetaTests();
 	}
 	
 	private void discoverMetaTests() {
 		var metaTestFilter = new MetaTestFilter();
-		
-		//var pkgs = Package.getPackages();
-		var pkgs = new String[] {
-			"org.doubleoops.heavymeta",
-			"org.doubleoops.mosh",
-			"health",
-			"kitchen"
-		};
-		var packageSelectors = Arrays.asList(pkgs).stream()
-//							.map(x -> x.getName())
-//							.filter(x -> !x.startsWith("java"))
-//							.filter(x -> !x.startsWith("sun"))
-//							.filter(x -> !x.startsWith("org.junit"))
-//							.filter(x -> !x.startsWith("org.eclipse"))
-//							.filter(x -> !x.startsWith("jdk"))
-//							.filter(x -> !x.startsWith("org.apiguardian"))
-//							.filter(x -> !x.startsWith("org.opentest4j"))
+		var packageSelectors = Arrays.asList(MoshConfiguration.getSearchPackages()).stream()
 							.map(DiscoverySelectors::selectPackage)
 							.collect(Collectors.toUnmodifiableList());
 		
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
-					.filters(systemPackagesFilter, metaTestFilter)
+					.filters(metaTestFilter)
 					.selectors(packageSelectors)
 					.build();
 		
