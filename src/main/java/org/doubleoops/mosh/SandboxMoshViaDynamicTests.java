@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.DynamicContainer;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
 import health.metatests.heartrate.getheartratezone.MetaTestShouldGetZoneOneAboveAerobicBoundary;
 import health.unittests.heartrate.TestGetHeartRateZone;
 
+@DisplayNameGeneration(DisplayNameGenerator.IndicativeSentences.class)
 public class SandboxMoshViaDynamicTests {
 
 	
@@ -34,13 +36,14 @@ public class SandboxMoshViaDynamicTests {
 	@TestFactory
 	List<DynamicNode> metaTestShouldGetZoneOneAboveAerobicBoundary() {
 		var metaTests = new ArrayList<DynamicNode>();
-		
 		var tm1 = "testShouldGetZoneOneAboveAerobicBoundary";
 		var mt1 = new MetaTestShouldGetZoneOneAboveAerobicBoundary(TestGetHeartRateZone.class, tm1);
 		var dc1 = dynamicContainer(tm1, 
 				URI.create("method:health.unittests.heartrate.TestGetHeartRateZone#testShouldGetZoneOneAboveAerobicBoundary"), 
 				Arrays.asList(
-				dynamicTest("shouldHaveArrangeStage", () -> mt1.shouldHaveArrangeStage()),
+				dynamicTest("shouldHaveArrangeStage", () -> {
+					mt1.shouldHaveArrangeStage();
+				}),
 				dynamicTest("shouldHaveActStage", () -> mt1.shouldHaveActStage()),
 				dynamicTest("shouldHaveAssertStage", () -> mt1.shouldHaveAssertStage()),
 				dynamicTest("actualValueShoudlComeFromActStageReturnValue", () -> mt1.actualValueShouldComeFromActStageReturnValue()),
