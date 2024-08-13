@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -122,13 +123,19 @@ public class Mosh {
 					e.printStackTrace();
 				}
 			}
-			var metaTestContainer = dynamicContainer(mtClass.getName(), studentTestsForThisMetaTestClass);
+			URI mtUri = uriFor(mtClass);
+			var metaTestContainer = dynamicContainer(mtClass.getName(), mtUri, studentTestsForThisMetaTestClass.stream());
 			resultsByMetaTestClass.add(metaTestContainer);
 		}
 		
 		return resultsByMetaTestClass;
 	}
 	
+	private static URI uriFor(Class<?> klass) {
+		var path = String.join(":", "class", klass.getCanonicalName());
+		return URI.create(path);
+	}
+
 	private DynamicContainer metaTestsForCandidateStudentTest(
 			Class<?> studentTestClass, 
 			String studentTestMethodName,
