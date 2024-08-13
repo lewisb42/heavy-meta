@@ -1,5 +1,9 @@
 package org.doubleoops.mosh;
 
+import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
+import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,9 +13,13 @@ import java.util.stream.Collectors;
 
 import org.doubleoops.heavymeta.MetaTestBase;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.support.descriptor.ClassSource;
@@ -24,6 +32,7 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class Mosh {
 	private final List<Class<? extends MetaTestBase>> metaTestClasses = new ArrayList<Class<? extends MetaTestBase>>();
 	private final List<Method> studentTestMethods = new ArrayList<Method>();
@@ -95,5 +104,49 @@ public class Mosh {
 	@Test
 	void dummyTest() {
 		
+	}
+	
+	@TestFactory
+	List<DynamicContainer> runAllMetaTestsAgainstAllStudentTests() {
+		var resultsByMetaTestClass = new ArrayList<DynamicContainer>();
+		
+		for (var mtClass : metaTestClasses) {
+			var studentTestsForThisMetaTestClass = new ArrayList<DynamicContainer>();
+			for (var stMethod : studentTestMethods) {
+				try {
+					var dynTests = metaTestsForCandidateStudentTest(stMethod.getDeclaringClass(), stMethod.getName(), mtClass);
+					studentTestsForThisMetaTestClass.add(dynTests);
+				} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			var metaTestContainer = dynamicContainer(mtClass.getName(), studentTestsForThisMetaTestClass);
+			resultsByMetaTestClass.add(metaTestContainer);
+		}
+		
+		return resultsByMetaTestClass;
+	}
+	
+	private DynamicContainer metaTestsForCandidateStudentTest(
+			Class<?> studentTestClass, 
+			String studentTestMethodName,
+			Class<? extends MetaTestBase> metaTestClass) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		var dynTests = new ArrayList<DynamicTest>();
+		var mtConstructor = metaTestClass.getDeclaredConstructor(new Class<?>[] {Class.class, String.class });
+		var mtInstance = mtConstructor.newInstance(studentTestClass, studentTestMethodName);
+		
+		for (var mtMethod : metaTestClass.getMethods()) {
+			if (mtMethod.isAnnotationPresent(Test.class)) {
+				var displayName = mtMethod.getName();
+				var dynTest = dynamicTest(displayName, () -> {
+					mtMethod.invoke(mtInstance);
+				});
+				dynTests.add(dynTest);
+			}
+		}
+		
+		return dynamicContainer(studentTestMethodName, dynTests);
 	}
 }
