@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.engine.Filter;
+import org.junit.platform.engine.discovery.ClassNameFilter;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.engine.discovery.PackageNameFilter;
 import org.junit.platform.engine.support.descriptor.MethodSource;
@@ -28,17 +30,23 @@ public class Mosh {
 	
 	public Mosh() {
 		discoverMetaTests();
+		discoverStudentTests();
 	}
 	
-	private void discoverMetaTests() {
-		var metaTestFilter = new MetaTestFilter();
+	private void discoverStudentTests() {
+		var filter = new StudentTestFilter();
+		discoverTests(filter, studentTestMethods);
+	}
+	
+	private void discoverTests(ClassNameFilter filter, List<Method> toList) {
+
 		var packageSelectors = Arrays.asList(MoshConfiguration.getSearchPackages()).stream()
 							.map(DiscoverySelectors::selectPackage)
 							.collect(Collectors.toUnmodifiableList());
 		
 		LauncherDiscoveryRequest discoveryRequest = 
 				LauncherDiscoveryRequestBuilder.request()
-					.filters(metaTestFilter)
+					.filters(filter, ClassNameFilter.excludeClassNamePatterns("org.doubleoops.mosh.Mosh"))
 					.selectors(packageSelectors)
 					.build();
 		
@@ -50,7 +58,7 @@ public class Mosh {
 					try {
 						MethodSource src = (MethodSource)ident.getSource().get();
 						Method meth = src.getJavaMethod();
-						metaTestMethods.add(meth);
+						toList.add(meth);
 						
 						// debug
 						Class<?> klass = meth.getDeclaringClass();
@@ -65,6 +73,11 @@ public class Mosh {
 		} catch (Exception e) {
 			throw new RuntimeException("Error discovering Meta-Tests found in project.");
 		}
+	}
+	
+	private void discoverMetaTests() {
+		var metaTestFilter = new MetaTestFilter();
+		discoverTests(metaTestFilter, metaTestMethods);
 	}
 	
 	@Test
